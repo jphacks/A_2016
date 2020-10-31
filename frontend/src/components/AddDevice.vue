@@ -1,7 +1,7 @@
 <template>
     <section id="AddDevice">
-        <AddButton />
-        <AddDialog />
+        <AddButton @open-modal="openModal" />
+        <AddDialog v-if="isOpened"/>
     </section>
 </template>
 
@@ -14,6 +14,18 @@ export default {
     components: {
         AddButton,
         AddDialog
+    },
+
+    data () {
+        return {
+            isOpened: false
+        }
+    },
+
+    methods: {
+        openModal () {
+            isOpened= true
+        }
     }
 }
 </script>
