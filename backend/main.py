@@ -46,3 +46,16 @@ def get_states():
             "percentage": 52
         }
     ]}
+
+
+class PostItemsReq(BaseModel):
+    device_id: str
+    item: str
+    max: int
+    min: int
+
+
+@app.post("/items", status_code=status.HTTP_201_CREATED)
+def post_items(req: PostItemsReq):
+    print(req)
+    return {}
