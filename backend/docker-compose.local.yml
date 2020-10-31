@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  app-local:
+    container_name: app-local
+    build:
+      context: .
+      dockerfile: docker/local/Dockerfile
+    ports:
+    - 8080:8080
+    volumes:
+      - .:/app
