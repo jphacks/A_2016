@@ -1,16 +1,19 @@
 <template>
   <section>
     <HelloWorld />
+    <Lists />
   </section>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import Lists from './components/Lists.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    HelloWorld,
+    Lists
   }
 }
 </script>
