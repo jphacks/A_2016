@@ -1,5 +1,6 @@
 <template>
     <section>
+        <AddDevice class="lists" />
         <div v-for="(list ,i) in lists" :key="i">
             <Card :info="list" class="lists"/>
         </div>
@@ -8,12 +9,14 @@
 
 <script>
 import Card from './molecutes/Card'
+import AddDevice from './AddDevice'
 
 export default {
     name: 'List',
 
     components: {
-        Card
+        Card,
+        AddDevice
     },
 
     data () {
