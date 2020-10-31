@@ -24,7 +24,7 @@ export default {
 
     methods: {
         openModal () {
-            isOpened= true
+            this.isOpened= true
         }
     }
 }
