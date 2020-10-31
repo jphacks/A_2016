@@ -1,2 +1,4 @@
 .DS_Store
 .idea
+esp32/.vscode/*
+.vscode/*
