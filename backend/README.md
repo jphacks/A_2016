@@ -2,13 +2,29 @@
 
 ## 開発
 
-サーバーを立ち上げる
+### サーバーを起動
+
+- `docker-compose`
+
+が必要。
 
 ```shell script
-docker-compose -f docker-compose.local.yml up
+make start
 ```
 
 http://localhost:8080 でサーバーが立ち上がる。
 
 - API docs: https://hackmd.io/9vrWlNnbTpCfoyhrPTFjBQ?view
 - 実際に生えているエンドポイントのdocs: http://localhost:8080/docs
+
+### デプロイ
+
+- heroku cli
+- `heroku login`
+- `heroku container:login`
+
+が必要。
+
+```shell script
+make deploy
+```
