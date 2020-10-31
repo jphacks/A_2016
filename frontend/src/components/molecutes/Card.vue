@@ -23,7 +23,7 @@ export default {
 #Card{
     width: 200px;
     height: 300px;
-    border: 1px solid #111
+    border: 2px solid #111
 }
 .percentage {
     margin-top:40px
