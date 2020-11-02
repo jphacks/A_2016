@@ -6,16 +6,16 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import Lists from './components/Lists.vue'
+import HelloWorld from './components/HelloWorld.vue';
+import Lists from './components/Lists.vue';
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-    Lists
-  }
-}
+    Lists,
+  },
+};
 </script>
 
 <style>
