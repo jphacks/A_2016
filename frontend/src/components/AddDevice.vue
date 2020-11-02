@@ -1,7 +1,9 @@
 <template>
-    <section id="AddDevice">
-        <AddButton @open-modal="openModal" />
+    <section>
         <AddDialog v-if="isOpened"/>
+        <section id="AddDevice">
+            <AddButton @open-modal="openModal" />
+        </section>
     </section>
 </template>
 
@@ -25,6 +27,7 @@ export default {
     methods: {
         openModal () {
             this.isOpened= true
+            console.log(this.isOpened)
         }
     }
 }
