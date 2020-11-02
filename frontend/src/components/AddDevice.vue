@@ -1,10 +1,10 @@
 <template>
-  <section>
-    <AddDialog v-if="isOpened" />
-    <section id="AddDevice">
-      <AddButton @open-modal="openModal" />
+    <section>
+        <AddDialog v-if="isOpened"/>
+        <section id="AddDevice">
+            <AddButton @open-modal="openModal" />
+        </section>
     </section>
-  </section>
 </template>
 
 <script>
