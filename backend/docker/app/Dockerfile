@@ -1,8 +1,10 @@
-FROM tiangolo/uvicorn-gunicorn:python3.8
+FROM python:3.9-alpine
 
-COPY requirement.txt /requirement.txt
+WORKDIR /app
 
-RUN pip install --no-cache-dir -r /requirement.txt
+COPY requirements.txt /
+
+RUN pip install --no-cache-dir -r /requirements.txt
 
 COPY . /app
 
