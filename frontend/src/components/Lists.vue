@@ -1,23 +1,23 @@
 <template>
-    <section>
-        <AddDevice class="lists" />
-        <div v-for="(list ,i) in lists" :key="i">
-            <Card :info="list" class="lists"/>
-        </div>
-    </section>
+  <section>
+    <AddDevice class="lists" />
+    <div v-for="(list, i) in lists" :key="i">
+      <Card :info="list" class="lists" />
+    </div>
+  </section>
 </template>
 
 <script>
-import Card from './molecutes/Card'
-import AddDevice from './AddDevice'
+import Card from './molecules/Card';
+import AddDevice from './AddDevice';
 
 export default {
   name: 'List',
 
-    components: {
-        Card,
-        AddDevice
-    },
+  components: {
+    Card,
+    AddDevice,
+  },
 
   data() {
     return {
