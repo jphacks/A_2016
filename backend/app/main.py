@@ -1,11 +1,18 @@
+import traceback
 from typing import List
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
+from sqlalchemy.orm import Session
 from starlette import status
-from . import db
+from .db import Database
 
-db = db.new_db()
+from .domain import schemas, repository
+
+# TODO: get from env
+DATABASE_URL = "postgresql://pizza:pizzatabetai@postgres/pizza"
+
+db = Database(DATABASE_URL)
 
 # server = "ec2-3-208-224-152.compute-1.amazonaws.com"
 # port = "5432"
@@ -21,6 +28,35 @@ db = db.new_db()
 #     print("DB already exists")
 
 app = FastAPI()
+
+
+class PostItemsReq(BaseModel):
+    device_id: str
+    item: str
+    max: int
+    min: int
+
+
+@app.post("/items", status_code=status.HTTP_201_CREATED)
+def post_items(req: PostItemsReq, ssn: Session = Depends(db.get_db)):
+    # TODO: 値のバリデーション
+    try:
+        repository.create_device(
+            ssn,
+            schemas.DeviceCreate(
+                id=req.device_id,
+                item=req.item,
+                max=req.max,
+                min=req.min,
+            ),
+        )
+        return {}
+    except Exception as err:
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail='Error: %s' % err,
+        )
 
 
 class PostStatesReq(BaseModel):
@@ -62,28 +98,6 @@ def get_states():
             "percentage": 52
         }
     ]}
-
-
-# Register item
-class PostItemsReq(BaseModel):
-    device_id: str
-    item: str
-    max: int
-    min: int
-    expdate: int  # unix time
-
-
-@app.post("/items", status_code=status.HTTP_201_CREATED)
-def post_items(req: PostItemsReq):
-    print(req)
-    # try:
-    #     cursor.execute('INSERT INTO devices (id ,name,max,min,expdate) VALUES(%s, %s, %s, %s, %s)',
-    #                    (req.device_id, req.item, req.max, req.min, req.expdate,))
-    #     conn.commit()
-    #     return {"text": "Created"}
-    # except:
-    #     return {"text": "error"}
-
 
 # @app.get("/reset", status_code=status.HTTP_201_CREATED)
 # def post_items():
