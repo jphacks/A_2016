@@ -17,3 +17,6 @@ push:
 
 release:
 	heroku container:release web -a ${HEROKU_APP}
+
+revision:
+	alembic revision --autogenerate

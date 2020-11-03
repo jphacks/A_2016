@@ -1,4 +1,4 @@
-from .entity import Base
+from app.db import Base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 
 
