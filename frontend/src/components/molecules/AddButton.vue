@@ -6,7 +6,6 @@
 </template>
 
 <script>
-
 export default {
   methods: {
     openModal() {

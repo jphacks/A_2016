@@ -1,15 +1,15 @@
 <template>
-    <section>
-        <AddDialog v-if="isOpened"/>
-        <section id="AddDevice">
-            <AddButton @open-modal="openModal" />
-        </section>
+  <section>
+    <AddDialog @close-modal="closeModal" v-if="isOpened" />
+    <section id="AddDevice">
+      <AddButton @open-modal="openModal" />
     </section>
+  </section>
 </template>
 
 <script>
-import AddButton from './molecutes/AddButton';
-import AddDialog from './molecutes/AddDialog';
+import AddButton from './molecules/AddButton';
+import AddDialog from './molecules/AddDialog';
 
 export default {
   name: 'AddDevice',
@@ -28,6 +28,11 @@ export default {
     openModal() {
       this.isOpened = true;
       console.log(this.isOpened);
+    },
+
+    closeModal() {
+      console.log('close');
+      this.isOpened = false;
     },
   },
 };
