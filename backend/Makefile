@@ -4,7 +4,7 @@ DOCKERFILE=docker/app/Dockerfile
 DOCKER_COMPOSE_FILE=docker-compose.local.yml
 
 start:
-	docker-compose -f ${DOCKER_COMPOSE_FILE} up --build
+	docker-compose -f ${DOCKER_COMPOSE_FILE} up --build app postgres
 
 deploy:
 	make build && make push && make release
@@ -17,3 +17,9 @@ push:
 
 release:
 	heroku container:release web -a ${HEROKU_APP}
+
+db-revision:
+	docker-compose -f ${DOCKER_COMPOSE_FILE} run db-revision
+
+db-upgrade:
+	docker-compose -f ${DOCKER_COMPOSE_FILE} run db-upgrade
