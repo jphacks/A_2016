@@ -4,7 +4,7 @@ DOCKERFILE=docker/app/Dockerfile
 DOCKER_COMPOSE_FILE=docker-compose.local.yml
 
 start:
-	docker-compose -f ${DOCKER_COMPOSE_FILE} up
+	docker-compose -f ${DOCKER_COMPOSE_FILE} up --build
 
 deploy:
 	make build && make push && make release
