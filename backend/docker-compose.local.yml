@@ -21,13 +21,18 @@ services:
       - a_2016_postgres_data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-  revision:
+  db-revision:
     build:
       context: .
       dockerfile: docker/app/Dockerfile
     command: alembic revision --autogenerate
-    ports:
-      - 8080:8080
+    volumes:
+      - .:/app
+  db-upgrade:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    command: alembic upgrade head
     volumes:
       - .:/app
 
