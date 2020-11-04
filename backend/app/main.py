@@ -2,19 +2,15 @@ import os
 import traceback
 from typing import List
 
-import psycopg2
 from fastapi import FastAPI, Depends, HTTPException
-from psycopg2 import errors
 from pydantic import BaseModel
-from sqlalchemy import exc
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import Response
 
 from .db import Database
-
-from .domain import schemas, repository
+from .domain import repository
 from .domain.repository import DeviceCreate, DeviceUpdate
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
