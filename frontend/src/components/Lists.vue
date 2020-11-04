@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import Card from './molecutes/Card';
+import Card from './molecules/Card';
 import AddDevice from './AddDevice';
 
 export default {
