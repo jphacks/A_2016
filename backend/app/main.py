@@ -116,7 +116,10 @@ def get_states(ssn: Session = Depends(db.get_db)):
     res_devices: List[GetDevicesResDevice] = []
     for d in devices:
         weight = d.weight or 0
-        percentage = 100 * (weight - d.min) / (d.max - d.min)
+        try:
+            percentage = 100 * (weight - d.min) / (d.max - d.min)
+        except ZeroDivisionError:
+            percentage = 0
         res_devices.append(GetDevicesResDevice(
             device_id=d.id,
             item=d.item,
