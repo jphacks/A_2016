@@ -28,6 +28,8 @@ services:
       context: .
       dockerfile: docker/app/Dockerfile
     command: alembic revision --autogenerate
+    env_file:
+      - .env
     volumes:
       - .:/app
   db-upgrade:
@@ -35,6 +37,8 @@ services:
       context: .
       dockerfile: docker/app/Dockerfile
     command: alembic upgrade head
+    env_file:
+      - .env
     volumes:
       - .:/app
 
