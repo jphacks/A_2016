@@ -1,3 +1,4 @@
+import os
 import pathlib
 import sys
 from logging.config import fileConfig
@@ -11,8 +12,7 @@ sys.path.append(str(pathlib.Path(__file__).resolve().parents[2]))
 
 import app.domain.entity
 from app.db import Base
-from app.db import new_db
-from app.db import DATABASE_URL
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -21,8 +21,6 @@ config = context.config
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
-
-_ = new_db()
 
 target_metadata = Base.metadata
 

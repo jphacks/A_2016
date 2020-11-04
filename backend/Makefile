@@ -23,3 +23,8 @@ db-revision:
 
 db-upgrade:
 	docker-compose -f ${DOCKER_COMPOSE_FILE} run db-upgrade
+
+# on production
+
+start-prod:
+	alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port $$PORT
