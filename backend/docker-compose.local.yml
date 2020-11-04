@@ -7,6 +7,8 @@ services:
       context: .
       dockerfile: docker/app/Dockerfile
     command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
+    env_file:
+      - .env
     ports:
     - 8080:8080
     volumes:
@@ -26,6 +28,8 @@ services:
       context: .
       dockerfile: docker/app/Dockerfile
     command: alembic revision --autogenerate
+    env_file:
+      - .env
     volumes:
       - .:/app
   db-upgrade:
@@ -33,6 +37,8 @@ services:
       context: .
       dockerfile: docker/app/Dockerfile
     command: alembic upgrade head
+    env_file:
+      - .env
     volumes:
       - .:/app
 
