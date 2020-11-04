@@ -96,7 +96,7 @@ class GetStatesResState(BaseModel):
     device_id: str
     item: str
     weight: int
-    percentage: int
+    percentage: float
 
 
 class GetStatesRes(BaseModel):
@@ -104,30 +104,23 @@ class GetStatesRes(BaseModel):
 
 
 @app.get("/states", response_model=GetStatesRes)
-def get_states():
-    # TODO: replace with real data
-    return {"states": [
-        {
-            "device_id": "5CDCD567",
-            "item": "牛乳",
-            "weight": 500,
-            "percentage": 52
-        },
-        {
-            "device_id": "5CDCD568",
-            "item": "コーヒー牛乳",
-            "weight": 500,
-            "percentage": 52
-        }
-    ]}
-
-# @app.get("/reset", status_code=status.HTTP_201_CREATED)
-# def post_items():
-#     try:
-#         cursor.execute('DELETE FROM devices')
-#         conn.commit()
-#     except Exception as e:
-#         print("DB error", e)
-#         conn.rollback()
-#         pass
-#     return {"text": "reseted"}
+def get_states(ssn: Session = Depends(db.get_db)):
+    try:
+        devices = repository.get_all_devices(ssn)
+    except Exception as err:
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail='Error: %s' % err,
+        )
+    states: List[GetStatesResState] = []
+    for d in devices:
+        weight = d.weight or 0
+        percentage = 100 * (weight - d.min) / (d.max - d.min)
+        states.append(GetStatesResState(
+            device_id=d.id,
+            item=d.item,
+            weight=weight,
+            percentage=percentage
+        ))
+    return GetStatesRes(states=states)
