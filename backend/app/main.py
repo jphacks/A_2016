@@ -6,6 +6,8 @@ from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
+from starlette.middleware.cors import CORSMiddleware
+
 from .db import Database
 
 from .domain import schemas, repository
@@ -16,6 +18,15 @@ DATABASE_URL = os.environ.get("DATABASE_URL", "")
 db = Database(DATABASE_URL)
 
 app = FastAPI()
+
+cors_allow_origins = os.environ.get("CORS_ALLOW_ORIGINS", "").split(",")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_allow_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class PostItemsReq(BaseModel):
