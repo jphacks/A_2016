@@ -42,7 +42,6 @@ class PostDevicesReq(BaseModel):
 
 @app.post("/devices", status_code=status.HTTP_201_CREATED)
 def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
-    # TODO: 値のバリデーション
     # すでに存在するデバイスか確認
     device = repository.get_devices_by_id(ssn, req.device_id)
     try:
@@ -82,7 +81,6 @@ class PutDevicesWeightReq(BaseModel):
 
 @app.put("/devices/weight", status_code=status.HTTP_204_NO_CONTENT)
 def post_states(req: PutDevicesWeightReq, ssn: Session = Depends(db.get_db)):
-    # TODO: validation
     try:
         device = repository.update_device(
             ssn,
