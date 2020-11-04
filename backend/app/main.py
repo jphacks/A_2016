@@ -10,8 +10,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import Response
 
 from .db import Database
-
-from .domain import schemas, repository
+from .domain import repository
 from .domain.repository import DeviceCreate, DeviceUpdate
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
@@ -39,18 +38,29 @@ class PostDevicesReq(BaseModel):
 
 @app.post("/devices", status_code=status.HTTP_201_CREATED)
 def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
-    # TODO: 値のバリデーション
-    # TODO: もし同じIDのdeviceが存在したら、値を更新
+    # すでに存在するデバイスか確認
+    device = repository.get_devices_by_id(ssn, req.device_id)
     try:
-        repository.create_device(
-            ssn,
-            DeviceCreate(
-                id=req.device_id,
-                item=req.item,
-                max=req.max,
-                min=req.min,
-            ),
-        )
+        if device is None:
+            repository.create_device(
+                ssn,
+                DeviceCreate(
+                    id=req.device_id,
+                    item=req.item,
+                    max=req.max,
+                    min=req.min,
+                ),
+            )
+        else:
+            repository.update_device(
+                ssn,
+                DeviceUpdate(
+                    id=req.device_id,
+                    item=req.item,
+                    max=req.max,
+                    min=req.min,
+                )
+            )
         return {}
     except Exception as err:
         traceback.print_exc()
@@ -67,7 +77,6 @@ class PutDevicesWeightReq(BaseModel):
 
 @app.put("/devices/weight", status_code=status.HTTP_204_NO_CONTENT)
 def post_states(req: PutDevicesWeightReq, ssn: Session = Depends(db.get_db)):
-    # TODO: validation
     try:
         device = repository.update_device(
             ssn,
@@ -116,7 +125,10 @@ def get_states(ssn: Session = Depends(db.get_db)):
     res_devices: List[GetDevicesResDevice] = []
     for d in devices:
         weight = d.weight or 0
-        percentage = 100 * (weight - d.min) / (d.max - d.min)
+        try:
+            percentage = 100 * (weight - d.min) / (d.max - d.min)
+        except ZeroDivisionError:
+            percentage = 0
         res_devices.append(GetDevicesResDevice(
             device_id=d.id,
             item=d.item,

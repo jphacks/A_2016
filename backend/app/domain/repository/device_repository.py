@@ -1,15 +1,21 @@
 from typing import Optional, List
 
+from pydantic import validator
 from sqlalchemy.orm import Session
 
 from app.domain import entity
-from app.domain.schemas import DeviceBase
+from app.domain.schemas import DeviceBase, validate_item, validate_min, validate_nat
 
 
 class DeviceCreate(DeviceBase):
     item: str
     max: int
     min: int
+
+    _validate_name = validator('item', allow_reuse=True)(validate_item)
+    _validate_min = validator('min', allow_reuse=True)(validate_min)
+    _validate_min_nat = validator('min', allow_reuse=True)(validate_nat)
+    _validate_max = validator('max', allow_reuse=True)(validate_nat)
 
 
 def create_device(db: Session, device: DeviceCreate):
@@ -26,6 +32,10 @@ def create_device(db: Session, device: DeviceCreate):
     return db_device
 
 
+def get_devices_by_id(db: Session, device_id: str) -> entity.Device:
+    return db.query(entity.Device).filter(entity.Device.id == device_id).first()
+
+
 def get_all_devices(db: Session) -> List[entity.Device]:
     return db.query(entity.Device).all()
 
@@ -35,6 +45,12 @@ class DeviceUpdate(DeviceBase):
     max: Optional[int]
     min: Optional[int]
     weight: Optional[int]
+
+    _validate_name = validator('item', allow_reuse=True)(validate_item)
+    _validate_min = validator('min', allow_reuse=True)(validate_min)
+    _validate_min_nat = validator('min', allow_reuse=True)(validate_nat)
+    _validate_max = validator('max', allow_reuse=True)(validate_nat)
+    _validate_weight_nat = validator('weight', allow_reuse=True)(validate_nat)
 
 
 def update_device(db: Session, params: DeviceUpdate):
