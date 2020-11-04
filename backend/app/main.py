@@ -44,7 +44,7 @@ class PostDevicesReq(BaseModel):
 def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
     # TODO: 値のバリデーション
     # すでに存在するデバイスか確認
-    device = repository.get_devices_by_id(req.device_id)
+    device = repository.get_devices_by_id(ssn, req.device_id)
     try:
         if device is None:
             repository.create_device(
