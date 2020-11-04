@@ -30,15 +30,15 @@ app.add_middleware(
 )
 
 
-class PostItemsReq(BaseModel):
+class PostDevicesReq(BaseModel):
     device_id: str
     item: str
     max: int
     min: int
 
 
-@app.post("/items", status_code=status.HTTP_201_CREATED)
-def post_items(req: PostItemsReq, ssn: Session = Depends(db.get_db)):
+@app.post("/devices", status_code=status.HTTP_201_CREATED)
+def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
     # TODO: 値のバリデーション
     # TODO: もし同じIDのdeviceが存在したら、値を更新
     try:
@@ -60,13 +60,13 @@ def post_items(req: PostItemsReq, ssn: Session = Depends(db.get_db)):
         )
 
 
-class PostStatesReq(BaseModel):
+class PutDevicesWeightReq(BaseModel):
     device_id: str
     weight: int
 
 
-@app.post("/states", status_code=status.HTTP_204_NO_CONTENT)
-def post_states(req: PostStatesReq, ssn: Session = Depends(db.get_db)):
+@app.put("/devices/weight", status_code=status.HTTP_204_NO_CONTENT)
+def post_states(req: PutDevicesWeightReq, ssn: Session = Depends(db.get_db)):
     # TODO: validation
     try:
         device = repository.update_device(
@@ -92,18 +92,18 @@ def post_states(req: PostStatesReq, ssn: Session = Depends(db.get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-class GetStatesResState(BaseModel):
+class GetDevicesResDevice(BaseModel):
     device_id: str
     item: str
     weight: int
     percentage: float
 
 
-class GetStatesRes(BaseModel):
-    states: List[GetStatesResState]
+class GetDevicesRes(BaseModel):
+    devices: List[GetDevicesResDevice]
 
 
-@app.get("/states", response_model=GetStatesRes)
+@app.get("/devices", response_model=GetDevicesRes)
 def get_states(ssn: Session = Depends(db.get_db)):
     try:
         devices = repository.get_all_devices(ssn)
@@ -113,14 +113,14 @@ def get_states(ssn: Session = Depends(db.get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail='Error: %s' % err,
         )
-    states: List[GetStatesResState] = []
+    res_devices: List[GetDevicesResDevice] = []
     for d in devices:
         weight = d.weight or 0
         percentage = 100 * (weight - d.min) / (d.max - d.min)
-        states.append(GetStatesResState(
+        res_devices.append(GetDevicesResDevice(
             device_id=d.id,
             item=d.item,
             weight=weight,
             percentage=percentage
         ))
-    return GetStatesRes(states=states)
+    return GetDevicesRes(devices=res_devices)
