@@ -6,8 +6,37 @@ services:
     build:
       context: .
       dockerfile: docker/app/Dockerfile
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 8080
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
+    env_file:
+      - .env
     ports:
     - 8080:8080
     volumes:
       - .:/app
+  postgres:
+    container_name: a_2016_postgres
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=pizza
+      - POSTGRES_PASSWORD=pizzatabetai
+    volumes:
+      - a_2016_postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  db-revision:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    command: alembic revision --autogenerate
+    volumes:
+      - .:/app
+  db-upgrade:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    command: alembic upgrade head
+    volumes:
+      - .:/app
+
+volumes:
+  a_2016_postgres_data:
