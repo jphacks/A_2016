@@ -16,9 +16,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.add {
-  margin-top: 30px;
-  font-size: 80px;
-}
-</style>
+<style scoped></style>
