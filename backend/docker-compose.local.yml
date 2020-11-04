@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  app-local:
-    container_name: app-local
+  app:
+    container_name: a_2016_app
     build:
       context: .
       dockerfile: docker/app/Dockerfile
