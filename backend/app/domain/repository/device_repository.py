@@ -1,8 +1,8 @@
-from typing import Optional
+from typing import Optional, List
 
 from sqlalchemy.orm import Session
 
-from app.domain import schemas, entity
+from app.domain import entity
 from app.domain.schemas import DeviceBase
 
 
@@ -24,6 +24,10 @@ def create_device(db: Session, device: DeviceCreate):
     db.commit()
     db.refresh(db_device)
     return db_device
+
+
+def get_all_devices(db: Session) -> List[entity.Device]:
+    return db.query(entity.Device).all()
 
 
 class DeviceUpdate(DeviceBase):
