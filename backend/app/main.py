@@ -12,7 +12,6 @@ from .db import Database
 
 from .domain import schemas, repository
 
-# TODO: get from env
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
 db = Database(DATABASE_URL)
