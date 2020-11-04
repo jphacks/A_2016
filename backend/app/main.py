@@ -7,10 +7,12 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
+from starlette.responses import Response
 
 from .db import Database
 
 from .domain import schemas, repository
+from .domain.repository import DeviceCreate, DeviceUpdate
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
@@ -42,7 +44,7 @@ def post_items(req: PostItemsReq, ssn: Session = Depends(db.get_db)):
     try:
         repository.create_device(
             ssn,
-            schemas.DeviceCreate(
+            DeviceCreate(
                 id=req.device_id,
                 item=req.item,
                 max=req.max,
@@ -64,9 +66,29 @@ class PostStatesReq(BaseModel):
 
 
 @app.post("/states", status_code=status.HTTP_204_NO_CONTENT)
-def post_states(req: PostStatesReq):
-    print(req)
-    return {}
+def post_states(req: PostStatesReq, ssn: Session = Depends(db.get_db)):
+    try:
+        device = repository.update_device(
+            ssn,
+            DeviceUpdate(
+                id=req.device_id,
+                weight=req.weight,
+            ),
+        )
+    except Exception as err:
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail='Error: %s' % err,
+        )
+
+    if device is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='device_id: %s is not found' % req.device_id,
+        )
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 class GetStatesResState(BaseModel):

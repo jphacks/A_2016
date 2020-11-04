@@ -35,7 +35,9 @@ class DeviceUpdate(DeviceBase):
 
 def update_device(db: Session, params: DeviceUpdate):
     query = db.query(entity.Device)
-    device_update: entity.Device = query.filter(entity.Device.id == params.id).first()
+    device_update: Optional[entity.Device] = query.filter(entity.Device.id == params.id).first()
+    if device_update is None:
+        return None
     if params.item is not None:
         device_update.item = params.item
     if params.max is not None:
