@@ -1,16 +1,20 @@
 <template>
   <section>
-    <AddDevice class="lists" />
-    <div v-for="(list, i) in lists" :key="i">
-      <Card :info="list" class="lists" />
-    </div>
+    <Detail v-if="isOpened" />
+    <section id="lists">
+      <AddDevice class="listCard" />
+      <div v-for="(list, i) in lists" :key="i" class="listCard">
+        <Card :info="list" />
+      </div>
+    </section>
   </section>
 </template>
 
 <script>
 import Card from './molecules/Card';
 import AddDevice from './AddDevice';
-import { hello } from '../toServer/main';
+import Detail from '../components/molecules/Detail';
+// import { hello } from '../toServer/main';
 
 export default {
   name: 'List',
@@ -18,27 +22,44 @@ export default {
   components: {
     Card,
     AddDevice,
+    Detail,
   },
 
   data() {
     return {
-      lists: [],
+      isOpened: false,
+      lists: [{ percentage: 52 }, { percentage: 52 }, { percentage: 52 }],
     };
   },
 
-  created() {
-    const res = hello();
-    this.lists = res;
-  },
+  // created() {
+  //   // const res = hello();
+  //   // this.lists = res;
+  // },
 };
 </script>
 
 <style scoped>
-.lists {
+#lists {
+  /* display: block; */
+  width: 80%;
+  background-color: pink;
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.listCard {
+  background-color: green;
+  width: 90%;
+  border-radius: 7px;
+  border: 1px solid #111;
+  margin: 0 auto;
 }
 
 @media screen and (max-width: 375px) {
+  #lists {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 </style>

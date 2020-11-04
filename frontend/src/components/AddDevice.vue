@@ -1,7 +1,7 @@
 <template>
-  <section>
+  <section id="AddDevice">
     <AddDialog @close-modal="closeModal" v-if="isOpened" />
-    <section id="AddDevice">
+    <section>
       <AddButton @open-modal="openModal" />
     </section>
   </section>
@@ -40,9 +40,7 @@ export default {
 
 <style scoped>
 #AddDevice {
-  width: 200px;
-  height: 300px;
-  border: 2px dotted #111;
-  border-radius: 30px;
+  width: 100%;
+  padding-top: 100%;
 }
 </style>

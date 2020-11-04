@@ -1,6 +1,6 @@
 <template>
-  <section id="Card">
-    <div>
+  <section>
+    <div id="Card" @click="openModal">
       <h1 class="percentage">{{ info.percentage }}</h1>
     </div>
   </section>
@@ -16,16 +16,23 @@ export default {
       required: true,
     },
   },
+
+  methods: {
+    openModal() {
+      this.$emit('open-modal');
+    },
+  },
 };
 </script>
 
 <style scoped>
-#Card {
-  width: 200px;
-  height: 300px;
-  border: 2px solid #111;
-}
-.percentage {
+/* .percentage {
   margin-top: 40px;
+} */
+#Card {
+  /* display: block;
+  background-color: blue;
+  width: 100%;
+  padding-top: 100%; */
 }
 </style>
