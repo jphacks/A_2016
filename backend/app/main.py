@@ -2,8 +2,11 @@ import os
 import traceback
 from typing import List
 
+import psycopg2
 from fastapi import FastAPI, Depends, HTTPException
+from psycopg2 import errors
 from pydantic import BaseModel
+from sqlalchemy import exc
 from sqlalchemy.orm import Session
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
@@ -40,17 +43,29 @@ class PostDevicesReq(BaseModel):
 @app.post("/devices", status_code=status.HTTP_201_CREATED)
 def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
     # TODO: 値のバリデーション
-    # TODO: もし同じIDのdeviceが存在したら、値を更新
+    # すでに存在するデバイスか確認
+    device = repository.get_devices_by_id(req.device_id)
     try:
-        repository.create_device(
-            ssn,
-            DeviceCreate(
-                id=req.device_id,
-                item=req.item,
-                max=req.max,
-                min=req.min,
-            ),
-        )
+        if device is None:
+            repository.create_device(
+                ssn,
+                DeviceCreate(
+                    id=req.device_id,
+                    item=req.item,
+                    max=req.max,
+                    min=req.min,
+                ),
+            )
+        else:
+            repository.update_device(
+                ssn,
+                DeviceUpdate(
+                    id=req.device_id,
+                    item=req.item,
+                    max=req.max,
+                    min=req.min,
+                )
+            )
         return {}
     except Exception as err:
         traceback.print_exc()

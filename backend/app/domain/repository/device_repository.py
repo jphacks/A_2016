@@ -26,6 +26,10 @@ def create_device(db: Session, device: DeviceCreate):
     return db_device
 
 
+def get_devices_by_id(db: Session, device_id: DeviceBase.id) -> entity.Device:
+    return db.query(entity.Device).filter(entity.Device.id == device_id).first()
+
+
 def get_all_devices(db: Session) -> List[entity.Device]:
     return db.query(entity.Device).all()
 
