@@ -67,6 +67,7 @@ class PostStatesReq(BaseModel):
 
 @app.post("/states", status_code=status.HTTP_204_NO_CONTENT)
 def post_states(req: PostStatesReq, ssn: Session = Depends(db.get_db)):
+    # TODO: validation
     try:
         device = repository.update_device(
             ssn,
