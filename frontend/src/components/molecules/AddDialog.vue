@@ -8,8 +8,8 @@
     <p>
       <label>deviceId: </label> <input type="text" v-model="item.device_id" />
     </p>
-    <p><label>最大容量: </label><input type="text" v-model="item.max" /></p>
-    <p><label>最小容量: </label><input type="text" v-model="item.min" /></p>
+    <p><label>最大容量: </label><input type="number" v-model="item.max" /></p>
+    <p><label>最小容量: </label><input type="number" v-model="item.min" /></p>
     <p><button @click="click">登録</button></p>
   </dialog>
 </template>
@@ -25,8 +25,8 @@ export default {
       item: {
         item: '',
         device_id: '',
-        max: '',
-        min: '',
+        max: 0,
+        min: 0,
       },
     };
   },
