@@ -43,6 +43,7 @@ import AddDialog from './molecules/AddDialog';
 import AddButton from './molecules/AddButton';
 import Detail from '../components/molecules/Detail';
 import Change from '../components/molecules/Change';
+
 import { hello } from '../toServer/main';
 
 export default {
@@ -127,6 +128,7 @@ export default {
   border: 1px solid #111;
   border-radius: 10px;
 }
+
 #lists {
   /* display: block; */
   width: 80%;
