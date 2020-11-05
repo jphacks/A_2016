@@ -1,5 +1,4 @@
 .DS_Store
 .idea
 *.pyc
-esp32/.vscode/*
-.vscode/*
+.vscode

@@ -1,3 +1,7 @@
+import re
+from datetime import datetime
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -10,6 +14,8 @@ class Device(DeviceBase):
     max: int
     min: int
     weight: int
+    color: str
+    expiration_date: str
 
     class Config:
         orm_mode = True
@@ -33,3 +39,15 @@ def validate_nat(v: int) -> int:
     if v < 0:
         raise ValueError('must be larger than 0')
     return v
+
+
+def validate_color(v: str) -> str:
+    if re.fullmatch(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$', v) is None:
+        raise ValueError('malformed color code: %s' % v)
+    return v
+
+
+def validate_expiration_date(v: Optional[str]) -> Optional[str]:
+    if v is None:
+        return None
+    return datetime.fromisoformat(v.replace('Z', '+00:00')).isoformat()
