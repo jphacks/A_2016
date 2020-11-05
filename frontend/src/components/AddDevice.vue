@@ -38,10 +38,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-#AddDevice {
-  width: 100%;
-  padding-top: 100%;
-}
-</style>

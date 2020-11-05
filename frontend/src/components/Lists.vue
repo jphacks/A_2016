@@ -1,10 +1,10 @@
 <template>
   <section>
-    <Detail v-if="isOpened" />
     <section id="lists">
+      <Detail v-if="isOpened" @close-modal="closeModal" />
       <AddDevice class="listCard" @add="add" />
       <div v-for="(list, i) in lists" :key="i" class="listCard">
-        <Card :info="list" />
+        <Card :info="list" @open-modal="openModal" />
       </div>
     </section>
   </section>
@@ -32,13 +32,22 @@ export default {
     };
   },
 
-  async created() {
+  async mounted() {
     this.lists = await hello();
   },
 
   methods: {
     add(res) {
+      console.log(res, 'aaa');
       this.lists.push(res);
+    },
+
+    openModal() {
+      this.isOpened = true;
+    },
+
+    closeModal() {
+      this.isOpened = false;
     },
   },
 };
@@ -50,16 +59,18 @@ export default {
   width: 80%;
   background-color: pink;
   margin: 0 auto;
+  padding-top: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
 
 .listCard {
-  background-color: green;
-  width: 90%;
+  background-color: whitesmoke;
+  margin: 10px auto;
+  width: 80%;
+  height: 150px;
   border-radius: 7px;
   border: 1px solid #111;
-  margin: 0 auto;
 }
 
 @media screen and (max-width: 375px) {
