@@ -10,6 +10,11 @@ export const hello = async () => {
 
 // deviceの登録（変更もここで）
 export const register = (item) => {
-  const res = Axios.post(`${serverURL}/devices`, item);
-  return res.data;
+  Axios.post(`${serverURL}/devices`, item);
+  return {
+    item: item.item,
+    device_id: item.device_id,
+    percentage: 0,
+    weight: 0,
+  };
 };
