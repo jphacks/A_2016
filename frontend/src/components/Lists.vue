@@ -12,6 +12,12 @@
       <Change v-if="isOpenedChange" :changeItemId="changeItem.device_id" />
       <AddDevice class="listCard" @add="add" />
       <div v-for="(list, i) in lists" :key="i" class="listCard">
+        <div
+          className="colorBox"
+          v-bind:style="{
+            height: 30 + 'px',
+          }"
+        ></div>
         <!-- // TODO:  listCardでstylingされてるのに、onclickは上半分でしか反応しない -->
         <Card :info="list" @open-detail-modal="openDetailModal" />
       </div>
@@ -75,7 +81,8 @@ export default {
 #lists {
   /* display: block; */
   width: 80%;
-  background-color: pink;
+  /* background-color: pink; */
+  max-width: 950px;
   margin: 0 auto;
   padding-top: 10px;
   display: grid;
@@ -86,10 +93,22 @@ export default {
   background-color: whitesmoke;
   margin: 10px auto;
   width: 80%;
+  max-width: 150px;
+  max-height: 150px;
   height: 150px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid #111;
   cursor: pointer;
+  position: relative;
+}
+.colorBox {
+  background-color: pink;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .detailCard-enter-active,
@@ -102,7 +121,7 @@ export default {
   opacity: 0;
 }
 
-@media screen and (max-width: 375px) {
+@media screen and (max-width: 767px) {
   #lists {
     grid-template-columns: 1fr 1fr 1fr;
     width: 95%;
@@ -110,6 +129,7 @@ export default {
   .listCard {
     width: 90%;
     height: 110px;
+    max-width: 110px;
   }
 }
 </style>
