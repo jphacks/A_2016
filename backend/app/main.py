@@ -136,3 +136,10 @@ def get_states(ssn: Session = Depends(db.get_db)):
             percentage=percentage
         ))
     return GetDevicesRes(devices=res_devices)
+
+
+@app.delete("/devices/{device_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_devices(device_id: str, ssn: Session = Depends(db.get_db)):
+    if not repository.delete_device(ssn, device_id):
+        return Response(status_code=status.HTTP_404_NOT_FOUND)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
