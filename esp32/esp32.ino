@@ -9,19 +9,23 @@
 const char* ssid = "takapiro2";
 const char* password = "2kumifriends";
 
-//const char* serverURL = "https://a-2016-backend.herokuapp.com/states";
-const char* serverURL = "https://jsonplaceholder.typicode.com/posts";
+const char* serverURL = "https://a-2016-backend.herokuapp.com/devices/weight";
+//const char* serverURL = "https://jsonplaceholder.typicode.com/posts";
 
+const int sensorPin = 34;
+int sensorValue = 0;
 // timer
 unsigned long lastTime = 0;
-unsigned long timerDelay = 1000 * 10; // ten seconds
+const unsigned long timerDelay = 1000 * 1; // one second
+
+const String device_id = "5CDCD561";
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(sensorPin, ANALOG);
   Serial.begin(115200);
   setup_wifi();
 }
-
 
 void loop() {
   if ((millis() - lastTime) > timerDelay) {
@@ -32,7 +36,12 @@ void loop() {
 }
 
 int get_weight() {
-  return 100;
+  sensorValue = analogRead(sensorPin);
+  int convertedValue = 1.39 * sensorValue - 728;
+  if (convertedValue < 20) {
+    return 0;
+  }
+  return convertedValue;
 }
 
 void send_data(int weight) {
@@ -40,15 +49,13 @@ void send_data(int weight) {
     digitalWrite(LED_BUILTIN, HIGH);
     HTTPClient http;
     http.begin(serverURL);
-    // Specify content-type header
-    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-    // Data to send with HTTP POST
-    String httpRequestData = "device_id=5CDCD567&weight=500";
-    // Send HTTP POST request
-    int httpResponseCode = http.POST(httpRequestData);
+    http.addHeader("Content-Type", "application/json");
+    String httpRequestData = "{\"device_id\": \"" + device_id + "\",\"weight\":" + String(weight) + "}";
+    int httpResponseCode = http.PUT(httpRequestData);
+    String res = http.getString();
+    Serial.println("req body: " + httpRequestData);
+    Serial.println("response: " + res);
     http.end();
-    Serial.print("Weight was... ");
-    Serial.println(weight);
     Serial.print("status code: ");
     Serial.println(httpResponseCode);
   } else {
