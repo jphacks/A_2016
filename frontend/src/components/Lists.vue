@@ -35,7 +35,10 @@ export default {
 
 <style scoped>
 .lists {
-  float: left;
-  margin: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+@media screen and (max-width: 375px) {
 }
 </style>
