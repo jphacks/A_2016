@@ -1,5 +1,5 @@
 <template>
-  <section @click="openModal">
+  <section @click="openModal" class="itemCard">
     <div id="Card">
       <h1 class="percentage">id: {{ info.device_id }}</h1>
       <h1 class="name">{{ info.item }}</h1>
@@ -20,7 +20,7 @@ export default {
 
   methods: {
     openModal() {
-      this.$emit('open-modal');
+      this.$emit('open-detail-modal', this.info);
     },
   },
 };

@@ -1,10 +1,19 @@
 <template>
   <section>
     <section id="lists">
-      <Detail v-if="isOpened" @close-modal="closeModal" />
+      <!-- <transition appear name="detailCard"> -->
+      <Detail
+        v-if="isOpenedDetail"
+        @close-detail-modal="closeDetailModal"
+        @open-change-modal="openChangeModal"
+        :item="detailItem"
+      />
+      <!-- </transition> -->
+      <Change v-if="isOpenedChange" :changeItemId="changeItem.device_id" />
       <AddDevice class="listCard" @add="add" />
       <div v-for="(list, i) in lists" :key="i" class="listCard">
-        <Card :info="list" @open-modal="openModal" />
+        <!-- // TODO:  listCardでstylingされてるのに、onclickは上半分でしか反応しない -->
+        <Card :info="list" @open-detail-modal="openDetailModal" />
       </div>
     </section>
   </section>
@@ -27,8 +36,11 @@ export default {
 
   data() {
     return {
-      isOpened: false,
+      isOpenedDetail: false,
+      isOpenedChange: false,
       lists: [],
+      detailItem: {},
+      changeItem: {},
     };
   },
 
@@ -42,12 +54,18 @@ export default {
       this.lists.push(res);
     },
 
-    openModal() {
-      this.isOpened = true;
+    openDetailModal(item) {
+      this.isOpenedDetail = true;
+      this.detailItem = item;
     },
 
-    closeModal() {
-      this.isOpened = false;
+    closeDetailModal() {
+      this.isOpenedDetail = false;
+    },
+
+    openChangeModal(item) {
+      this.isOpenedChange = true;
+      this.changeItem = item;
     },
   },
 };
@@ -69,13 +87,29 @@ export default {
   margin: 10px auto;
   width: 80%;
   height: 150px;
-  border-radius: 7px;
+  border-radius: 12px;
   border: 1px solid #111;
+  cursor: pointer;
+}
+
+.detailCard-enter-active,
+.detailCard-leave-active {
+  transition: opacity 0.5s;
+}
+
+.detailCard-enter,
+.detailCard-leave-to {
+  opacity: 0;
 }
 
 @media screen and (max-width: 375px) {
   #lists {
     grid-template-columns: 1fr 1fr 1fr;
+    width: 95%;
+  }
+  .listCard {
+    width: 90%;
+    height: 110px;
   }
 }
 </style>
