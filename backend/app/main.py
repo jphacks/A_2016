@@ -68,6 +68,11 @@ def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
                 )
             )
         return {}
+    except ValueError as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=err
+        )
     except Exception as err:
         traceback.print_exc()
         raise HTTPException(
