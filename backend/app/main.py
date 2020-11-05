@@ -1,6 +1,6 @@
 import os
 import traceback
-from typing import List
+from typing import List, Optional
 
 from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
@@ -34,12 +34,17 @@ class PostDevicesReq(BaseModel):
     item: str
     max: int
     min: int
+    color: str
+    expiration_date: str  # ISO8601
 
 
 @app.post("/devices", status_code=status.HTTP_201_CREATED)
 def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
     # すでに存在するデバイスか確認
     device = repository.get_devices_by_id(ssn, req.device_id)
+    color = req.color or "#FFFFFF"
+    expiration_date = req.expiration_date or None
+
     try:
         if device is None:
             repository.create_device(
@@ -49,6 +54,8 @@ def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
                     item=req.item,
                     max=req.max,
                     min=req.min,
+                    color=color,
+                    expiration_date=expiration_date,
                 ),
             )
         else:
@@ -59,9 +66,16 @@ def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
                     item=req.item,
                     max=req.max,
                     min=req.min,
+                    color=color,
+                    expiration_date=expiration_date,
                 )
             )
         return {}
+    except ValueError as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail='%s' % err
+        )
     except Exception as err:
         traceback.print_exc()
         raise HTTPException(
@@ -106,6 +120,8 @@ class GetDevicesResDevice(BaseModel):
     item: str
     weight: int
     percentage: float
+    color: Optional[str]
+    expiration_date: Optional[str]
 
 
 class GetDevicesRes(BaseModel):
@@ -133,7 +149,9 @@ def get_states(ssn: Session = Depends(db.get_db)):
             device_id=d.id,
             item=d.item,
             weight=weight,
-            percentage=percentage
+            percentage=percentage,
+            color=d.color,
+            expiration_date=d.expiration_date
         ))
     return GetDevicesRes(devices=res_devices)
 

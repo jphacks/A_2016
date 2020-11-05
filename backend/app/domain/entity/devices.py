@@ -1,4 +1,7 @@
-from sqlalchemy import Column, Integer, String
+from datetime import datetime
+from typing import Optional
+
+from sqlalchemy import Column, Integer, String, DateTime, text
 
 from app.db import Base
 
@@ -11,3 +14,5 @@ class Device(Base):
     max = Column(Integer)
     min = Column(Integer)
     weight = Column(Integer)
+    color = Column(String(length=7))
+    expiration_date = Column(DateTime)
