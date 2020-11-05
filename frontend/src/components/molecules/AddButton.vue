@@ -7,7 +7,7 @@ export default {
   methods: {
     openModal() {
       console.log('emmitted');
-      this.$emit('open-modal');
+      this.$emit('open-add-modal');
     },
   },
 };

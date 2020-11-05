@@ -14,7 +14,7 @@ export const register = (item) => {
   return {
     item: item.item,
     device_id: item.device_id,
-    percentage: 0,
+    percentage: 45,
     weight: 0,
   };
 };

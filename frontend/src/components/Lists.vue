@@ -9,13 +9,25 @@
         :item="detailItem"
       />
       <!-- </transition> -->
-      <Change v-if="isOpenedChange" :changeItemId="changeItem.device_id" />
-      <AddDevice class="listCard" @add="add" />
+      <Change
+        v-if="isOpenedChange"
+        :changeItemId="changeItem.device_id"
+        @close-change-modal="closeChangeModal"
+        @change-list="changeList"
+      />
+      <AddDialog
+        id="Dialog"
+        v-if="isOpenedAdd"
+        @close-add-modal="closeAddModal"
+      />
+      <section class="listCard addButton">
+        <AddButton @open-add-modal="openAddModal" />
+      </section>
       <div v-for="(list, i) in lists" :key="i" class="listCard">
         <div
           className="colorBox"
           v-bind:style="{
-            height: 30 + 'px',
+            height: list.percentage * 1.5 + 'px',
           }"
         ></div>
         <!-- // TODO:  listCardでstylingされてるのに、onclickは上半分でしか反応しない -->
@@ -27,8 +39,10 @@
 
 <script>
 import Card from './molecules/Card';
-import AddDevice from './AddDevice';
+import AddDialog from './molecules/AddDialog';
+import AddButton from './molecules/AddButton';
 import Detail from '../components/molecules/Detail';
+import Change from '../components/molecules/Change';
 import { hello } from '../toServer/main';
 
 export default {
@@ -36,22 +50,30 @@ export default {
 
   components: {
     Card,
-    AddDevice,
     Detail,
+    Change,
+    AddDialog,
+    AddButton,
   },
 
   data() {
     return {
       isOpenedDetail: false,
       isOpenedChange: false,
+      isOpenedAdd: false,
       lists: [],
       detailItem: {},
       changeItem: {},
+      // deviceIdFromURL: '',
     };
   },
 
   async mounted() {
     this.lists = await hello();
+    // if (this.$route.query.device_id) {
+    //   this.isOpenedAdd = true;
+    //   this.deviceIdFromURL = this.$route.query.device_id;
+    // }
   },
 
   methods: {
@@ -73,11 +95,38 @@ export default {
       this.isOpenedChange = true;
       this.changeItem = item;
     },
+
+    closeChangeModal() {
+      this.isOpenedChange = false;
+    },
+
+    openAddModal() {
+      this.isOpenedDetail = false;
+      this.isOpenedChange = false;
+      this.isOpenedAdd = true;
+    },
+
+    closeAddModal(item) {
+      this.isOpenedAdd = false;
+      this.add(item);
+    },
+
+    changeList(item) {
+      // Todo: 用途を変更したらその時点で画面の物も変更できるようにする
+      console.log(item);
+    },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss">
+#Dialog {
+  z-index: 100000;
+  width: 80%;
+  height: 500px;
+  border: 1px solid #111;
+  border-radius: 10px;
+}
 #lists {
   /* display: block; */
   width: 80%;
@@ -87,20 +136,40 @@ export default {
   padding-top: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  .listCard {
+    background-color: whitesmoke;
+    margin: 10px auto;
+    width: 80%;
+    max-width: 150px;
+    max-height: 150px;
+    height: 150px;
+    border-radius: 10px;
+    border: 1px solid #111;
+    cursor: pointer;
+    position: relative;
+    .percentage {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+    }
+    .name {
+      position: absolute;
+      bottom: 5px;
+      left: 10px;
+    }
+  }
+}
+.addButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white !important;
+  border: 1px dashed black !important;
+  h1 {
+    border: none !important;
+  }
 }
 
-.listCard {
-  background-color: whitesmoke;
-  margin: 10px auto;
-  width: 80%;
-  max-width: 150px;
-  max-height: 150px;
-  height: 150px;
-  border-radius: 10px;
-  border: 1px solid #111;
-  cursor: pointer;
-  position: relative;
-}
 .colorBox {
   background-color: pink;
   position: absolute;
@@ -120,7 +189,13 @@ export default {
 .detailCard-leave-to {
   opacity: 0;
 }
-
+@media screen and (max-width: 375px) {
+  .listCard {
+    width: 90%;
+    height: 95px !important;
+    max-width: 110px;
+  }
+}
 @media screen and (max-width: 767px) {
   #lists {
     grid-template-columns: 1fr 1fr 1fr;

@@ -26,14 +26,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* .percentage {
-  margin-top: 40px;
-} */
-#Card {
-  /* display: block;
-  background-color: blue;
-  width: 100%;
-  padding-top: 100%; */
-}
-</style>
+<style scoped lang="scss"></style>

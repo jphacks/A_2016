@@ -32,8 +32,10 @@ export default {
 
 <style scoped>
 #Dialog {
+  z-index: 100000;
   width: 80%;
-  height: 300px;
+  height: 400px;
   border: 1px solid #111;
+  border-radius: 10px;
 }
 </style>
