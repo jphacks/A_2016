@@ -37,6 +37,7 @@ def create_device(db: Session, device: DeviceCreate):
         max=device.max,
         min=device.min,
         color=device.color,
+        weight=0,
         expiration_date=expiration_date
     )
 
@@ -86,6 +87,10 @@ def update_device(db: Session, params: DeviceUpdate):
         device_update.min = params.min
     if params.weight is not None:
         device_update.weight = params.weight
+    if params.color is not None:
+        device_update.color = params.color
+    if params.expiration_date is not None:
+        device_update.expiration_date = params.expiration_date
     db.commit()
     db.refresh(device_update)
     return device_update

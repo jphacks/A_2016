@@ -1,6 +1,6 @@
 import os
 import traceback
-from typing import List
+from typing import List, Optional
 
 from fastapi import FastAPI, Depends, HTTPException
 from pydantic import BaseModel
@@ -120,6 +120,8 @@ class GetDevicesResDevice(BaseModel):
     item: str
     weight: int
     percentage: float
+    color: Optional[str]
+    expiration_date: Optional[str]
 
 
 class GetDevicesRes(BaseModel):
@@ -147,7 +149,9 @@ def get_states(ssn: Session = Depends(db.get_db)):
             device_id=d.id,
             item=d.item,
             weight=weight,
-            percentage=percentage
+            percentage=percentage,
+            color=d.color,
+            expiration_date=d.expiration_date
         ))
     return GetDevicesRes(devices=res_devices)
 
