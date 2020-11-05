@@ -2,7 +2,7 @@
   <section>
     <Detail v-if="isOpened" />
     <section id="lists">
-      <AddDevice class="listCard" />
+      <AddDevice class="listCard" @add="add" />
       <div v-for="(list, i) in lists" :key="i" class="listCard">
         <Card :info="list" />
       </div>
@@ -28,13 +28,18 @@ export default {
   data() {
     return {
       isOpened: false,
-      lists: [{ percentage: 52 }, { percentage: 52 }, { percentage: 52 }],
+      lists: [],
     };
   },
 
-  created() {
-    const res = hello();
-    this.lists = res;
+  async created() {
+    this.lists = await hello();
+  },
+
+  methods: {
+    add(res) {
+      this.lists.push(res);
+    },
   },
 };
 </script>
