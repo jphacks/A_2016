@@ -1,8 +1,5 @@
 <template>
-  <button @click="openModal">
-    <span class="add">+</span>
-    <h1>追加する</h1>
-  </button>
+  <h1 @click="openModal">追加する</h1>
 </template>
 
 <script>
@@ -15,5 +12,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

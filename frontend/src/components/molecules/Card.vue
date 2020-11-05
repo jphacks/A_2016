@@ -1,7 +1,8 @@
 <template>
-  <section>
-    <div id="Card" @click="openModal">
-      <h1 class="percentage">{{ info.percentage }}</h1>
+  <section @click="openModal">
+    <div id="Card">
+      <h1 class="percentage">id: {{ info.device_id }}</h1>
+      <h1 class="name">{{ info.item }}</h1>
     </div>
   </section>
 </template>
