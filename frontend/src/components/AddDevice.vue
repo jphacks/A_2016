@@ -30,8 +30,9 @@ export default {
       console.log(this.isOpened);
     },
 
-    closeModal() {
+    closeModal(res) {
       console.log('close');
+      this.$emit('add', res);
       this.isOpened = false;
     },
   },

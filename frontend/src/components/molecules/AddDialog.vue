@@ -34,8 +34,7 @@ export default {
   methods: {
     click() {
       const res = register(this.item);
-      console.log(res);
-      this.$emit('close-modal');
+      this.$emit('close-modal', res);
     },
   },
 };
