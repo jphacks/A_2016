@@ -15,14 +15,15 @@ class DeviceCreate(DeviceBase):
     max: int
     min: int
     color: str
-    expiration_date: str
+    expiration_date: Optional[str]
 
     _validate_name = validator('item', allow_reuse=True)(validate_item)
     _validate_min = validator('min', allow_reuse=True)(validate_min)
     _validate_min_nat = validator('min', allow_reuse=True)(validate_nat)
     _validate_max = validator('max', allow_reuse=True)(validate_nat)
     _validate_color = validator('color', allow_reuse=True)(validate_color)
-    _validate_expiration_date = validator('expiration_date', allow_reuse=True)(validate_expiration_date)
+    _validate_expiration_date = validator(
+        'expiration_date', allow_reuse=True)(validate_expiration_date)
 
 
 def create_device(db: Session, device: DeviceCreate):
@@ -67,12 +68,14 @@ class DeviceUpdate(DeviceBase):
     _validate_max = validator('max', allow_reuse=True)(validate_nat)
     _validate_weight_nat = validator('weight', allow_reuse=True)(validate_nat)
     _validate_color = validator('color', allow_reuse=True)(validate_color)
-    _validate_expiration_date = validator('expiration_date', allow_reuse=True)(validate_expiration_date)
+    _validate_expiration_date = validator(
+        'expiration_date', allow_reuse=True)(validate_expiration_date)
 
 
 def update_device(db: Session, params: DeviceUpdate):
     query = db.query(entity.Device)
-    device_update: Optional[entity.Device] = query.filter(entity.Device.id == params.id).first()
+    device_update: Optional[entity.Device] = query.filter(
+        entity.Device.id == params.id).first()
     if device_update is None:
         return None
     if params.item is not None:
@@ -90,7 +93,8 @@ def update_device(db: Session, params: DeviceUpdate):
 
 def delete_device(db: Session, device_id: str):
     query = db.query(entity.Device)
-    device: Optional[entity.Device] = query.filter(entity.Device.id == device_id).first()
+    device: Optional[entity.Device] = query.filter(
+        entity.Device.id == device_id).first()
     if device is None:
         return False
     db.delete(device)

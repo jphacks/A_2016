@@ -42,6 +42,9 @@ class PostDevicesReq(BaseModel):
 def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
     # すでに存在するデバイスか確認
     device = repository.get_devices_by_id(ssn, req.device_id)
+    color = req.color or "#FFFFFF"
+    expiration_date = req.expiration_date or None
+
     try:
         if device is None:
             repository.create_device(
@@ -51,8 +54,8 @@ def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
                     item=req.item,
                     max=req.max,
                     min=req.min,
-                    color=req.color,
-                    expiration_date=req.expiration_date,
+                    color=color,
+                    expiration_date=expiration_date,
                 ),
             )
         else:
@@ -63,15 +66,15 @@ def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
                     item=req.item,
                     max=req.max,
                     min=req.min,
-                    color=req.color,
-                    expiration_date=req.expiration_date,
+                    color=color,
+                    expiration_date=expiration_date,
                 )
             )
         return {}
     except ValueError as err:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=err
+            detail='%s' % err
         )
     except Exception as err:
         traceback.print_exc()

@@ -1,5 +1,6 @@
 import re
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -46,5 +47,7 @@ def validate_color(v: str) -> str:
     return v
 
 
-def validate_expiration_date(v: str) -> str:
+def validate_expiration_date(v: Optional[str]) -> Optional[str]:
+    if v is None:
+        return None
     return datetime.fromisoformat(v.replace('Z', '+00:00')).isoformat()
