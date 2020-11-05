@@ -1,5 +1,6 @@
 from typing import Optional, List
 
+import sqlalchemy
 from pydantic import validator
 from sqlalchemy.orm import Session
 
@@ -69,3 +70,13 @@ def update_device(db: Session, params: DeviceUpdate):
     db.commit()
     db.refresh(device_update)
     return device_update
+
+
+def delete_device(db: Session, device_id: str):
+    query = db.query(entity.Device)
+    device: Optional[entity.Device] = query.filter(entity.Device.id == device_id).first()
+    if device is None:
+        return False
+    db.delete(device)
+    db.commit()
+    return True
