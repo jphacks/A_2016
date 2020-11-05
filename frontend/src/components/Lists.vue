@@ -14,7 +14,7 @@
 import Card from './molecules/Card';
 import AddDevice from './AddDevice';
 import Detail from '../components/molecules/Detail';
-// import { hello } from '../toServer/main';
+import { hello } from '../toServer/main';
 
 export default {
   name: 'List',
@@ -32,10 +32,10 @@ export default {
     };
   },
 
-  // created() {
-  //   // const res = hello();
-  //   // this.lists = res;
-  // },
+  created() {
+    const res = hello();
+    this.lists = res;
+  },
 };
 </script>
 
