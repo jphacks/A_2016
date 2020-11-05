@@ -51,6 +51,8 @@ def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
                     item=req.item,
                     max=req.max,
                     min=req.min,
+                    color=req.color,
+                    expiration_date=req.expiration_date,
                 ),
             )
         else:
@@ -61,6 +63,8 @@ def post_devices(req: PostDevicesReq, ssn: Session = Depends(db.get_db)):
                     item=req.item,
                     max=req.max,
                     min=req.min,
+                    color=req.color,
+                    expiration_date=req.expiration_date,
                 )
             )
         return {}
