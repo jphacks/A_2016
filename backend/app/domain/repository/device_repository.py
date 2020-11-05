@@ -26,11 +26,17 @@ class DeviceCreate(DeviceBase):
 
 
 def create_device(db: Session, device: DeviceCreate):
+    try:
+        expiration_date = datetime.fromisoformat(device.expiration_date)
+    except:
+        expiration_date = None
     db_device = entity.Device(
         id=device.id,
         item=device.item,
         max=device.max,
         min=device.min,
+        color=device.color,
+        expiration_date=expiration_date
     )
 
     db.add(db_device)
