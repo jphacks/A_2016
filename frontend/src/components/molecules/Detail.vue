@@ -1,7 +1,8 @@
 <template>
   <dialog open id="Dialog">
     <h1>詳細</h1>
-    <button @click="close">閉じる</button>
+    <button class="button" @click="change">変更</button>
+    <button class="button" @click="close">閉じる</button>
   </dialog>
 </template>
 
@@ -9,9 +10,21 @@
 export default {
   name: 'Detail',
 
+  props: {
+    item: {
+      required: true,
+      type: Object,
+    },
+  },
+
   methods: {
     close() {
-      this.$emit('close-modal');
+      this.$emit('close-detail-modal');
+    },
+
+    change() {
+      this.$emit('close-detail-modal');
+      this.$emit('open-change-modal', this.item);
     },
   },
 };
