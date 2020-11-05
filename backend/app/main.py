@@ -34,6 +34,8 @@ class PostDevicesReq(BaseModel):
     item: str
     max: int
     min: int
+    color: str
+    expiration_date: str  # ISO8601
 
 
 @app.post("/devices", status_code=status.HTTP_201_CREATED)

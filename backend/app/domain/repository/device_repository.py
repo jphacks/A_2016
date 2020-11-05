@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional, List
 
 import sqlalchemy
@@ -5,18 +6,23 @@ from pydantic import validator
 from sqlalchemy.orm import Session
 
 from app.domain import entity
-from app.domain.schemas import DeviceBase, validate_item, validate_min, validate_nat
+from app.domain.schemas import DeviceBase, validate_item, validate_min, validate_nat, validate_color, \
+    validate_expiration_date
 
 
 class DeviceCreate(DeviceBase):
     item: str
     max: int
     min: int
+    color: str
+    expiration_date: str
 
     _validate_name = validator('item', allow_reuse=True)(validate_item)
     _validate_min = validator('min', allow_reuse=True)(validate_min)
     _validate_min_nat = validator('min', allow_reuse=True)(validate_nat)
     _validate_max = validator('max', allow_reuse=True)(validate_nat)
+    _validate_color = validator('color', allow_reuse=True)(validate_color)
+    _validate_expiration_date = validator('expiration_date', allow_reuse=True)(validate_expiration_date)
 
 
 def create_device(db: Session, device: DeviceCreate):
@@ -46,12 +52,16 @@ class DeviceUpdate(DeviceBase):
     max: Optional[int]
     min: Optional[int]
     weight: Optional[int]
+    color: Optional[str]
+    expiration_date: Optional[str]
 
     _validate_name = validator('item', allow_reuse=True)(validate_item)
     _validate_min = validator('min', allow_reuse=True)(validate_min)
     _validate_min_nat = validator('min', allow_reuse=True)(validate_nat)
     _validate_max = validator('max', allow_reuse=True)(validate_nat)
     _validate_weight_nat = validator('weight', allow_reuse=True)(validate_nat)
+    _validate_color = validator('color', allow_reuse=True)(validate_color)
+    _validate_expiration_date = validator('expiration_date', allow_reuse=True)(validate_expiration_date)
 
 
 def update_device(db: Session, params: DeviceUpdate):
