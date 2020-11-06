@@ -68,13 +68,17 @@ export default {
     };
   },
 
-  async created() {
-    this.fetchDevices();
+  created() {
+    setInterval(() => {
+      this.fetchDevices();
+    }, 3000);
   },
 
   computed: {
     devices() {
-      return devicesStore.state.devices;
+      return devicesStore.state.devices.sort((a, b) => {
+        return a.device_id - b.device_id;
+      });
     },
   },
 
