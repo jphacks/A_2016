@@ -1,23 +1,12 @@
 <template>
   <section>
     <section id="lists">
-      <!-- <transition appear name="detailCard"> -->
-      <!-- </transition> -->
       <Change
         v-if="isOpenedChange"
         :changeItemId="changeItem.device_id"
         @close-change-modal="closeChangeModal"
         @change-list="changeList"
       />
-      <AddDialog
-        id="Dialog"
-        v-if="isOpenedAdd"
-        @close-add-modal="closeAddModal"
-        :deviceIdFromURL="deviceIdFromURL"
-      />
-      <section class="listCard addButton">
-        <AddButton @open-add-modal="openAddModal" />
-      </section>
       <div
         v-for="(list, i) in lists"
         :key="i"
@@ -41,8 +30,6 @@
 
 <script>
 import Card from './molecules/Card';
-import AddDialog from './molecules/AddDialog';
-import AddButton from './molecules/AddButton';
 import Detail from '../components/molecules/Detail';
 import Change from '../components/molecules/Change';
 
@@ -55,30 +42,20 @@ export default {
     Card,
     Detail,
     Change,
-    AddDialog,
-    AddButton,
   },
 
   data() {
     return {
       isOpenedDetail: false,
       isOpenedChange: false,
-      isOpenedAdd: false,
       lists: [],
       detailItem: {},
       changeItem: {},
-      deviceIdFromURL: '',
-      query: null,
     };
   },
 
   async mounted() {
-    this.query = new URLSearchParams(location.search.slice(1));
-    this.deviceIdFromURL = this.query?.get('d');
     this.lists = await hello();
-    if (this.deviceIdFromURL) {
-      this.isOpenedAdd = true;
-    }
   },
 
   methods: {
@@ -86,7 +63,6 @@ export default {
       console.log(res, 'aaa');
       this.lists.push(res);
     },
-
     openDetailModal(item) {
       this.isOpenedDetail = true;
       this.detailItem = item;
@@ -106,20 +82,6 @@ export default {
       this.isOpenedChange = false;
     },
 
-    openAddModal() {
-      this.isOpenedDetail = false;
-      this.isOpenedChange = false;
-      this.isOpenedAdd = true;
-    },
-
-    closeAddModal(item) {
-      this.isOpenedAdd = false;
-      this.add(item);
-      this.deviceIdFromURL = '';
-      this.query?.delete('d');
-      history.pushState('', '', '?' + this.query?.toString());
-    },
-
     changeList(item) {
       // Todo: 用途を変更したらその時点で画面の物も変更できるようにする
       console.log(item);
@@ -129,19 +91,6 @@ export default {
 </script>
 
 <style lang="scss">
-#Dialog {
-  z-index: 100000;
-  width: 80%;
-  height: 500px;
-  border: 1px solid #111;
-  border-radius: 10px;
-  display: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 10px;
-}
-
 #lists {
   /* display: block; */
   width: 80%;
