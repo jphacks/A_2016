@@ -94,10 +94,10 @@ export default {
 
   methods: {
     async register() {
-      var color = this.item.color
-      color = color.slice(0,7)
-      this.item.color = color
-      console.log(this.item)
+      var color = this.item.color;
+      color = color.slice(0, 7);
+      this.item.color = color;
+      console.log(this.item);
       const res = register(this.item);
       this.$emit('close-add-modal', res);
       // this.$emit('close-add-modal',this.item)
@@ -111,8 +111,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.color{
-  margin: 0 auto
+.color {
+  margin: 0 auto;
 }
 .card-items {
   margin: 30px 0;
