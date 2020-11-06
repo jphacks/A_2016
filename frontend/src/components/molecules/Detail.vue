@@ -15,7 +15,7 @@
       </v-card-actions>
     </v-card>
     <v-row justify="center">
-      <v-dialog v-model="isOpenChange" persistent max-width="290">
+      <v-dialog v-model="isOpenChange" persistent>
         <AddDialog
           @close-add-modal="closeChangeModal"
           :deviceIdFromURL="item.device_id"
