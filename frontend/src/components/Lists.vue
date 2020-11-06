@@ -1,14 +1,8 @@
 <template>
   <section>
     <section id="lists">
-      <Change
-        v-if="isOpenedChange"
-        :changeItemId="changeItem.device_id"
-        @close-change-modal="closeChangeModal"
-        @change-list="changeList"
-      />
       <div
-        v-for="(list, i) in lists"
+        v-for="(list, i) in devices"
         :key="i"
         class="listCard"
         @click="openDetailModal(list)"
@@ -45,11 +39,7 @@
       </div>
       <v-row justify="center">
         <v-dialog v-model="isOpenedDetail" persistent max-width="290">
-          <Detail
-            @close-detail-modal="closeDetailModal"
-            @open-change-modal="openChangeModal"
-            :item="detailItem"
-          />
+          <Detail @close-detail-modal="closeDetailModal" :item="detailItem" />
         </v-dialog>
       </v-row>
     </section>
@@ -59,9 +49,8 @@
 <script>
 import Card from './molecules/Card';
 import Detail from '../components/molecules/Detail';
-import Change from '../components/molecules/Change';
 
-import { hello } from '../toServer/main';
+import { devicesStore } from '../store/devices';
 
 export default {
   name: 'List',
@@ -69,29 +58,27 @@ export default {
   components: {
     Card,
     Detail,
-    Change,
   },
 
   data() {
     return {
       isOpenedDetail: false,
-      isOpenedChange: false,
-      lists: [],
       detailItem: {},
       changeItem: {},
     };
   },
 
-  async mounted() {
-    this.lists = await hello();
-    console.log(this.lists);
+  async created() {
+    this.fetchDevices();
+  },
+
+  computed: {
+    devices() {
+      return devicesStore.state.devices;
+    },
   },
 
   methods: {
-    add(res) {
-      console.log(res, 'aaa');
-      this.lists.push(res);
-    },
     openDetailModal(item) {
       this.isOpenedDetail = true;
       this.detailItem = item;
@@ -99,21 +86,11 @@ export default {
 
     async closeDetailModal() {
       this.isOpenedDetail = false;
-      this.lists = await hello();
+      this.fetchDevices();
     },
 
-    openChangeModal(item) {
-      this.isOpenedChange = true;
-      this.changeItem = item;
-    },
-
-    closeChangeModal() {
-      this.isOpenedChange = false;
-    },
-
-    changeList(item) {
-      // Todo: 用途を変更したらその時点で画面の物も変更できるようにする
-      console.log(item);
+    async fetchDevices() {
+      await devicesStore.dispatch('fetchDevices');
     },
   },
 };

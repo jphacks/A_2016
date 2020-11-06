@@ -8,7 +8,7 @@
       </v-btn>
     </v-app-bar>
     <v-row justify="center">
-      <v-dialog v-model="isOpenedAdd" persistent max-width="290">
+      <v-dialog v-model="isOpenedAdd" max-width="500px">
         <AddDialog
           @close-add-modal="closeAddModal"
           :deviceIdFromURL="deviceIdFromURL"
