@@ -39,7 +39,7 @@
       </v-menu>
     </p>
     <p class="inputs">
-      <label>色</label><input type="text" v-model="item.color">
+      <label>色</label><input type="text" v-model="item.color" />
     </p>
     <p class="inputs">
       <button @click="register" class="register">登録</button>
@@ -81,35 +81,17 @@ export default {
   },
 
   methods: {
-    register() {
+    async register() {
       console.log(this.item)
+      await this.item.expiration_date.toISOString()
       const res = register(this.item);
       this.$emit('close-add-modal', res);
-      // this.$emit('close-add-modal')
+      // this.$emit('close-add-modal',this.item)
     },
 
     close() {
       this.$emit('close-add-modal', this.item);
     },
-
-    allowDate (val) {
-      let today = new Date() 
-      today = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate()
-      )
-      let maxAllowedDay = new Date()
-      maxAllowedDay.setDate(
-        today.getDate() + 100
-      )
-      maxAllowedDay = new Date(
-        maxAllowedDay.getFullYear(),
-        maxAllowedDay.getMonth(),
-        maxAllowedDay.getDate()
-      )
-      return today <= new Date(val) && new Date(val) <= maxAllowedDay
-    }
   },
 };
 </script>
