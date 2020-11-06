@@ -135,6 +135,11 @@ export default {
   height: 500px;
   border: 1px solid #111;
   border-radius: 10px;
+  display: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
 }
 
 #lists {

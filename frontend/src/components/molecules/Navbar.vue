@@ -14,11 +14,11 @@ export default {
 .navBar {
   height: 60px;
   // border-bottom: 3px solid rgb(99, 83, 83);
-  font-family: 'Reenie Beanie', cursive;
+  font-family: 'Shrikhand', cursive;
   background-color: rgb(99, 83, 83);
   h1 {
     color: white;
-    font-size: 40px;
+    font-size: 30px;
     line-height: 60px;
   }
 }
