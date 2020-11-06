@@ -1,12 +1,21 @@
 <template>
-  <dialog open id="Dialog">
-    <h1>詳細</h1>
-    <button class="button" @click="change">変更</button>
-    <button class="button" @click="close">閉じる</button>
-  </dialog>
+  <v-card class="dialog">
+    <v-card-title class="headline grey lighten-2">{{ item.item }}</v-card-title>
+
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="secondary" @click="onClickDelete" small icon
+        ><v-icon dark> mdi-delete </v-icon></v-btn
+      >
+      <v-btn color="secondary" text @click="change">変更</v-btn>
+      <v-btn color="secondary" text @click="close">閉じる</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
+import { deleteItem } from '../../toServer/main';
+
 export default {
   name: 'Detail',
 
@@ -26,15 +35,22 @@ export default {
       this.$emit('close-detail-modal');
       this.$emit('open-change-modal', this.item);
     },
+
+    async onClickDelete() {
+      try {
+        await deleteItem(this.item.device_id);
+        this.close();
+      } catch (err) {
+        console.error(err);
+      }
+    },
   },
 };
 </script>
 
 <style scoped>
-#Dialog {
+.dialog {
   z-index: 100000;
-  width: 80%;
-  height: 400px;
   border: 1px solid #111;
   border-radius: 10px;
 }

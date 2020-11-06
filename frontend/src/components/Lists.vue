@@ -2,12 +2,6 @@
   <section>
     <section id="lists">
       <!-- <transition appear name="detailCard"> -->
-      <Detail
-        v-if="isOpenedDetail"
-        @close-detail-modal="closeDetailModal"
-        @open-change-modal="openChangeModal"
-        :item="detailItem"
-      />
       <!-- </transition> -->
       <Change
         v-if="isOpenedChange"
@@ -24,16 +18,23 @@
       <section class="listCard addButton">
         <AddButton @open-add-modal="openAddModal" />
       </section>
-      <div v-for="(list, i) in lists" :key="i" class="listCard">
-        <div
-          className="colorBox"
-          v-bind:style="{
-            height: list.percentage * 1.5 + 'px',
-          }"
-        ></div>
-        <!-- // TODO:  listCardでstylingされてるのに、onclickは上半分でしか反応しない -->
-        <Card :info="list" @open-detail-modal="openDetailModal" />
+      <div
+        v-for="(list, i) in lists"
+        :key="i"
+        class="listCard"
+        @click="openDetailModal(list)"
+      >
+        <Card :info="list" />
       </div>
+      <v-row justify="center">
+        <v-dialog v-model="isOpenedDetail" persistent max-width="290">
+          <Detail
+            @close-detail-modal="closeDetailModal"
+            @open-change-modal="openChangeModal"
+            :item="detailItem"
+          />
+        </v-dialog>
+      </v-row>
     </section>
   </section>
 </template>
@@ -91,8 +92,9 @@ export default {
       this.detailItem = item;
     },
 
-    closeDetailModal() {
+    async closeDetailModal() {
       this.isOpenedDetail = false;
+      this.lists = await hello();
     },
 
     openChangeModal(item) {
