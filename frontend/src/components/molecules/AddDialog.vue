@@ -1,6 +1,8 @@
 <template>
   <v-card open>
-    <v-card-title class="headline grey lighten-2">デバイスを追加</v-card-title>
+    <v-card-title class="headline grey lighten-2">{{
+      title || 'デバイスを追加'
+    }}</v-card-title>
     <p class="inputs">
       <label>上に置くものの名前: </label
       ><input type="text" v-model="item.item" />
@@ -54,7 +56,6 @@ import { register } from '../../toServer/main';
 export default {
   name: 'AddDialog',
 
-
   data() {
     return {
       item: {
@@ -65,12 +66,16 @@ export default {
         expiration_date: '',
         color: '',
       },
-      menu: false
+      menu: false,
     };
   },
 
   props: {
     deviceIdFromURL: {
+      required: false,
+      type: String,
+    },
+    title: {
       required: false,
       type: String,
     },
@@ -84,8 +89,8 @@ export default {
 
   methods: {
     async register() {
-      console.log(this.item)
-      await this.item.expiration_date.toISOString()
+      console.log(this.item);
+      await this.item.expiration_date.toISOString();
       const res = register(this.item);
       this.$emit('close-add-modal', res);
       // this.$emit('close-add-modal',this.item)
