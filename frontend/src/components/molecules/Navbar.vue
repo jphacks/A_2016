@@ -20,6 +20,7 @@
 
 <script>
 import AddDialog from './AddDialog';
+import { devicesStore } from '../../store/devices';
 
 export default {
   name: 'Navbar',
@@ -48,7 +49,8 @@ export default {
       this.isOpenedAdd = true;
     },
 
-    closeAddModal() {
+    async closeAddModal() {
+      await devicesStore.dispatch('fetchDevices');
       this.isOpenedAdd = false;
       this.deviceIdFromURL = '';
       this.query?.delete('d');
