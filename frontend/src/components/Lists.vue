@@ -7,6 +7,34 @@
         class="listCard"
         @click="openDetailModal(list)"
       >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="1.1"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          id="svg-bg"
+          class="wave"
+          :style="`top:${
+            list && list.percentage == 0
+              ? 170
+              : 150 - (list && list.percentage * 1.5)
+          }px; `"
+        >
+          <path
+            d="M0,0 v50 q10,10 20,0 t20,0 t20,0 t20,0 t20,0 v-50 Z"
+            :fill="`${list && list.color ? list.color : whitesmoke}`"
+          ></path>
+        </svg>
+        <div
+          class="colorBox"
+          :style="`height: ${
+            list && list.percentage >= 100
+              ? 150
+              : list && list.percentage * 1.5 - 10
+          }px;backgroundColor:${list && list.color ? list.color : '#efebe9'}; `"
+        ></div>
+
         <Card :info="list" />
       </div>
       <v-row justify="center">
@@ -69,6 +97,19 @@ export default {
 </script>
 
 <style lang="scss">
+#Dialog {
+  z-index: 100000;
+  width: 80%;
+  height: 500px;
+  // border: 1px solid #111;
+  border-radius: 10px;
+  display: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 10px;
+}
+
 #lists {
   /* display: block; */
   width: 80%;
@@ -85,8 +126,8 @@ export default {
     max-width: 150px;
     max-height: 150px;
     height: 150px;
-    border-radius: 10px;
-    border: 1px solid #111;
+    overflow-y: hidden;
+    border: 1px solid #c3c3c3;
     cursor: pointer;
     position: relative;
     .percentage {
@@ -106,20 +147,34 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: white !important;
-  border: 1px dashed black !important;
+  border: 1px dashed #c3c3c3 !important;
   h1 {
     border: none !important;
   }
 }
+.wave {
+  position: absolute;
+  transform: translateY(calc(-50% - 0px)) scale(1, -1);
+  left: 0;
+  overflow-y: hidden;
+  animation: wave 5s infinite normal linear;
+  width: 200%;
+  height: 100%;
+}
+@keyframes wave {
+  0% {
+    left: 0%;
+  }
+  100% {
+    left: -80%;
+  }
+}
 
 .colorBox {
-  background-color: pink;
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
 }
 
 .detailCard-enter-active,
@@ -131,6 +186,7 @@ export default {
 .detailCard-leave-to {
   opacity: 0;
 }
+
 @media screen and (max-width: 375px) {
   .listCard {
     width: 90%;
