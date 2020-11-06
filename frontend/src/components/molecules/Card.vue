@@ -1,6 +1,6 @@
 <template>
   <section @click="openModal" class="itemCard">
-    <h1 class="percentage">id: {{ info.device_id }}</h1>
+    <h1 class="percentage">id: {{ info.percentage }}</h1>
     <h1 class="name">{{ info.item }}</h1>
   </section>
 </template>
