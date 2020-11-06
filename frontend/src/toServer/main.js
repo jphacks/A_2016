@@ -16,6 +16,8 @@ export const register = (item) => {
     device_id: item.device_id,
     percentage: 45,
     weight: 0,
+    color: '',
+    expiration_date: ''
   };
 };
 

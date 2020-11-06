@@ -4,6 +4,8 @@
     <p><label>用途</label><input v-model="item" type="text" /></p>
     <p><label>最大容量</label><input v-model="max" type="number" /></p>
     <p><label>最小容量</label><input v-model="min" type="number" /></p>
+    <p><label>色</label><input v-model="color" type="text" /></p>
+    <p><label>期限</label><input v-model="expiration_date" type="text" /></p>
     <p class="inputs"><button @click="change">変更</button></p>
     <p class="inputs"><button @click="close">閉じる</button></p>
   </dialog>
@@ -26,6 +28,8 @@ export default {
       item: '',
       max: 0,
       min: 0,
+      color: '',
+      expiration_date: ''
     };
   },
 
@@ -36,6 +40,8 @@ export default {
         device_id: this.changeItemId,
         max: this.max,
         min: this.min,
+        color: this.color,
+        expiration_date: this.expiration_date
       });
       this.$emit('change-list', res);
       this.$emit('close-change-modal');

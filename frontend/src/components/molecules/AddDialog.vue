@@ -15,7 +15,10 @@
       <label>最小容量: </label><input type="number" v-model="item.min" />
     </p>
     <p class="inputs">
-      <label>期限</label>
+      <label>期限</label><input type="text" v-model="item.expiration_date">
+    </p>
+    <p class="inputs">
+      <label>色</label><input type="text" v-model="item.color">
     </p>
     <p class="inputs">
       <button @click="register" class="register">登録</button>
