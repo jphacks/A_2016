@@ -8,7 +8,7 @@
         @change-list="changeList"
       />
       <div
-        v-for="(list, i) in lists"
+        v-for="(list, i) in devices"
         :key="i"
         class="listCard"
         @click="openDetailModal(list)"
@@ -33,8 +33,6 @@ import Card from './molecules/Card';
 import Detail from '../components/molecules/Detail';
 import Change from '../components/molecules/Change';
 
-import { hello } from '../toServer/main';
-
 import { devicesStore } from '../store/devices';
 
 export default {
@@ -50,14 +48,19 @@ export default {
     return {
       isOpenedDetail: false,
       isOpenedChange: false,
-      lists: [],
       detailItem: {},
       changeItem: {},
     };
   },
 
-  async mounted() {
-    devicesStore.dispatch('fetchDevices');
+  async created() {
+    this.fetchDevices();
+  },
+
+  computed: {
+    devices() {
+      return devicesStore.state.devices;
+    },
   },
 
   methods: {
@@ -68,7 +71,11 @@ export default {
 
     async closeDetailModal() {
       this.isOpenedDetail = false;
-      this.lists = await hello();
+      this.fetchDevices();
+    },
+
+    async fetchDevices() {
+      await devicesStore.dispatch('fetchDevices');
     },
 
     openChangeModal(item) {
