@@ -22,7 +22,6 @@
     </p>
     <!-- <datepicker :format="DatePickerFormat" :language="ja"></datepicker> -->
     <!-- <v-icon name="times-circle" @click="close" /> -->
-    <MenuIcon />
   </dialog>
 </template>
 
@@ -30,14 +29,12 @@
 // import Datepicker from 'vuejs-datepicker';
 // import { ja } from 'vuejs-datepicker/dist/locale';
 import { register } from '../../toServer/main';
-import MenuIcon from 'vue-material-design-icons/Menu.vue';
 // import 'vue-awesome/icons';
 export default {
   name: 'AddDialog',
 
   components: {
-    // Datepicker,
-    MenuIcon,
+    // Datepicker
   },
 
   data() {
@@ -64,9 +61,8 @@ export default {
 
   created() {
     if (this.deviceIdFromURL) {
-      this.device_id = this.deviceIdFromURL;
+      this.item.device_id = this.deviceIdFromURL;
     }
-    console.log(MenuIcon);
   },
 
   methods: {

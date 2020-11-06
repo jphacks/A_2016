@@ -19,6 +19,7 @@
         id="Dialog"
         v-if="isOpenedAdd"
         @close-add-modal="closeAddModal"
+        :deviceIdFromURL="deviceIdFromURL"
       />
       <section class="listCard addButton">
         <AddButton @open-add-modal="openAddModal" />
@@ -65,16 +66,18 @@ export default {
       lists: [],
       detailItem: {},
       changeItem: {},
-      // deviceIdFromURL: '',
+      deviceIdFromURL: '',
+      query: null,
     };
   },
 
   async mounted() {
+    this.query = new URLSearchParams(location.search.slice(1));
+    this.deviceIdFromURL = this.query?.get('d');
     this.lists = await hello();
-    // if (this.$route.query.device_id) {
-    //   this.isOpenedAdd = true;
-    //   this.deviceIdFromURL = this.$route.query.device_id;
-    // }
+    if (this.deviceIdFromURL) {
+      this.isOpenedAdd = true;
+    }
   },
 
   methods: {
@@ -110,6 +113,9 @@ export default {
     closeAddModal(item) {
       this.isOpenedAdd = false;
       this.add(item);
+      this.deviceIdFromURL = '';
+      this.query?.delete('d');
+      history.pushState('', '', '?' + this.query?.toString());
     },
 
     changeList(item) {
