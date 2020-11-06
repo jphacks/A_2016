@@ -141,6 +141,7 @@ def get_states(ssn: Session = Depends(db.get_db)):
     res_devices: List[GetDevicesResDevice] = []
     for d in devices:
         weight = d.weight or 0
+        exp = d.expiration_date.isoformat() if d.expiration_date is not None else None
         try:
             percentage = 100 * (weight - d.min) / (d.max - d.min)
         except ZeroDivisionError:
@@ -151,7 +152,7 @@ def get_states(ssn: Session = Depends(db.get_db)):
             weight=weight,
             percentage=percentage,
             color=d.color,
-            expiration_date=d.expiration_date
+            expiration_date=exp
         ))
     return GetDevicesRes(devices=res_devices)
 
