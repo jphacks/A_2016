@@ -46,6 +46,8 @@ import Change from '../components/molecules/Change';
 
 import { hello } from '../toServer/main';
 
+import { getSearchObj } from '../utils/utils';
+
 export default {
   name: 'List',
 
@@ -65,16 +67,16 @@ export default {
       lists: [],
       detailItem: {},
       changeItem: {},
-      // deviceIdFromURL: '',
+      deviceIdFromURL: '',
     };
   },
 
   async mounted() {
+    this.deviceIdFromURL = getSearchObj(location.search)?.d || '';
     this.lists = await hello();
-    // if (this.$route.query.device_id) {
-    //   this.isOpenedAdd = true;
-    //   this.deviceIdFromURL = this.$route.query.device_id;
-    // }
+    if (this.deviceIdFromURL) {
+      this.isOpenedAdd = true;
+    }
   },
 
   methods: {
