@@ -16,10 +16,10 @@
     </v-card>
     <v-row justify="center">
       <v-dialog v-model="isOpenChange" persistent max-width="290">
-        <Change
-          :changeItemId="item.device_id"
-          @close-change-modal="closeChangeModal"
-          @change-list="changeList"
+        <AddDialog
+          @close-add-modal="closeChangeModal"
+          :deviceIdFromURL="item.device_id"
+          title="デバイスを変更"
         />
       </v-dialog>
     </v-row>
@@ -28,13 +28,13 @@
 
 <script>
 import { deleteItem } from '../../toServer/main';
-import Change from '../molecules/Change';
+import AddDialog from './AddDialog';
 
 export default {
   name: 'Detail',
 
   components: {
-    Change,
+    AddDialog,
   },
 
   props: {
@@ -71,11 +71,6 @@ export default {
       } catch (err) {
         console.error(err);
       }
-    },
-
-    changeList(item) {
-      // Todo: 用途を変更したらその時点で画面の物も変更できるようにする
-      console.log(item);
     },
   },
 };
