@@ -1,12 +1,6 @@
 <template>
   <section>
     <section id="lists">
-      <Change
-        v-if="isOpenedChange"
-        :changeItemId="changeItem.device_id"
-        @close-change-modal="closeChangeModal"
-        @change-list="changeList"
-      />
       <div
         v-for="(list, i) in devices"
         :key="i"
@@ -17,11 +11,7 @@
       </div>
       <v-row justify="center">
         <v-dialog v-model="isOpenedDetail" persistent max-width="290">
-          <Detail
-            @close-detail-modal="closeDetailModal"
-            @open-change-modal="openChangeModal"
-            :item="detailItem"
-          />
+          <Detail @close-detail-modal="closeDetailModal" :item="detailItem" />
         </v-dialog>
       </v-row>
     </section>
@@ -31,7 +21,6 @@
 <script>
 import Card from './molecules/Card';
 import Detail from '../components/molecules/Detail';
-import Change from '../components/molecules/Change';
 
 import { devicesStore } from '../store/devices';
 
@@ -41,13 +30,11 @@ export default {
   components: {
     Card,
     Detail,
-    Change,
   },
 
   data() {
     return {
       isOpenedDetail: false,
-      isOpenedChange: false,
       detailItem: {},
       changeItem: {},
     };
@@ -76,20 +63,6 @@ export default {
 
     async fetchDevices() {
       await devicesStore.dispatch('fetchDevices');
-    },
-
-    openChangeModal(item) {
-      this.isOpenedChange = true;
-      this.changeItem = item;
-    },
-
-    closeChangeModal() {
-      this.isOpenedChange = false;
-    },
-
-    changeList(item) {
-      // Todo: 用途を変更したらその時点で画面の物も変更できるようにする
-      console.log(item);
     },
   },
 };

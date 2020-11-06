@@ -1,29 +1,53 @@
 <template>
-  <v-card class="dialog">
-    <v-card-title class="headline grey lighten-2">{{ item.item }}</v-card-title>
+  <div>
+    <v-card class="dialog">
+      <v-card-title class="headline grey lighten-2">{{
+        item.item
+      }}</v-card-title>
 
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="secondary" @click="onClickDelete" small icon
-        ><v-icon dark> mdi-delete </v-icon></v-btn
-      >
-      <v-btn color="secondary" text @click="change">変更</v-btn>
-      <v-btn color="secondary" text @click="close">閉じる</v-btn>
-    </v-card-actions>
-  </v-card>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="secondary" @click="onClickDelete" small icon
+          ><v-icon dark> mdi-delete </v-icon></v-btn
+        >
+        <v-btn color="secondary" text @click="change">変更</v-btn>
+        <v-btn color="secondary" text @click="close">閉じる</v-btn>
+      </v-card-actions>
+    </v-card>
+    <v-row justify="center">
+      <v-dialog v-model="isOpenChange" persistent max-width="290">
+        <Change
+          :changeItemId="item.device_id"
+          @close-change-modal="closeChangeModal"
+          @change-list="changeList"
+        />
+      </v-dialog>
+    </v-row>
+  </div>
 </template>
 
 <script>
 import { deleteItem } from '../../toServer/main';
+import Change from '../molecules/Change';
 
 export default {
   name: 'Detail',
+
+  components: {
+    Change,
+  },
 
   props: {
     item: {
       required: true,
       type: Object,
     },
+  },
+
+  data() {
+    return {
+      isOpenChange: false,
+    };
   },
 
   methods: {
@@ -33,7 +57,11 @@ export default {
 
     change() {
       this.$emit('close-detail-modal');
-      this.$emit('open-change-modal', this.item);
+      this.isOpenChange = true;
+    },
+
+    closeChangeModal() {
+      this.isOpenChange = false;
     },
 
     async onClickDelete() {
@@ -43,6 +71,11 @@ export default {
       } catch (err) {
         console.error(err);
       }
+    },
+
+    changeList(item) {
+      // Todo: 用途を変更したらその時点で画面の物も変更できるようにする
+      console.log(item);
     },
   },
 };
