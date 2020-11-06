@@ -3,48 +3,50 @@
     <v-card-title class="headline grey lighten-2">{{
       title || 'デバイスを追加'
     }}</v-card-title>
-    <p class="inputs">
-      <label>上に置くものの名前: </label
-      ><input type="text" v-model="item.item" />
-    </p>
-    <p class="inputs">
-      <label>deviceId: </label> <input type="text" v-model="item.device_id" />
-    </p>
-    <p class="inputs">
-      <label>最大容量: </label><input type="number" v-model="item.max" />
-    </p>
-    <p class="inputs">
-      <label>最小容量: </label><input type="number" v-model="item.min" />
-    </p>
-    <p class="inputs">
-      <label>期限</label>
-      <v-menu
-        v-model="menu"
-        :close-on-content-click="false"
-        transition="scale-transition"
-        offset-y
-        min-width="100px"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-text-field
-            v-model="item.expiration_date"
-            prepend-icon="mdi-calendar"
-            readonly
-            v-bind="attrs"
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-dialog v-model="menu" max-width="400px">
-          <v-date-picker
-            v-model="item.expiration_date"
-            @input="menu = false"
-          ></v-date-picker>
-        </v-dialog>
-      </v-menu>
-    </p>
-    <p class="inputs">
-      <label>色</label><input type="text" v-model="item.color" />
-    </p>
+    <div class="card-items">
+      <p class="inputs">
+        <label>上に置くものの名前: </label
+        ><input type="text" v-model="item.item" />
+      </p>
+      <p class="inputs">
+        <label>deviceId: </label> <input type="text" v-model="item.device_id" />
+      </p>
+      <p class="inputs">
+        <label>最大容量: </label><input type="number" v-model="item.max" />
+      </p>
+      <p class="inputs">
+        <label>最小容量: </label><input type="number" v-model="item.min" />
+      </p>
+      <p class="inputs">
+        <label>期限</label>
+        <v-menu
+          v-model="menu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="100px"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="item.expiration_date"
+              prepend-icon="mdi-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            ></v-text-field>
+          </template>
+          <v-dialog v-model="menu" max-width="400px">
+            <v-date-picker
+              v-model="item.expiration_date"
+              @input="menu = false"
+            ></v-date-picker>
+          </v-dialog>
+        </v-menu>
+      </p>
+      <p class="inputs">
+        <label>色</label><input type="text" v-model="item.color" />
+      </p>
+    </div>
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn color="secondary" text @click="register">登録</v-btn>
@@ -106,6 +108,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.card-items {
+  margin: 30px 0;
+}
 .addDevice {
   margin-top: 0;
 }
@@ -113,6 +118,7 @@ export default {
   display: flex;
   flex-direction: column;
   font-size: 14px;
+  padding: 0 30px;
   .register {
     background-color: black;
     color: white;
