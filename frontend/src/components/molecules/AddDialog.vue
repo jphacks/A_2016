@@ -12,13 +12,14 @@
       <label>最大容量: </label><input type="number" v-model="item.max" />
     </p>
     <p class="inputs">
-      <label>最小容量: </label><input type="number" v-model="item.min" />
+      <label>最小容量ssssssssssssssss: </label
+      ><input type="number" v-model="item.min" />
     </p>
     <p class="inputs">
-      <label>期限</label><input type="text" v-model="item.expiration_date">
+      <label>期限</label><input type="text" v-model="item.expiration_date" />
     </p>
     <p class="inputs">
-      <label>色</label><input type="text" v-model="item.color">
+      <label>色</label><input type="text" v-model="item.color" />
     </p>
     <v-card-actions>
       <v-spacer></v-spacer>

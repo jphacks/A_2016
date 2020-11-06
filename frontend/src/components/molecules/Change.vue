@@ -29,7 +29,7 @@ export default {
       max: 0,
       min: 0,
       color: '',
-      expiration_date: ''
+      expiration_date: '',
     };
   },
 
@@ -41,7 +41,7 @@ export default {
         max: this.max,
         min: this.min,
         color: this.color,
-        expiration_date: this.expiration_date
+        expiration_date: this.expiration_date,
       });
       this.$emit('change-list', res);
       this.$emit('close-change-modal');

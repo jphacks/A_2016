@@ -13,6 +13,32 @@
         class="listCard"
         @click="openDetailModal(list)"
       >
+        >
+        <div
+          class="colorBox"
+          :style="`height: ${item && item.percentage * 1.5}px backgroundColor:${
+            item ? (item.color ? item.color : gold) : gold
+          }`"
+        >
+          <!-- <div
+          class="colorBox"
+          :style="`height: ${item && item.percentage * 1.5}px`"
+        > -->
+          {{ 's ' }}
+          <!-- <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            version="1.1"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            id="svg-bg"
+          >
+            <path
+              d="M0,0 v50 q10,10 20,0 t20,0 t20,0 t20,0 t20,0 v-50 Z"
+              fill="#3eba90"
+            ></path>
+          </svg> -->
+        </div>
         <Card :info="list" />
       </div>
       <v-row justify="center">
@@ -56,6 +82,7 @@ export default {
 
   async mounted() {
     this.lists = await hello();
+    console.log(this.listsß);
   },
 
   methods: {
@@ -107,8 +134,8 @@ export default {
     max-width: 150px;
     max-height: 150px;
     height: 150px;
-    border-radius: 10px;
-    border: 1px solid #111;
+
+    border: 1px solid #c3c3c3;
     cursor: pointer;
     position: relative;
     .percentage {
@@ -128,20 +155,18 @@ export default {
   align-items: center;
   justify-content: center;
   background-color: white !important;
-  border: 1px dashed black !important;
+  border: 1px dashed #c3c3c3 !important;
   h1 {
     border: none !important;
   }
 }
 
 .colorBox {
-  background-color: pink;
+  // background-color: blue;
   position: absolute;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
-  border-bottom-right-radius: 10px;
-  border-bottom-left-radius: 10px;
 }
 
 .detailCard-enter-active,
