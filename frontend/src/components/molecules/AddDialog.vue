@@ -34,10 +34,12 @@
             v-on="on"
           ></v-text-field>
         </template>
-        <v-date-picker
-          v-model="item.expiration_date"
-          @input="menu = false"
-        ></v-date-picker>
+        <v-dialog v-model="menu" max-width="400px">
+          <v-date-picker
+            v-model="item.expiration_date"
+            @input="menu = false"
+          ></v-date-picker>
+        </v-dialog>
       </v-menu>
     </p>
     <p class="inputs">
