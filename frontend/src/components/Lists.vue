@@ -92,8 +92,9 @@ export default {
       this.detailItem = item;
     },
 
-    closeDetailModal() {
+    async closeDetailModal() {
       this.isOpenedDetail = false;
+      this.lists = await hello();
     },
 
     openChangeModal(item) {
