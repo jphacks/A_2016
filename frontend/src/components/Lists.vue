@@ -76,9 +76,21 @@ export default {
 
   computed: {
     devices() {
-      return devicesStore.state.devices.sort((a, b) => {
-        return a.device_id - b.device_id;
-      });
+      return devicesStore.state.devices
+        .sort((a, b) => {
+          return a.device_id - b.device_id;
+        })
+        .map((device) => {
+          const percentage = Math.min(100, Math.max(0, device.percentage));
+          return {
+            device_id: device.device_id,
+            item: device.item,
+            weight: device.weight,
+            percentage: percentage,
+            color: device.color,
+            expiration_date: device.expiration_date,
+          };
+        });
     },
   },
 
