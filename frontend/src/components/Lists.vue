@@ -19,6 +19,7 @@
         id="Dialog"
         v-if="isOpenedAdd"
         @close-add-modal="closeAddModal"
+        :deviceIdFromURL="deviceIdFromURL"
       />
       <section class="listCard addButton">
         <AddButton @open-add-modal="openAddModal" />
@@ -46,8 +47,6 @@ import Change from '../components/molecules/Change';
 
 import { hello } from '../toServer/main';
 
-import { getSearchObj } from '../utils/utils';
-
 export default {
   name: 'List',
 
@@ -68,11 +67,13 @@ export default {
       detailItem: {},
       changeItem: {},
       deviceIdFromURL: '',
+      query: null,
     };
   },
 
   async mounted() {
-    this.deviceIdFromURL = getSearchObj(location.search)?.d || '';
+    this.query = new URLSearchParams(location.search.slice(1));
+    this.deviceIdFromURL = this.query?.get('d');
     this.lists = await hello();
     if (this.deviceIdFromURL) {
       this.isOpenedAdd = true;
@@ -112,6 +113,9 @@ export default {
     closeAddModal(item) {
       this.isOpenedAdd = false;
       this.add(item);
+      this.deviceIdFromURL = '';
+      this.query?.delete('d');
+      history.pushState('', '', '?' + this.query?.toString());
     },
 
     changeList(item) {

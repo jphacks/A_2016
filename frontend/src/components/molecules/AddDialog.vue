@@ -22,7 +22,6 @@
     </p>
     <!-- <datepicker :format="DatePickerFormat" :language="ja"></datepicker> -->
     <!-- <v-icon name="times-circle" @click="close" /> -->
-    <MenuIcon />
   </dialog>
 </template>
 
@@ -62,7 +61,7 @@ export default {
 
   created() {
     if (this.deviceIdFromURL) {
-      this.device_id = this.deviceIdFromURL;
+      this.item.device_id = this.deviceIdFromURL;
     }
   },
 
