@@ -44,7 +44,8 @@
         </v-menu>
       </p>
       <p class="inputs">
-        <label>色</label><input type="text" v-model="item.color" />
+        <label>色</label>
+        <v-color-picker v-model="item.color" class="color"></v-color-picker>
       </p>
     </div>
     <v-card-actions>
@@ -93,8 +94,10 @@ export default {
 
   methods: {
     async register() {
-      console.log(this.item);
-      await this.item.expiration_date.toISOString();
+      var color = this.item.color
+      color = color.slice(0,7)
+      this.item.color = color
+      console.log(this.item)
       const res = register(this.item);
       this.$emit('close-add-modal', res);
       // this.$emit('close-add-modal',this.item)
@@ -108,6 +111,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.color{
+  margin: 0 auto
+}
 .card-items {
   margin: 30px 0;
 }
