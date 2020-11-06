@@ -1,10 +1,10 @@
 <template>
-  <section @click="openModal" class="itemCard">
-    <div id="Card">
+  <div @click="openModal" class="itemCard">
+    <section class="card">
       <h1 class="percentage">id: {{ info.device_id }}</h1>
       <h1 class="name">{{ info.item }}</h1>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -26,4 +26,8 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.itemCard {
+  height: 100%;
+}
+</style>

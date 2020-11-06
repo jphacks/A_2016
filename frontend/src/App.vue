@@ -1,8 +1,8 @@
 <template>
-  <section>
+  <v-app>
     <Navbar />
     <Lists />
-  </section>
+  </v-app>
 </template>
 
 <script>

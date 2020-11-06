@@ -1,9 +1,16 @@
 <template>
-  <dialog open id="Dialog">
-    <h1>詳細</h1>
-    <button class="button" @click="change">変更</button>
-    <button class="button" @click="close">閉じる</button>
-  </dialog>
+  <v-card class="dialog">
+    <v-card-title class="headline grey lighten-2">{{ item.item }}</v-card-title>
+
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="primary" @click="dialog = false"
+        ><v-icon dark> mdi-delete </v-icon></v-btn
+      >
+      <v-btn color="primary" text @click="change">変更</v-btn>
+      <v-btn color="primary" text @click="close">閉じる</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -31,10 +38,8 @@ export default {
 </script>
 
 <style scoped>
-#Dialog {
+.dialog {
   z-index: 100000;
-  width: 80%;
-  height: 400px;
   border: 1px solid #111;
   border-radius: 10px;
 }

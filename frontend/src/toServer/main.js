@@ -18,3 +18,8 @@ export const register = (item) => {
     weight: 0,
   };
 };
+
+export const deleteItem = async (deviceId) => {
+  const res = await Axios.delete(`${serverURL}/devices/${deviceId}`);
+  return res.data;
+};
