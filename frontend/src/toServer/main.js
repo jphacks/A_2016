@@ -8,6 +8,11 @@ export const hello = async () => {
   return res.data.devices;
 };
 
+export const fetchDevices = async () => {
+  const res = await Axios.get(`${serverURL}/devices`);
+  return res.data.devices;
+};
+
 // deviceの登録（変更もここで）
 export const register = (item) => {
   Axios.post(`${serverURL}/devices`, item);
@@ -17,7 +22,7 @@ export const register = (item) => {
     percentage: 45,
     weight: 0,
     color: '',
-    expiration_date: ''
+    expiration_date: '',
   };
 };
 
