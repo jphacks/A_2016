@@ -1,6 +1,6 @@
 <template>
-  <dialog open id="Dialog">
-    <h2 class="addDevice">デバイスを追加</h2>
+  <v-card open>
+    <v-card-title class="headline grey lighten-2">デバイスを追加</v-card-title>
     <p class="inputs">
       <label>上に置くものの名前: </label
       ><input type="text" v-model="item.item" />
@@ -17,12 +17,12 @@
     <p class="inputs">
       <label>期限</label>
     </p>
-    <p class="inputs">
-      <button @click="register" class="register">登録</button>
-    </p>
-    <!-- <datepicker :format="DatePickerFormat" :language="ja"></datepicker> -->
-    <!-- <v-icon name="times-circle" @click="close" /> -->
-  </dialog>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="secondary" text @click="register">登録</v-btn>
+      <v-btn color="secondary" text @click="close">閉じる</v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script>
@@ -81,15 +81,6 @@ export default {
 <style scoped lang="scss">
 .addDevice {
   margin-top: 0;
-}
-#Dialog {
-  z-index: 100000;
-  width: 95%;
-  max-width: 500px;
-  border: 1px solid #111;
-  height: 500px;
-  text-align: left;
-  border-radius: 10px;
 }
 .inputs {
   display: flex;

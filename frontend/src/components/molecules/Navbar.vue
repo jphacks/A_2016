@@ -1,21 +1,66 @@
 <template>
-  <div class="navBar">
-    <h1>arcana</h1>
+  <div>
+    <v-app-bar flat class="navBar" color="rgb(99, 83, 83)">
+      <h1>arcana</h1>
+      <v-spacer></v-spacer>
+      <v-btn icon color="white" @click="openAddModal">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-app-bar>
+    <v-row justify="center">
+      <v-dialog v-model="isOpenedAdd" persistent max-width="290">
+        <AddDialog
+          @close-add-modal="closeAddModal"
+          :deviceIdFromURL="deviceIdFromURL"
+        />
+      </v-dialog>
+    </v-row>
   </div>
 </template>
 
 <script>
+import AddDialog from './AddDialog';
+
 export default {
   name: 'Navbar',
+  components: {
+    AddDialog,
+  },
+
+  data() {
+    return {
+      isOpenedAdd: false,
+      query: null,
+      deviceIdFromURL: '',
+    };
+  },
+
+  mounted() {
+    this.query = new URLSearchParams(location.search.slice(1));
+    this.deviceIdFromURL = this.query?.get('d');
+    if (this.deviceIdFromURL) {
+      this.isOpenedAdd = true;
+    }
+  },
+
+  methods: {
+    openAddModal() {
+      this.isOpenedAdd = true;
+    },
+
+    closeAddModal() {
+      this.isOpenedAdd = false;
+      this.deviceIdFromURL = '';
+      this.query?.delete('d');
+      history.pushState('', '', '?' + this.query?.toString());
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .navBar {
-  height: 60px;
-  // border-bottom: 3px solid rgb(99, 83, 83);
   font-family: 'Shrikhand', cursive;
-  background-color: rgb(99, 83, 83);
   h1 {
     color: white;
     font-size: 30px;
