@@ -16,7 +16,7 @@
           id="svg-bg"
           class="wave"
           :style="`top:${
-            list && list.percentage == 0
+            list && list.percentage <= 0
               ? 170
               : 150 - (list && list.percentage * 1.5)
           }px; `"
@@ -136,7 +136,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   .listCard {
-    background-color: whitesmoke;
+    background-color: white;
     margin: 10px auto;
     width: 80%;
     max-width: 150px;
@@ -146,15 +146,20 @@ export default {
     border: 1px solid #c3c3c3;
     cursor: pointer;
     position: relative;
+    // mix-blend-mode: hue;
     .percentage {
       position: absolute;
       top: 5px;
       left: 10px;
+      mix-blend-mode: difference;
     }
     .name {
+      // color: rgb(59, 59, 59);
       position: absolute;
       bottom: 5px;
       left: 10px;
+      mix-blend-mode: difference;
+      // mix-blend-mode: lighten;
     }
   }
 }
@@ -176,6 +181,7 @@ export default {
   animation: wave 5s infinite normal linear;
   width: 200%;
   height: 100%;
+  // mix-blend-mode: hue;
 }
 @keyframes wave {
   0% {
