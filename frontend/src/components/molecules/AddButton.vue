@@ -1,8 +1,5 @@
 <template>
-  <button @click="openModal">
-    <span class="add">+</span>
-    <h1>追加する</h1>
-  </button>
+  <h1 @click="openModal">追加する</h1>
 </template>
 
 <script>
@@ -10,15 +7,8 @@ export default {
   methods: {
     openModal() {
       console.log('emmitted');
-      this.$emit('open-modal');
+      this.$emit('open-add-modal');
     },
   },
 };
 </script>
-
-<style scoped>
-.add {
-  margin-top: 30px;
-  font-size: 80px;
-}
-</style>
