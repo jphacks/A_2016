@@ -15,7 +15,28 @@
       <label>最小容量: </label><input type="number" v-model="item.min" />
     </p>
     <p class="inputs">
-      <label>期限</label><input type="text" v-model="item.expiration_date">
+      <label>期限</label>
+      <v-menu
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="100px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="item.expiration_date"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="item.expiration_date"
+          @input="menu = false"
+        ></v-date-picker>
+      </v-menu>
     </p>
     <p class="inputs">
       <label>色</label><input type="text" v-model="item.color">
@@ -23,27 +44,17 @@
     <p class="inputs">
       <button @click="register" class="register">登録</button>
     </p>
-    <!-- <datepicker :format="DatePickerFormat" :language="ja"></datepicker> -->
-    <!-- <v-icon name="times-circle" @click="close" /> -->
   </dialog>
 </template>
 
 <script>
-// import Datepicker from 'vuejs-datepicker';
-// import { ja } from 'vuejs-datepicker/dist/locale';
 import { register } from '../../toServer/main';
-// import 'vue-awesome/icons';
 export default {
   name: 'AddDialog',
 
-  components: {
-    // Datepicker
-  },
 
   data() {
     return {
-      // DatePickerFormat: 'yyyy-MM-dd',
-      // ja: ja,
       item: {
         item: '',
         device_id: '',
@@ -52,6 +63,7 @@ export default {
         expiration_date: '',
         color: '',
       },
+      menu: false
     };
   },
 
@@ -70,13 +82,34 @@ export default {
 
   methods: {
     register() {
+      console.log(this.item)
       const res = register(this.item);
       this.$emit('close-add-modal', res);
+      // this.$emit('close-add-modal')
     },
 
     close() {
       this.$emit('close-add-modal', this.item);
     },
+
+    allowDate (val) {
+      let today = new Date() 
+      today = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      )
+      let maxAllowedDay = new Date()
+      maxAllowedDay.setDate(
+        today.getDate() + 100
+      )
+      maxAllowedDay = new Date(
+        maxAllowedDay.getFullYear(),
+        maxAllowedDay.getMonth(),
+        maxAllowedDay.getDate()
+      )
+      return today <= new Date(val) && new Date(val) <= maxAllowedDay
+    }
   },
 };
 </script>
