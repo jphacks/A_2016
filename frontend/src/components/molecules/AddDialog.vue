@@ -15,10 +15,31 @@
       <label>最小容量: </label><input type="number" v-model="item.min" />
     </p>
     <p class="inputs">
-      <label>期限</label><input type="text" v-model="item.expiration_date">
+      <label>期限</label>
+      <v-menu
+        v-model="menu"
+        :close-on-content-click="false"
+        transition="scale-transition"
+        offset-y
+        min-width="100px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="item.expiration_date"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="item.expiration_date"
+          @input="menu = false"
+        ></v-date-picker>
+      </v-menu>
     </p>
     <p class="inputs">
-      <label>色</label><input type="text" v-model="item.color">
+      <label>色</label><input type="text" v-model="item.color" />
     </p>
     <v-card-actions>
       <v-spacer></v-spacer>
@@ -29,21 +50,13 @@
 </template>
 
 <script>
-// import Datepicker from 'vuejs-datepicker';
-// import { ja } from 'vuejs-datepicker/dist/locale';
 import { register } from '../../toServer/main';
-// import 'vue-awesome/icons';
 export default {
   name: 'AddDialog',
 
-  components: {
-    // Datepicker
-  },
 
   data() {
     return {
-      // DatePickerFormat: 'yyyy-MM-dd',
-      // ja: ja,
       item: {
         item: '',
         device_id: '',
@@ -52,6 +65,7 @@ export default {
         expiration_date: '',
         color: '',
       },
+      menu: false
     };
   },
 
@@ -69,9 +83,12 @@ export default {
   },
 
   methods: {
-    register() {
+    async register() {
+      console.log(this.item)
+      await this.item.expiration_date.toISOString()
       const res = register(this.item);
       this.$emit('close-add-modal', res);
+      // this.$emit('close-add-modal',this.item)
     },
 
     close() {
