@@ -1,7 +1,10 @@
 import Vuex from 'vuex';
 import { fetchDevices } from '../toServer/main';
+import Vue from 'vue';
 
-export const deviceStore = new Vuex.Store({
+Vue.use(Vuex);
+
+export const devicesStore = new Vuex.Store({
   state: {
     devices: [],
   },

@@ -35,6 +35,8 @@ import Change from '../components/molecules/Change';
 
 import { hello } from '../toServer/main';
 
+import { devicesStore } from '../store/devices';
+
 export default {
   name: 'List',
 
@@ -55,14 +57,10 @@ export default {
   },
 
   async mounted() {
-    this.lists = await hello();
+    devicesStore.dispatch('fetchDevices');
   },
 
   methods: {
-    add(res) {
-      console.log(res, 'aaa');
-      this.lists.push(res);
-    },
     openDetailModal(item) {
       this.isOpenedDetail = true;
       this.detailItem = item;
