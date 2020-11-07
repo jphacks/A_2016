@@ -20,7 +20,7 @@
       </v-card-actions>
     </v-card>
     <v-row justify="center">
-      <v-dialog v-model="isOpenChange">
+      <v-dialog v-model="isOpenChange" max-width="500" hide-overlay>
         <AddDialog
           @close-add-modal="closeChangeModal"
           :deviceIdFromURL="item.device_id"
@@ -98,5 +98,12 @@ export default {
 .v-card {
   color: #777777;
   font-family: 'Exo', sans-serif;
+}
+
+.v-dialog {
+  -webkit-box-shadow: 0 0 0;
+  box-shadow: 0 0 0;
+  border-radius: 10px;
+  border: 1px solid #c3c3c3;
 }
 </style>

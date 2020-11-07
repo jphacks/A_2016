@@ -48,7 +48,7 @@
           <Card :info="list" />
         </div>
         <v-row justify="center">
-          <v-dialog v-model="isOpenedDetail" max-width="400" hide-overlay>
+          <v-dialog v-model="isOpenedDetail" max-width="400px" hide-overlay>
             <Detail @close-detail-modal="closeDetailModal" :item="detailItem" />
           </v-dialog>
         </v-row>

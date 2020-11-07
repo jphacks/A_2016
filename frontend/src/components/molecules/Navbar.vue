@@ -8,7 +8,7 @@
       </v-btn>
     </v-app-bar>
     <v-row justify="center">
-      <v-dialog v-model="isOpenedAdd" max-width="500px">
+      <v-dialog v-model="isOpenedAdd" max-width="400px" hide-overlay>
         <AddDialog
           @close-add-modal="closeAddModal"
           :deviceIdFromURL="deviceIdFromURL"
@@ -70,5 +70,12 @@ export default {
     font-weight: 400;
     cursor: pointer;
   }
+}
+
+.v-dialog {
+  -webkit-box-shadow: 0 0 0;
+  box-shadow: 0 0 0;
+  border-radius: 10px;
+  border: 1px solid #c3c3c3;
 }
 </style>
