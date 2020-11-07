@@ -1,85 +1,87 @@
 <template>
-  <v-card open>
-    <ValidationObserver ref="observer" v-slot="{ invalid }">
-      <form>
-        <v-card-title class="headline grey lighten-2">{{
-          title || 'デバイスを追加'
-        }}</v-card-title>
-        <div class="card-items">
-          <v-card-text>
-            <ValidationProvider v-slot="{ errors }" rules="required">
-              <v-text-field
-                v-model="item.item"
-                :error-messages="errors"
-                label="名前"
-              />
-            </ValidationProvider>
-            <ValidationProvider v-slot="{ errors }" rules="required">
-              <v-text-field
-                v-model="item.device_id"
-                :error-messages="errors"
-                label="デバイスID"
-              />
-            </ValidationProvider>
-            <ValidationProvider v-slot="{ errors }" rules="required">
-              <v-text-field
-                v-model="item.max"
-                :error-messages="errors"
-                label="最大容量"
-              />
-            </ValidationProvider>
-            <ValidationProvider v-slot="{ errors }" rules="required">
-              <v-text-field
-                v-model="item.min"
-                :error-messages="errors"
-                label="最小容量"
-              />
-            </ValidationProvider>
-            <ValidationProvider rules="required">
-              <label>期限</label>
-              <v-menu
-                v-model="menu"
-                :close-on-content-click="false"
-                transition="scale-transition"
-                offset-y
-                min-width="100px"
-              >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    v-model="item.expiration_date"
-                    prepend-icon="mdi-calendar"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                  ></v-text-field>
-                </template>
-                <v-dialog v-model="menu" max-width="400px">
-                  <v-date-picker
-                    v-model="item.expiration_date"
-                    @input="menu = false"
-                  ></v-date-picker>
-                </v-dialog>
-              </v-menu>
-            </ValidationProvider>
-            <ValidationProvider rules="required">
-              <label>色</label>
-              <v-color-picker
-                v-model="item.color"
-                class="color"
-              ></v-color-picker>
-            </ValidationProvider>
-          </v-card-text>
-        </div>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" text @click="register" :disabled="invalid"
-            >登録</v-btn
-          >
-          <v-btn color="secondary" text @click="close">閉じる</v-btn>
-        </v-card-actions>
-      </form>
-    </ValidationObserver>
-  </v-card>
+  <div>
+    <v-card>
+      <h2 class="text-center pt-7 font-weight-bold">
+        {{ title || 'デバイスを追加' }}
+      </h2>
+      <ValidationObserver ref="observer" v-slot="{ invalid }">
+        <form>
+          <div class="card-items">
+            <v-card-text>
+              <ValidationProvider v-slot="{ errors }" rules="required">
+                <v-text-field
+                  v-model="item.item"
+                  :error-messages="errors"
+                  label="名前"
+                />
+              </ValidationProvider>
+              <ValidationProvider v-slot="{ errors }" rules="required">
+                <v-text-field
+                  v-model="item.device_id"
+                  :error-messages="errors"
+                  label="デバイスID"
+                />
+              </ValidationProvider>
+              <ValidationProvider v-slot="{ errors }" rules="required">
+                <v-text-field
+                  v-model="item.max"
+                  :error-messages="errors"
+                  label="最大容量"
+                />
+              </ValidationProvider>
+              <ValidationProvider v-slot="{ errors }" rules="required">
+                <v-text-field
+                  v-model="item.min"
+                  :error-messages="errors"
+                  label="最小容量"
+                />
+              </ValidationProvider>
+              <ValidationProvider rules="required">
+                <label>期限</label>
+                <v-menu
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="100px"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="item.expiration_date"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-dialog v-model="menu" max-width="400px" hide-overlay>
+                    <v-date-picker
+                      v-model="item.expiration_date"
+                      @input="menu = false"
+                    ></v-date-picker>
+                  </v-dialog>
+                </v-menu>
+              </ValidationProvider>
+              <ValidationProvider rules="required">
+                <label>色</label>
+                <v-color-picker
+                  v-model="item.color"
+                  class="color"
+                ></v-color-picker>
+              </ValidationProvider>
+            </v-card-text>
+          </div>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="secondary" text @click="register" :disabled="invalid"
+              >登録</v-btn
+            >
+            <v-btn color="secondary" text @click="close">閉じる</v-btn>
+          </v-card-actions>
+        </form>
+      </ValidationObserver>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -153,6 +155,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.v-card {
+  color: #777777 !important;
+  font-family: 'Exo', sans-serif;
+}
+
 .color {
   margin: 0 auto;
 }
@@ -189,5 +196,12 @@ input {
     outline: none;
     border-bottom: 1px solid black;
   }
+}
+
+.v-dialog {
+  -webkit-box-shadow: 0 0 0;
+  box-shadow: 0 0 0;
+  border-radius: 10px;
+  border: 1px solid #c3c3c3;
 }
 </style>
