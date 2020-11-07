@@ -10,9 +10,20 @@
       <p class="text-center mt-3 font-weight-light">
         消費期限 {{ expirationDate }}
       </p>
+      <p
+        v-if="!canDelete"
+        class="caption text-right mt-10 mr-3 font-weight-light"
+      >
+        デモ用のデバイスは削除できません。
+      </p>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="secondary" @click="onClickDelete" small icon
+        <v-btn
+          color="secondary"
+          @click="onClickDelete"
+          small
+          icon
+          :disabled="!canDelete"
           ><v-icon dark> mdi-delete </v-icon></v-btn
         >
         <v-btn color="secondary" text @click="change">変更</v-btn>
@@ -35,6 +46,7 @@
 import { deleteItem } from '../../toServer/main';
 import AddDialog from './AddDialog';
 import dayjs from 'dayjs';
+import { devicesStore } from '../../store/devices';
 
 export default {
   name: 'Detail',
@@ -53,6 +65,9 @@ export default {
   computed: {
     expirationDate() {
       return dayjs(this.item?.expiration_date).format('YYYY - MM - DD');
+    },
+    canDelete() {
+      return !devicesStore.state.adminIds.includes(this.item?.device_id);
     },
   },
 
