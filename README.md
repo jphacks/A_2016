@@ -1,6 +1,7 @@
 # arcana(アルカナ)
 <img src="https://github.com/jphacks/A_2016/blob/master/images/arcana.png?raw=true" height="188"/>
 <img src="https://github.com/jphacks/A_2016/blob/master/images/device.jpg?raw=true" height="400"/>
+
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
 買い物に行った時、「あれ、牛乳あったっけ？」のような問題に直面したことはありませんか？また、冷蔵庫に食材を放置しすぎて腐敗している、のような経験をしたことはありませんか？我々は、テクノロジーでその問題を解決します。
