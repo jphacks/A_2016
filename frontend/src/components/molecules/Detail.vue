@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card flat elevation="0">
-      <p class="text-center pt-3 font-weight-bold">
+      <p class="text-center pt-7 font-weight-bold">
         {{ item.item }}
       </p>
       <h1 class="text-center mt-5 font-weight-bold">
@@ -97,5 +97,6 @@ export default {
 
 .v-card {
   color: #777777;
+  font-family: 'Exo', sans-serif;
 }
 </style>
