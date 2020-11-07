@@ -83,7 +83,7 @@ export default {
     devices() {
       return devicesStore.state.devices
         .sort((a, b) => {
-          return a.device_id - b.device_id;
+          return a.device_id < b.device_id ? 1 : -1;
         })
         .map((device) => {
           const percentage = Math.min(100, Math.max(0, device.percentage));
