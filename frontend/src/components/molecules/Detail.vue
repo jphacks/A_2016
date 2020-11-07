@@ -11,7 +11,7 @@
         {{ Math.round(item.percentage) }}%
         <p>残量が少なくなっています。</p>
       </h1>
-      <p class="text-center mt-3 font-weight-light">
+      <p v-if="displayExp" class="text-center mt-3 font-weight-light">
         消費期限 {{ expirationDate }}
       </p>
       <p
@@ -72,6 +72,9 @@ export default {
     },
     canDelete() {
       return !devicesStore.state.adminIds.includes(this.item?.device_id);
+    },
+    displayExp() {
+      return !!this.item?.expiration_date;
     },
   },
 
