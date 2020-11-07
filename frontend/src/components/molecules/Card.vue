@@ -1,6 +1,8 @@
 <template>
   <section @click="openModal" class="itemCard">
-    <h1 class="percentage">{{ Math.round(info.percentage) }}%</h1>
+    <h1 class="percentage">
+      {{ Math.round(info.percentage) }}<span class="p"> %</span>
+    </h1>
     <h1 class="name">{{ info.item }}</h1>
   </section>
 </template>
@@ -24,4 +26,17 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.percentage {
+  font-size: 250%;
+  font-weight: 300;
+  font-family: 'Exo', sans-serif;
+  // font-family: 'Shrikhand', cursive;
+}
+.p {
+  font-size: 1.2rem;
+}
+.name {
+  font-size: 16px !important;
+}
+</style>

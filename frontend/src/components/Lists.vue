@@ -148,7 +148,9 @@ export default {
     max-height: 150px;
     height: 150px;
     overflow: hidden;
-    border: 1px solid #c3c3c3;
+    // outline: 1px solid #c3c3c3;
+    box-shadow: 0 0 0 1px #c3c3c3;
+    border-radius: 9px;
     cursor: pointer;
     position: relative;
     // mix-blend-mode: hue;
@@ -190,9 +192,9 @@ export default {
   transform: translateY(calc(-50% - 0px)) scale(1, -1);
   left: 0;
   overflow-y: hidden;
-  animation: wave 5s infinite normal linear;
-  width: 200%;
-  height: 100%;
+  animation: wave 4s infinite normal linear;
+  width: 280%;
+  height: 40%;
   // mix-blend-mode: hue;
 }
 @keyframes wave {
@@ -200,7 +202,7 @@ export default {
     left: 0%;
   }
   100% {
-    left: -80%;
+    left: -110%;
   }
 }
 

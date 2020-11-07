@@ -67,6 +67,8 @@ export default {
     color: white;
     font-size: 30px;
     line-height: 60px;
+    font-weight: 400;
+    cursor: pointer;
   }
 }
 </style>
