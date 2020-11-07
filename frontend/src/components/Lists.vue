@@ -185,9 +185,9 @@ export default {
   transform: translateY(calc(-50% - 0px)) scale(1, -1);
   left: 0;
   overflow-y: hidden;
-  animation: wave 5s infinite normal linear;
-  width: 200%;
-  height: 100%;
+  animation: wave 4s infinite normal linear;
+  width: 280%;
+  height: 40%;
   // mix-blend-mode: hue;
 }
 @keyframes wave {
@@ -195,7 +195,7 @@ export default {
     left: 0%;
   }
   100% {
-    left: -80%;
+    left: -110%;
   }
 }
 
