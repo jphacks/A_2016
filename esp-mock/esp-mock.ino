@@ -58,16 +58,16 @@ int get_weight(int type) {
   int value = 0;
   switch (type) {
     case 3:
-      value = sensorValue / 4095 * 2000;
+      value = (float)sensorValue / 4095 * 2000;
       break;
     case 2:
-      value = sensorValue / 4095 * 1040;
+      value = (float)sensorValue / 4095 * 1040;
       break;
     case 1:
-      value = sensorValue / 4095 * 500;
+      value = (float)sensorValue / 4095 * 500;
       break;
     case 0:
-      value = sensorValue / 4095 * 300;
+      value = (float)sensorValue / 4095 * 300;
       break;
   }
   if (value < 20) {
