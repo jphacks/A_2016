@@ -16,10 +16,13 @@
 #### 2. 視覚的に量を確認可能
 書く液体が簡素なアニメーションで一覧表示されるため、簡単に残量を確認することができます。
 
-<img src="https://github.com/jphacks/A_2016/blob/master/images/screen.png?raw=true" style="height:25em"/>
+<img src="https://github.com/jphacks/A_2016/blob/master/images/screen.png?raw=true" style="height:20em"/>
+
 #### 3. 期限切れ・不足時に通知
 期限切れや不足した品物を放置することなく、冷蔵庫の収納を高効率化します。
+
 <img src="https://github.com/jphacks/A_2016/blob/master/images/milk.jpg?raw=true" style="height:15em"/>
+
 ### 解決出来ること
 冷蔵庫の賞味期限・消費期限をユーザが常に把握しなくてもアプリで管理・通知することで、それらが期限切れまで放置されてしまう問題を解決します。
 
