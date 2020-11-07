@@ -143,7 +143,9 @@ export default {
     max-height: 150px;
     height: 150px;
     overflow: hidden;
-    border: 1px solid #c3c3c3;
+    // outline: 1px solid #c3c3c3;
+    box-shadow: 0 0 0 1px #c3c3c3;
+    border-radius: 9px;
     cursor: pointer;
     position: relative;
     // mix-blend-mode: hue;
