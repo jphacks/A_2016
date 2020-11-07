@@ -142,23 +142,30 @@ export default {
     max-width: 150px;
     max-height: 150px;
     height: 150px;
-    overflow-y: hidden;
+    overflow: hidden;
     border: 1px solid #c3c3c3;
     cursor: pointer;
     position: relative;
     // mix-blend-mode: hue;
     .percentage {
       position: absolute;
-      top: 5px;
-      left: 10px;
+      top: 3px;
+      left: 6px;
       mix-blend-mode: difference;
     }
     .name {
       // color: rgb(59, 59, 59);
       position: absolute;
-      bottom: 5px;
-      left: 10px;
+      bottom: 3px;
+      left: 6px;
       mix-blend-mode: difference;
+      width: calc(100% - 12px);
+      font-size: 10px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-align: left;
       // mix-blend-mode: lighten;
     }
   }
@@ -212,7 +219,7 @@ export default {
 @media screen and (max-width: 375px) {
   .listCard {
     width: 90%;
-    height: 95px !important;
+    height: 150px;
     max-width: 110px;
   }
 }
@@ -223,7 +230,7 @@ export default {
   }
   .listCard {
     width: 90%;
-    height: 110px;
+    height: 150px;
     max-width: 110px;
   }
 }
