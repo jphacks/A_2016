@@ -71,14 +71,24 @@
               </ValidationProvider>
             </v-card-text>
           </div>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="secondary" text @click="register" :disabled="invalid"
-              >登録</v-btn
-            >
-            <v-btn color="secondary" text @click="close">閉じる</v-btn>
-          </v-card-actions>
         </form>
+        <p
+          v-if="!canModify"
+          class="caption text-right mt-10 mr-3 font-weight-light"
+        >
+          デモ用のデバイスは変更できません。
+        </p>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="secondary"
+            text
+            @click="register"
+            :disabled="invalid || !canModify"
+            >登録</v-btn
+          >
+          <v-btn color="secondary" text @click="close">閉じる</v-btn>
+        </v-card-actions>
       </ValidationObserver>
     </v-card>
   </div>
@@ -88,6 +98,7 @@
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 import { register } from '../../toServer/main';
+import { devicesStore } from '../../store/devices';
 
 extend('required', {
   ...required,
@@ -125,12 +136,31 @@ export default {
       required: false,
       type: String,
     },
+    deviceId: {
+      required: false,
+      type: String,
+    },
   },
 
-  created() {
+  computed: {
+    canModify() {
+      return !devicesStore.state.adminIds.includes(this.item?.device_id);
+    },
+  },
+
+  mounted() {
     if (this.deviceIdFromURL) {
       this.item.device_id = this.deviceIdFromURL;
     }
+    if (this.deviceId) {
+      this.item.device_id = this.deviceId;
+    }
+  },
+
+  watch: {
+    deviceId: function (val) {
+      this.item.device_id = val;
+    },
   },
 
   methods: {

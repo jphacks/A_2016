@@ -34,7 +34,7 @@
       <v-dialog v-model="isOpenChange" max-width="500" hide-overlay>
         <AddDialog
           @close-add-modal="closeChangeModal"
-          :deviceIdFromURL="item.device_id"
+          :deviceId="item.device_id"
           title="デバイスを変更"
         />
       </v-dialog>
