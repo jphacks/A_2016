@@ -4,8 +4,12 @@
       <p class="text-center pt-7 font-weight-bold">
         {{ item.item }}
       </p>
-      <h1 class="text-center mt-5 font-weight-bold">
+      <h1 v-if="item.percentage > 19" class="text-center mt-5 font-weight-bold">
         {{ Math.round(item.percentage) }}%
+      </h1>
+      <h1 v-else class="text-center mt-5 font-weight-bold danger">
+        {{ Math.round(item.percentage) }}%
+        <p>残量が少なくなっています。</p>
       </h1>
       <p class="text-center mt-3 font-weight-light">
         消費期限 {{ expirationDate }}
@@ -89,6 +93,13 @@ export default {
 </script>
 
 <style scoped>
+.danger {
+  color: rgb(187, 33, 33) !important;
+}
+
+.danger > p {
+  font-size: 50%;
+}
 .dialog {
   z-index: 100000;
   border: 1px solid #111;
