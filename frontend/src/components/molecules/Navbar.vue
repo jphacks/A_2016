@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar flat class="navBar" color="rgb(99, 83, 83)">
+    <v-app-bar flat class="navBar" color="#998675">
       <h1>arcana</h1>
       <v-spacer></v-spacer>
       <v-btn icon color="white" @click="openAddModal">
