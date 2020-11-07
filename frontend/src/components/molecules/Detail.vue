@@ -1,10 +1,15 @@
 <template>
   <div>
-    <v-card class="dialog">
-      <v-card-title class="headline grey lighten-2">{{
-        item.item
-      }}</v-card-title>
-
+    <v-card flat elevation="0">
+      <p class="text-center pt-3 font-weight-bold">
+        {{ item.item }}
+      </p>
+      <h1 class="text-center mt-5 font-weight-bold">
+        {{ Math.round(item.percentage) }}%
+      </h1>
+      <p class="text-center mt-3 font-weight-light">
+        消費期限 {{ expirationDate }}
+      </p>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="secondary" @click="onClickDelete" small icon
@@ -29,6 +34,7 @@
 <script>
 import { deleteItem } from '../../toServer/main';
 import AddDialog from './AddDialog';
+import dayjs from 'dayjs';
 
 export default {
   name: 'Detail',
@@ -41,6 +47,12 @@ export default {
     item: {
       required: true,
       type: Object,
+    },
+  },
+
+  computed: {
+    expirationDate() {
+      return dayjs(this.item?.expiration_date).format('YYYY - MM - DD');
     },
   },
 
@@ -81,5 +93,9 @@ export default {
   z-index: 100000;
   border: 1px solid #111;
   border-radius: 10px;
+}
+
+.v-card {
+  color: #777777;
 }
 </style>

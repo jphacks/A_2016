@@ -38,7 +38,12 @@
         <Card :info="list" />
       </div>
       <v-row justify="center">
-        <v-dialog v-model="isOpenedDetail" persistent max-width="290">
+        <v-dialog
+          v-model="isOpenedDetail"
+          elevation="1"
+          max-width="400px"
+          hide-overlay
+        >
           <Detail @close-detail-modal="closeDetailModal" :item="detailItem" />
         </v-dialog>
       </v-row>
@@ -233,5 +238,12 @@ export default {
     height: 150px;
     max-width: 110px;
   }
+}
+
+.v-dialog {
+  -webkit-box-shadow: 0 0 0;
+  box-shadow: 0 0 0;
+  border-radius: 10px;
+  border: 1px solid #c3c3c3;
 }
 </style>
