@@ -1,5 +1,5 @@
 # arcana(アルカナ)
-<img src="https://github.com/jphacks/A_2016/blob/master/images/arcana.png?raw=true" height="188"/>
+<img src="https://github.com/jphacks/A_2016/blob/master/images/arcana_logo.png?raw=true" height="188"/>
 <img src="https://github.com/jphacks/A_2016/blob/master/images/device.jpg?raw=true" height="400"/>
 
 ## 製品概要
