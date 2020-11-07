@@ -20,7 +20,7 @@
 <img src="https://github.com/jphacks/A_2016/blob/master/images/use.gif?raw=true" style="height:20em"/>
 
 #### 2. 視覚的に量を確認可能
-書く液体が簡素なアニメーションで一覧表示されるため、簡単に残量を確認することができます。
+各液体が簡素なアニメーションで一覧表示されるため、簡単に残量を確認することができます。
 
 <img src="https://github.com/jphacks/A_2016/blob/master/images/screen.png?raw=true" height="460"/>
 
