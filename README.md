@@ -1,6 +1,6 @@
 # arcana(アルカナ)
 ![](https://github.com/jphacks/A_2016/blob/master/images/arcana.png?raw=true)
-![](https://github.com/jphacks/A_2016/blob/master/images/device.jpg?raw=true)
+<img src="https://github.com/jphacks/A_2016/blob/master/images/device.jpg?raw=true" style="height:25em"/>
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
 買い物に行った時、「あれ、牛乳あったっけ？」のような問題に直面したことはありませんか？また、冷蔵庫に食材を放置しすぎて腐敗している、のような経験をしたことはありませんか？我々は、テクノロジーでその問題を解決します。
@@ -10,13 +10,16 @@
 ### 特長
 #### 1. 簡単に設置
 量を知りたい物の下に置くだけで、設置完了
-![](https://github.com/jphacks/A_2016/blob/master/images/use.gif?raw=true)
+
+<img src="https://github.com/jphacks/A_2016/blob/master/images/use.gif?raw=true" style="height:20em"/>
+
 #### 2. 視覚的に量を確認可能
-冷蔵庫の中身が一目瞭然
-![](https://github.com/jphacks/A_2016/blob/master/images/screen.png?raw=true)
+書く液体が簡素なアニメーションで一覧表示されるため、簡単に残量を確認することができます。
+
+<img src="https://github.com/jphacks/A_2016/blob/master/images/screen.png?raw=true" style="height:25em"/>
 #### 3. 期限切れ・不足時に通知
-冷蔵庫の収納を効率化
-![](https://github.com/jphacks/A_2016/blob/master/images/milk.jpg?raw=true)
+期限切れや不足した品物を放置することなく、冷蔵庫の収納を高効率化します。
+<img src="https://github.com/jphacks/A_2016/blob/master/images/milk.jpg?raw=true" style="height:15em"/>
 ### 解決出来ること
 冷蔵庫の賞味期限・消費期限をユーザが常に把握しなくてもアプリで管理・通知することで、それらが期限切れまで放置されてしまう問題を解決します。
 
@@ -46,6 +49,8 @@
 
 ### 独自技術
 #### ハッカソンで開発した独自機能・技術
+* 軽量システム部分をクッキングスケーラーを分解して電圧特性を解析し、arcanaの計測システムに搭載しました。
+
 * 独自で開発したものの内容をこちらに記載してください
 * 特に力を入れた部分をファイルリンク、またはcommit_idを記載してください。
 
