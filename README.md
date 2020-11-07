@@ -1,6 +1,6 @@
 # arcana(アルカナ)
-<img src="https://github.com/jphacks/A_2016/blob/master/images/arcana_logo.png?raw=true" height="188"/>
-<img src="https://github.com/jphacks/A_2016/blob/master/images/device.jpg?raw=true" height="400"/>
+<img src="https://github.com/jphacks/A_2016/blob/master/images/arcana_logo.png?raw=true" height="400"/>
+
 
 ## 製品概要
 ### 背景(製品開発のきっかけ、課題等）
@@ -10,7 +10,12 @@
 ### 製品説明（具体的な製品の説明）
 ### 特長
 #### 1. 簡単に設置
+
+<img src="https://github.com/jphacks/A_2016/blob/master/images/device.jpg?raw=true" height="200"/>
+
+
 量を知りたい物の下に置くだけで、設置完了
+
 
 <img src="https://github.com/jphacks/A_2016/blob/master/images/use.gif?raw=true" style="height:20em"/>
 
