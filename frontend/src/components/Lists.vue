@@ -81,6 +81,7 @@ export default {
   },
 
   created() {
+    this.fetchDevices();
     setInterval(() => {
       this.fetchDevices();
     }, 3000);
