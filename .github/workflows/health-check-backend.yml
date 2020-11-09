@@ -1,0 +1,12 @@
+name: CI
+
+on:
+  schedule:
+    - cron: "*/20 * * * *"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GET /devices
+        run: curl 'https://a-2016-backend.herokuapp.com/devices' -f
