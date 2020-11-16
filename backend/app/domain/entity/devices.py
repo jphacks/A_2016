@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, text
+from sqlalchemy import Column, Integer, String, DateTime, text, ForeignKey
 
 from app.db import Base
 
@@ -13,3 +13,4 @@ class Device(Base):
     weight = Column(Integer)
     color = Column(String(length=7))
     expiration_date = Column(DateTime)
+    container_id = Column(String(length=32), ForeignKey('containers.id'))
