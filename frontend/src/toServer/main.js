@@ -13,6 +13,11 @@ export const fetchDevices = async () => {
   return res.data.devices;
 };
 
+export const getContainers = async () => {
+  const res = await Axios.get(`${serverURL}/v2/containers`)
+  return res.data.containers
+}
+
 // deviceの登録（変更もここで）
 export const register = (item) => {
   Axios.post(`${serverURL}/devices`, item);
