@@ -1,10 +1,13 @@
+import traceback
 from typing import List
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+from starlette import status
 
 from app.db import Database
+from app.domain import repository
 
 
 def new_router(db: Database):
@@ -22,21 +25,25 @@ def new_router(db: Database):
 
     @router.get("/containers")
     def get_containers(ssn: Session = Depends(db.get_db)):
-        return GetContainersRes(containers=[
-            GetContainersResContainer(
-                id="C51CD0F5",
-                image="https://i.picsum.photos/id/202/200/200.jpg",
-                name="牛乳パック",
-                max=1040,
-                min=40
-            ),
-            GetContainersResContainer(
-                id="C51CD0F6",
-                image="https://i.picsum.photos/id/202/200/200.jpg",
-                name="500mlペットボトル",
-                max=540,
-                min=40
+        try:
+            containers = repository.get_all_containers(ssn)
+        except Exception as err:
+            traceback.print_exc()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail='Error: %s' % err,
             )
-        ])
+
+        res_containers: List[GetContainersResContainer] = []
+        for c in containers:
+            res_containers.append(GetContainersResContainer(
+                id=c.id,
+                image=c.image,
+                name=c.name,
+                max=c.max,
+                min=c.min
+            ))
+
+        return GetContainersRes(containers=res_containers)
 
     return router
