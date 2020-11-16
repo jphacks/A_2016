@@ -32,6 +32,7 @@
                       :error-messages="errors"
                       label="デバイスID"
                     />
+                    <!-- TODO: AMAZONAPIと連携 --->
                     <v-text-field
                       v-model="item.item"
                       :error-messages="errors"
@@ -50,10 +51,14 @@
                       <label>容器を選択して下さい</label>
                       <v-row>
                         <v-col v-for="(container, i) in containers" :key="i" md="4" xs="6" >
-                          <div class="container" @click="choice(container)">{{container.name}}</div>
+                          <!-- <div class="container" @click="choice(container)">{{container.image}}</div> -->
+                          <v-btn @click="choiceContainer(container, i)">
+                            <v-img max-height="50px" max-width="100px" :src="container.image" />
+                          </v-btn>
                         </v-col>
                       </v-row>
                     </section>
+                    <p v-if="!item.max" color="red">容器を選択してください</p>
                     <v-btn color="secondary" text @click="currentStep=1">戻る</v-btn>
                     <v-btn color="secondary" text @click="currentStep=3">次へ</v-btn>
                 </v-card-text>
@@ -62,6 +67,7 @@
               <v-stepper-content step="3">
                 <v-card-text>
                   <ValidationProvider rules="required">
+                    <div class="step3">
                     <label>期限</label>
                     <v-menu
                       v-model="menu"
@@ -86,11 +92,14 @@
                         ></v-date-picker>
                       </v-dialog>
                     </v-menu>
+                    </div>
+                    <div class="step3">
                     <label>色</label>
                     <v-color-picker
                       v-model="item.color"
                       class="color"
                     ></v-color-picker>
+                    </div>
                   </ValidationProvider>
                   <!-- <v-btn color="secondary" text @click="currentStep=2">戻る</v-btn> -->
                   <p v-if="!canModify" class="caption text-right mt-10 mr-3 font-weight-light">
@@ -160,7 +169,8 @@ export default {
         color: '',
       },
       menu: false,
-      containers: []
+      containers: [],
+      isChoiced: []
     };
   },
 
@@ -192,7 +202,14 @@ export default {
 
   async created () {
     this.containers = await getContainers()
-    console.log(this.containers)
+    for (let i=0;i<this.containers.length;i++){
+      this.isChoiced.push(false)
+    }
+    // this.item.item = ''
+    // this.item.max = 0
+    // this.item.min = 0
+    // this.item.expiration_date = ''
+    // this.item.color = ''
   },
 
   mounted() {
@@ -202,6 +219,12 @@ export default {
     if (this.deviceId) {
       this.item.device_id = this.deviceId;
     }
+    this.currentStep=1
+    this.item.item = ''
+    this.item.max = 0
+    this.item.min = 0
+    this.item.expiration_date = ''
+    this.item.color = ''
   },
 
   watch: {
@@ -211,13 +234,22 @@ export default {
   },
 
   methods: {
-    choiceContainer (container) {
-      console.log(container)
-    },
+    choiceContainer (container, num) {
+      console.log('最大容量は'+ container.max + '最小容量は'+ container.min)
+      this.item.max = container.max
+      this.item.min = container.min
+      // どこが選択されているかの処理。これに応じてbtnの色を変えるが、いい方法があれば違う方法にする
+      for (let i=0;i<this.isChoiced;i++){
+        if (this.isChoiced[i] === true ){
+          this.isChoiced[i] = false
+        }
+      }
+      this.isChoiced[num] = true
+    },  
 
     async register() {
       const isValid = this.$refs.observer.validate();
-      if (isValid) {
+      if (isValid && this.item.max && this.item.min) {
         var color = this.item.color;
         color = color.slice(0, 7);
         this.item.color = color;
@@ -289,4 +321,8 @@ input {
   border-radius: 10px;
   border: 1px solid #c3c3c3;
 }
+
+// .step3{
+//   display: inline;
+// }
 </style>
