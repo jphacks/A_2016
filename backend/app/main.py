@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from .db import Database
-from .router import v1
+from .router import v1, v2
 
 
 def new_app(db: Database) -> FastAPI:
@@ -20,6 +20,7 @@ def new_app(db: Database) -> FastAPI:
 
     a.include_router(v1.new_router(db))
     a.include_router(v1.new_router(db), prefix="/v1")
+    a.include_router(v2.new_router(db), prefix="/v2")
     return a
 
 

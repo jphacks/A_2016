@@ -11,3 +11,4 @@ def new_router(db: Database):
     def get_containers(ssn: Session = Depends(db.get_db)):
         return {"msg": 'hello'}
 
+    return router
