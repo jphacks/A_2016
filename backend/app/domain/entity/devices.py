@@ -13,4 +13,7 @@ class Device(Base):
     weight = Column(Integer)
     color = Column(String(length=7))
     expiration_date = Column(DateTime)
-    container_id = Column(String(length=32), ForeignKey('containers.id'))
+
+    # ユーザーがmax, minを補正したとき、Deviceのmax, minを変更するべきで、
+    # Container側のmax, minを変更するべきではないので、
+    # Container entityとは紐付けないことにする。
