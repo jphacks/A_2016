@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import Optional
-
 from sqlalchemy import Column, Integer, String, DateTime, text
 
 from app.db import Base
