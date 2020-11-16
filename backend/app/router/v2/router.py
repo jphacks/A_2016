@@ -8,17 +8,14 @@ from starlette import status
 
 from app.db import Database
 from app.domain import repository
+from app.domain.schemas.containers import Container
 
 
 def new_router(db: Database):
     router = APIRouter()
 
-    class GetContainersResContainer(BaseModel):
-        id: str
-        image: str
-        name: str
-        max: int
-        min: int
+    class GetContainersResContainer(Container):
+        pass
 
     class GetContainersRes(BaseModel):
         containers: List[GetContainersResContainer]
@@ -36,13 +33,19 @@ def new_router(db: Database):
 
         res_containers: List[GetContainersResContainer] = []
         for c in containers:
-            res_containers.append(GetContainersResContainer(
-                id=c.id,
-                image=c.image,
-                name=c.name,
-                max=c.max,
-                min=c.min
-            ))
+            try:
+                res_containers.append(GetContainersResContainer(
+                    id=c.id,
+                    image=c.image,
+                    name=c.name,
+                    max=c.max,
+                    min=c.min
+                ))
+            except ValueError as err:
+                raise HTTPException(
+                    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    detail='Error: %s' % err,
+                )
 
         return GetContainersRes(containers=res_containers)
 
