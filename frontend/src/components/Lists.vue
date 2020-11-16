@@ -10,10 +10,10 @@
     <transition name="fade">
       <section v-show="!loading" id="lists">
         <div
-          v-for="(list, i) in devices"
+          v-for="(item, i) in devices"
           :key="i"
           class="listCard"
-          @click="openDetailModal(list)"
+          @click="openDetailModal(item)"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -24,28 +24,34 @@
             id="svg-bg"
             class="wave"
             :style="`top:${
-              list && list.percentage <= 0
+              item && item.percentage <= 0
                 ? 170
-                : 150 - (list && list.percentage * 1.5)
-            }px; `"
+                : 150 - (item && item.percentage * 1.5)
+            }px;animation-name:wave${
+              Math.abs(
+                item && item.item.split('').reduce((a, b) => {
+                  a = (a << 5) - a + b.charCodeAt(0);
+                  return a & a;
+                }, 0)
+              ) % 5
+            };`"
           >
             <path
               d="M0,0 v50 q10,10 20,0 t20,0 t20,0 t20,0 t20,0 v-50 Z"
-              :fill="`${list && list.color ? list.color : whitesmoke}`"
+              :fill="`${item && item.color ? item.color : whitesmoke}`"
             ></path>
           </svg>
           <div
             class="colorBox"
             :style="`height: ${
-              list && list.percentage >= 100
+              item && item.percentage >= 100
                 ? 150
-                : list && list.percentage * 1.5 - 10
+                : item && item.percentage * 1.5 - 10
             }px;backgroundColor:${
-              list && list.color ? list.color : '#efebe9'
+              item && item.color ? item.color : '#efebe9'
             }; `"
-          ></div>
-
-          <Card :info="list" />
+          />
+          <Card :info="item" />
         </div>
         <v-row justify="center">
           <v-dialog v-model="isOpenedDetail" max-width="400px" hide-overlay>
@@ -81,6 +87,7 @@ export default {
   },
 
   created() {
+    this.fetchDevices();
     setInterval(() => {
       this.fetchDevices();
     }, 3000);
@@ -138,14 +145,14 @@ export default {
 .fade-leave-active {
   transition: opacity 1s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter,
+.fade-leave-to {
   opacity: 0;
 }
 #Dialog {
   z-index: 100000;
   width: 80%;
   height: 500px;
-  // border: 1px solid #111;
   border-radius: 10px;
   display: absolute;
   top: 50%;
@@ -155,9 +162,7 @@ export default {
 }
 
 #lists {
-  /* display: block; */
   width: 80%;
-  /* background-color: pink; */
   max-width: 950px;
   margin: 0 auto;
   padding-top: 10px;
@@ -171,7 +176,6 @@ export default {
     max-height: 150px;
     height: 150px;
     overflow: hidden;
-    // outline: 1px solid #c3c3c3;
     box-shadow: 0 0 0 1px #c3c3c3;
     border-radius: 9px;
     cursor: pointer;
@@ -184,7 +188,6 @@ export default {
       mix-blend-mode: difference;
     }
     .name {
-      // color: rgb(59, 59, 59);
       position: absolute;
       bottom: 3px;
       left: 6px;
@@ -215,17 +218,55 @@ export default {
   transform: translateY(calc(-50% - 0px)) scale(1, -1);
   left: 0;
   overflow-y: hidden;
-  animation: wave 4s infinite normal linear;
+  // animation: wave;
+  animation-duration: 4s;
+  animation-name: wave2;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-timing-function: linear;
   width: 280%;
   height: 40%;
   // mix-blend-mode: hue;
 }
-@keyframes wave {
+
+@keyframes wave1 {
   0% {
     left: 0%;
   }
   100% {
     left: -110%;
+  }
+}
+@keyframes wave2 {
+  0% {
+    left: -15%;
+  }
+  100% {
+    left: -125%;
+  }
+}
+@keyframes wave3 {
+  0% {
+    left: -30%;
+  }
+  100% {
+    left: -140%;
+  }
+}
+@keyframes wave4 {
+  0% {
+    left: -45%;
+  }
+  100% {
+    left: -155%;
+  }
+}
+@keyframes wave0 {
+  0% {
+    left: -60%;
+  }
+  100% {
+    left: -170%;
   }
 }
 
