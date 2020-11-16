@@ -1,28 +1,119 @@
 <template>
-  <div>
+  <v-container>
     <v-card>
       <h2 class="text-center pt-7 font-weight-bold">
         {{ title || 'デバイスを追加' }}
       </h2>
-      <ValidationObserver ref="observer" v-slot="{ invalid }">
-        <form>
-          <div class="card-items">
-            <v-card-text>
-              <ValidationProvider v-slot="{ errors }" rules="required">
-                <v-text-field
-                  v-model="item.item"
-                  :error-messages="errors"
-                  label="名前"
-                />
-              </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" rules="required">
-                <v-text-field
-                  v-model="item.device_id"
-                  :error-messages="errors"
-                  label="デバイスID"
-                />
-              </ValidationProvider>
-              <ValidationProvider v-slot="{ errors }" rules="required">
+
+      <v-stepper v-model="currentStep">
+        <v-stepper-header>
+          <v-stepper-step :complete="currentStep > 1" step="1">
+            デバイスID・表示名
+          </v-stepper-step>
+          <v-divider />
+          <v-stepper-step :complete="currentStep > 2" step="2">
+            容器を選択
+          </v-stepper-step>
+          <v-divider />
+          <v-stepper-step :complete="currentStep > 3" step="3">
+            期限・色の決定
+          </v-stepper-step>
+        </v-stepper-header>
+
+        <v-stepper-items>
+          <ValidationObserver ref="observer" v-slot="{ invalid }">
+            <form>
+
+              <v-stepper-content step="1">
+                <v-card-text>
+                  <ValidationProvider v-slot="{ errors }" rules="required">
+                    <v-text-field
+                      v-model="item.device_id"
+                      :error-messages="errors"
+                      label="デバイスID"
+                    />
+                    <v-text-field
+                      v-model="item.item"
+                      :error-messages="errors"
+                      label="名前"
+                    />
+                  </ValidationProvider>
+                  <v-spacer />
+                  <v-btn color="secondary" text @click="currentStep=2">次へ</v-btn>
+                </v-card-text>
+              </v-stepper-content>
+
+              <v-stepper-content step="2">
+                <v-card-text>
+                    <section>
+                      <!--TODO: componentに分ける --->
+                      <label>容器を選択して下さい</label>
+                      <v-row>
+                        <v-col v-for="(container, i) in containers" :key="i" md="4" xs="6" >
+                          <div class="container" @click="choice(container)">{{container.name}}</div>
+                        </v-col>
+                      </v-row>
+                    </section>
+                    <v-btn color="secondary" text @click="currentStep=1">戻る</v-btn>
+                    <v-btn color="secondary" text @click="currentStep=3">次へ</v-btn>
+                </v-card-text>
+              </v-stepper-content>
+
+              <v-stepper-content step="3">
+                <v-card-text>
+                  <ValidationProvider rules="required">
+                    <label>期限</label>
+                    <v-menu
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="100px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="item.expiration_date"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-dialog v-model="menu" max-width="400px" hide-overlay>
+                        <v-date-picker
+                          v-model="item.expiration_date"
+                          @input="menu = false"
+                        ></v-date-picker>
+                      </v-dialog>
+                    </v-menu>
+                    <label>色</label>
+                    <v-color-picker
+                      v-model="item.color"
+                      class="color"
+                    ></v-color-picker>
+                  </ValidationProvider>
+                  <!-- <v-btn color="secondary" text @click="currentStep=2">戻る</v-btn> -->
+                  <p v-if="!canModify" class="caption text-right mt-10 mr-3 font-weight-light">
+                    デモ用のデバイスは変更できません。
+                  </p>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="secondary" text @click="currentStep=2">戻る</v-btn>
+                    <v-spacer />
+                    <v-btn
+                      color="secondary"
+                      text
+                      @click="register"
+                      :disabled="invalid || !canModify"
+                    >登録</v-btn>
+                    <v-btn color="secondary" text @click="close">閉じる</v-btn>
+                  </v-card-actions>
+                </v-card-text>
+              </v-stepper-content>
+            </form>
+          </ValidationObserver>
+        </v-stepper-items>
+              <!-- <ValidationProvider v-slot="{ errors }" rules="required">
                 <v-text-field
                   v-model="item.max"
                   :error-messages="errors"
@@ -35,69 +126,17 @@
                   :error-messages="errors"
                   label="最小容量"
                 />
-              </ValidationProvider>
-              <ValidationProvider rules="required">
-                <label>期限</label>
-                <v-menu
-                  v-model="menu"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="100px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
-                      v-model="item.expiration_date"
-                      prepend-icon="mdi-calendar"
-                      readonly
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-dialog v-model="menu" max-width="400px" hide-overlay>
-                    <v-date-picker
-                      v-model="item.expiration_date"
-                      @input="menu = false"
-                    ></v-date-picker>
-                  </v-dialog>
-                </v-menu>
-              </ValidationProvider>
-              <ValidationProvider rules="required">
-                <label>色</label>
-                <v-color-picker
-                  v-model="item.color"
-                  class="color"
-                ></v-color-picker>
-              </ValidationProvider>
-            </v-card-text>
-          </div>
-        </form>
-        <p
-          v-if="!canModify"
-          class="caption text-right mt-10 mr-3 font-weight-light"
-        >
-          デモ用のデバイスは変更できません。
-        </p>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-            color="secondary"
-            text
-            @click="register"
-            :disabled="invalid || !canModify"
-            >登録</v-btn
-          >
-          <v-btn color="secondary" text @click="close">閉じる</v-btn>
-        </v-card-actions>
-      </ValidationObserver>
+              </ValidationProvider> -->
+      </v-stepper>
     </v-card>
-  </div>
+  </v-container>
 </template>
 
 <script>
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
 import { register } from '../../toServer/main';
+import { getContainers } from '../../toServer/main'
 import { devicesStore } from '../../store/devices';
 
 extend('required', {
@@ -110,6 +149,8 @@ export default {
 
   data() {
     return {
+      currentStep: 1,
+      dialogContainers: false,
       item: {
         item: '',
         device_id: '',
@@ -119,6 +160,7 @@ export default {
         color: '',
       },
       menu: false,
+      containers: []
     };
   },
 
@@ -148,6 +190,11 @@ export default {
     },
   },
 
+  async created () {
+    this.containers = await getContainers()
+    console.log(this.containers)
+  },
+
   mounted() {
     if (this.deviceIdFromURL) {
       this.item.device_id = this.deviceIdFromURL;
@@ -164,6 +211,10 @@ export default {
   },
 
   methods: {
+    choiceContainer (container) {
+      console.log(container)
+    },
+
     async register() {
       const isValid = this.$refs.observer.validate();
       if (isValid) {
@@ -185,6 +236,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.container{
+  background-color:seashell;
+  cursor: pointer;
+}
 .v-card {
   color: #777777 !important;
   font-family: 'Exo', sans-serif;
