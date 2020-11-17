@@ -9,11 +9,12 @@ from starlette import status
 
 from app.db import Database
 from app.domain import repository
+from app.domain.repository.user_repository import get_current_user_id
 from app.domain.schemas import DeviceBase
 from app.domain.schemas.containers import Container
 
 
-def new_router(db: Database, oauth2_scheme: OAuth2PasswordBearer):
+def new_router(db: Database):
     router = APIRouter()
 
     class GetContainersResContainer(Container):
@@ -62,7 +63,11 @@ def new_router(db: Database, oauth2_scheme: OAuth2PasswordBearer):
         devices: List[GetDevicesResDevice]
 
     @router.get("/devices", response_model=GetDevicesRes)
-    def get_states(ssn: Session = Depends(db.get_db)):
+    def get_states(
+            ssn: Session = Depends(db.get_db),
+            user_id: str = Depends(get_current_user_id),
+    ):
+        print(user_id)
         try:
             # TODO: get my devices
             devices = repository.get_all_devices(ssn)
