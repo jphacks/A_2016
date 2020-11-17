@@ -11,7 +11,8 @@ RUN apk --no-cache --update-cache add \
     libpng-dev \
     openblas-dev \
     postgresql-dev \
-    musl-dev
+    musl-dev \
+    libffi-dev
 
 COPY requirements.txt /
 
