@@ -9,5 +9,6 @@ GCP_SERVICE_ACCOUNT_KEY = os.environ.get("GCP_SERVICE_ACCOUNT_KEY", "")
 
 
 def new_app():
-    cred = json.loads(base64.b64decode(GCP_SERVICE_ACCOUNT_KEY).decode('utf-8'))
-    return firebase_admin.initialize_app(Certificate(cred))
+    if GCP_SERVICE_ACCOUNT_KEY != "":
+        cred = json.loads(base64.b64decode(GCP_SERVICE_ACCOUNT_KEY).decode('utf-8'))
+        return firebase_admin.initialize_app(Certificate(cred))
