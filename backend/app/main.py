@@ -1,6 +1,7 @@
 import os
 
 from fastapi import FastAPI
+from fastapi.security import OAuth2PasswordBearer
 from firebase_admin import App
 from starlette.middleware.cors import CORSMiddleware
 
@@ -20,9 +21,11 @@ def new_app(db: Database, firebase_app: App) -> FastAPI:
         allow_headers=["*"],
     )
 
+    oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
     a.include_router(v1.new_router(db))
     a.include_router(v1.new_router(db), prefix="/v1")
-    a.include_router(v2.new_router(db), prefix="/v2")
+    a.include_router(v2.new_router(db, oauth2_scheme), prefix="/v2")
     return a
 
 
