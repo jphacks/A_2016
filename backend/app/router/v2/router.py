@@ -105,7 +105,7 @@ def new_router(db: Database):
         items: List[SearchItemResItem]
     
     
-    @app.get("/searchitem")#, response_model=SearchItemRes)
+    @router.get("/searchitem")#, response_model=SearchItemRes)
     def get_states(query: str):
         url="https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
         appid="1016875581354618617"
