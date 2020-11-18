@@ -119,7 +119,10 @@ def new_router(db: Database):
                     itemUrl=item['Item']['itemUrl']
                 ))
         except:
-            return Response(status_code=status.HTTP_404_NOT_FOUND)
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail='Error: %s' % err,
+            )
         return SearchItemRes(items=res_items)
     return router
 
