@@ -118,7 +118,8 @@ def new_router(db: Database):
                     imageUrl=item['Item']['mediumImageUrls'][0]['imageUrl'],
                     itemUrl=item['Item']['itemUrl']
                 ))
-        except:
+        except Exception as err:
+            traceback.print_exc()
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail='Error: %s' % err,
