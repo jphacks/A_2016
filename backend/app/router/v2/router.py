@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
-
+import requests
 from app.db import Database
 from app.domain import repository
 from app.domain.repository.user_repository import get_current_user_id
@@ -95,4 +95,36 @@ def new_router(db: Database):
             ))
         return GetDevicesRes(devices=res_devices)
 
+    class SearchItemResItem(BaseModel):
+        name: str
+        imageUrl: str
+        itemUrl: str
+    
+    
+    class SearchItemRes(BaseModel):
+        items: List[SearchItemResItem]
+    
+    
+    @app.get("/searchitem")#, response_model=SearchItemRes)
+    def get_states(query: str):
+        url="https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
+        appid="1016875581354618617"
+        res=requests.get(url, params={"format":"json","genreId":"555086","keyword":query,"applicationId":appid}).json()
+        res_items: List[SearchItemRes] = []
+        try:
+            for item in res['Items']:
+                res_items.append(SearchItemResItem(
+                    name=item['Item']['itemName'],
+                    imageUrl=item['Item']['mediumImageUrls'][0]['imageUrl'],
+                    itemUrl=item['Item']['itemUrl']
+                ))
+        except:
+            return Response(status_code=status.HTTP_404_NOT_FOUND)
+        return SearchItemRes(items=res_items)
     return router
+
+
+
+
+
+
