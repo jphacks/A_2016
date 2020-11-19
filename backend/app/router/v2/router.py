@@ -109,7 +109,7 @@ def new_router(db: Database):
     def get_states(query: str):
         url="https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
         appid="1016875581354618617"
-        res=requests.get(url, params={"format":"json","genreId":"555086","keyword":query,"applicationId":appid}).json()
+        res=requests.get(url, params={"format":"json","keyword":query,"applicationId":appid}).json()
         res_items: List[SearchItemRes] = []
         try:
             for item in res['Items']:
