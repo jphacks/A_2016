@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 
 from app.domain import entity
 from app.domain.schemas import DeviceBase, validate_item, validate_min, validate_nat, validate_color, \
-    validate_expiration_date
+    validate_expiration_date, validate_user_id
 
 
 class DeviceCreate(DeviceBase):
@@ -16,6 +16,7 @@ class DeviceCreate(DeviceBase):
     min: int
     color: str
     expiration_date: Optional[str]
+    user_id: Optional[str]
 
     _validate_name = validator('item', allow_reuse=True)(validate_item)
     _validate_min = validator('min', allow_reuse=True)(validate_min)
@@ -24,6 +25,7 @@ class DeviceCreate(DeviceBase):
     _validate_color = validator('color', allow_reuse=True)(validate_color)
     _validate_expiration_date = validator(
         'expiration_date', allow_reuse=True)(validate_expiration_date)
+    _validate_user_id = validator('user_id', allow_reuse=True)(validate_user_id)
 
 
 def create_device(db: Session, device: DeviceCreate):
@@ -38,7 +40,8 @@ def create_device(db: Session, device: DeviceCreate):
         min=device.min,
         color=device.color,
         weight=0,
-        expiration_date=expiration_date
+        expiration_date=expiration_date,
+        user_id=device.user_id
     )
 
     db.add(db_device)

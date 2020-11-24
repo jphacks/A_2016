@@ -10,7 +10,9 @@ from .firebase import admin
 from .router import v1, v2
 
 
-def new_app(db: Database, firebase_app: App) -> FastAPI:
+def new_app(db: Database) -> FastAPI:
+    admin.init()
+
     a = FastAPI()
     cors_allow_origins = os.environ.get("CORS_ALLOW_ORIGINS", "").split(",")
     a.add_middleware(
@@ -29,7 +31,4 @@ def new_app(db: Database, firebase_app: App) -> FastAPI:
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "")
 
-app = new_app(
-    Database(DATABASE_URL),
-    admin.new_app(),
-)
+app = new_app(Database(DATABASE_URL))

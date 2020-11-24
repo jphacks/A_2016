@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from firebase_admin import auth
-from firebase_admin.auth import InvalidIdTokenError
+from firebase_admin.auth import InvalidIdTokenError, UserNotFoundError, UserRecord
 from starlette import status
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -17,3 +17,7 @@ async def get_current_user_id(token: str = Depends(oauth2_scheme)):
         )
     uid = decoded_token['uid']
     return uid
+
+
+def get_user(user_id: str) -> UserRecord:
+    return auth.get_user(user_id)

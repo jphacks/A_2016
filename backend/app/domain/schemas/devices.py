@@ -4,6 +4,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from app.domain.repository.user_repository import get_user
+
 
 class DeviceBase(BaseModel):
     id: str
@@ -16,6 +18,7 @@ class Device(DeviceBase):
     weight: int
     color: str
     expiration_date: str
+    user_id: Optional[str]
 
     class Config:
         orm_mode = True
@@ -51,3 +54,13 @@ def validate_expiration_date(v: Optional[str]) -> Optional[str]:
     if v is None:
         return None
     return datetime.fromisoformat(v.replace('Z', '+00:00')).isoformat()
+
+
+def validate_user_id(v: Optional[str]) -> Optional[str]:
+    if v is None:
+        return None
+    try:
+        get_user(v)
+    except:
+        return None
+    return v

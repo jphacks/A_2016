@@ -99,17 +99,15 @@ def new_router(db: Database):
         name: str
         imageUrl: str
         itemUrl: str
-    
-    
+
     class SearchItemRes(BaseModel):
         items: List[SearchItemResItem]
-    
-    
-    @router.get("/searchitem",response_model=SearchItemRes)
+
+    @router.get("/searchitem", response_model=SearchItemRes)
     def get_states(query: str):
-        url="https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
-        appid="1016875581354618617"
-        res=requests.get(url, params={"format":"json","keyword":query,"applicationId":appid}).json()
+        url = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20170706"
+        appid = "1016875581354618617"
+        res = requests.get(url, params={"format": "json", "keyword": query, "applicationId": appid}).json()
         res_items: List[SearchItemRes] = []
         try:
             for item in res['Items']:
@@ -125,10 +123,5 @@ def new_router(db: Database):
                 detail='Error: %s' % err,
             )
         return SearchItemRes(items=res_items)
+
     return router
-
-
-
-
-
-
