@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from starlette import status
 import requests
+from starlette.responses import Response
+
 from app.db import Database
 from app.domain import repository
 from app.domain.repository import DeviceCreate, DeviceUpdate
@@ -160,6 +162,16 @@ def new_router(db: Database):
 
     class SearchItemRes(BaseModel):
         items: List[SearchItemResItem]
+
+    @router.delete("/devices/{device_id}", status_code=status.HTTP_204_NO_CONTENT)
+    def delete_devices(
+            device_id: str,
+            ssn: Session = Depends(db.get_db),
+            user_id: str = Depends(get_current_user_id),
+    ):
+        if not repository.delete_device(ssn, device_id, user_id):
+            return Response(status_code=status.HTTP_404_NOT_FOUND)
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     @router.get("/searchitem", response_model=SearchItemRes)
     def get_states(query: str):

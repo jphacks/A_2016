@@ -107,10 +107,20 @@ def update_device(db: Session, params: DeviceUpdate):
     return device_update
 
 
-def delete_device(db: Session, device_id: str):
+def delete_device(
+        db: Session,
+        device_id: str,
+        user_id: Optional[str],
+):
     query = db.query(entity.Device)
-    device: Optional[entity.Device] = query.filter(
-        entity.Device.id == device_id).first()
+    if user_id is None:
+        device: Optional[entity.Device] = query.filter(
+            entity.Device.id == device_id).first()
+    else:
+        device = query.filter(
+            entity.Device.id == device_id,
+            entity.Device.user_id == user_id,
+        ).first()
     if device is None:
         return False
     db.delete(device)
