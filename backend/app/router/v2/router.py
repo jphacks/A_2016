@@ -9,6 +9,7 @@ from starlette import status
 import requests
 from app.db import Database
 from app.domain import repository
+from app.domain.repository import DeviceCreate, DeviceUpdate
 from app.domain.repository.user_repository import get_current_user_id
 from app.domain.schemas import DeviceBase
 from app.domain.schemas.containers import Container
@@ -67,10 +68,8 @@ def new_router(db: Database):
             ssn: Session = Depends(db.get_db),
             user_id: str = Depends(get_current_user_id),
     ):
-        print(user_id)
         try:
-            # TODO: get my devices
-            devices = repository.get_all_devices(ssn)
+            devices = repository.get_devices_by_user_id(ssn, user_id)
         except Exception as err:
             traceback.print_exc()
             raise HTTPException(
@@ -94,6 +93,65 @@ def new_router(db: Database):
                 expiration_date=exp
             ))
         return GetDevicesRes(devices=res_devices)
+
+    class PostDevicesReq(BaseModel):
+        device_id: str
+        item: str
+        max: int
+        min: int
+        color: str
+        expiration_date: str  # ISO8601
+
+    @router.post("/devices", status_code=status.HTTP_201_CREATED)
+    def post_devices(
+            req: PostDevicesReq,
+            ssn: Session = Depends(db.get_db),
+            user_id: str = Depends(get_current_user_id),
+    ):
+        # すでに存在するデバイスか確認
+        device = repository.get_devices_by_id(ssn, req.device_id)
+        color = req.color or "#FFFFFF"
+        expiration_date = req.expiration_date or None
+
+        try:
+            if device is None:
+                repository.create_device(
+                    ssn,
+                    DeviceCreate(
+                        id=req.device_id,
+                        item=req.item,
+                        max=req.max,
+                        min=req.min,
+                        color=color,
+                        expiration_date=expiration_date,
+                        user_id=user_id,
+                    ),
+                )
+            else:
+                repository.update_device(
+                    ssn,
+                    DeviceUpdate(
+                        id=req.device_id,
+                        item=req.item,
+                        max=req.max,
+                        min=req.min,
+                        color=color,
+                        expiration_date=expiration_date,
+                        user_id=user_id,
+                    )
+                )
+            return {}
+        except ValueError as err:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail='%s' % err
+            )
+        except Exception as err:
+            traceback.print_exc()
+            raise HTTPException(
+                status_code=500,
+                detail='Error: %s' % err,
+            )
 
     class SearchItemResItem(BaseModel):
         name: str

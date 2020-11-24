@@ -58,6 +58,12 @@ def get_all_devices(db: Session) -> List[entity.Device]:
     return db.query(entity.Device).all()
 
 
+def get_devices_by_user_id(db: Session, user_id: Optional[str]) -> List[entity.Device]:
+    if user_id is None:
+        return []
+    return db.query(entity.Device).filter(entity.Device.user_id == user_id)
+
+
 class DeviceUpdate(DeviceBase):
     item: Optional[str]
     max: Optional[int]
@@ -65,6 +71,7 @@ class DeviceUpdate(DeviceBase):
     weight: Optional[int]
     color: Optional[str]
     expiration_date: Optional[str]
+    user_id: Optional[str]
 
     _validate_name = validator('item', allow_reuse=True)(validate_item)
     _validate_min = validator('min', allow_reuse=True)(validate_min)
@@ -74,6 +81,7 @@ class DeviceUpdate(DeviceBase):
     _validate_color = validator('color', allow_reuse=True)(validate_color)
     _validate_expiration_date = validator(
         'expiration_date', allow_reuse=True)(validate_expiration_date)
+    _validate_user_id = validator('user_id', allow_reuse=True)(validate_user_id)
 
 
 def update_device(db: Session, params: DeviceUpdate):
