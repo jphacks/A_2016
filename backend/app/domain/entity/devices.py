@@ -1,7 +1,4 @@
-from datetime import datetime
-from typing import Optional
-
-from sqlalchemy import Column, Integer, String, DateTime, text
+from sqlalchemy import Column, Integer, String, DateTime, text, ForeignKey
 
 from app.db import Base
 
@@ -16,3 +13,8 @@ class Device(Base):
     weight = Column(Integer)
     color = Column(String(length=7))
     expiration_date = Column(DateTime)
+    user_id = Column(String(length=32))  # Firebase Authentication
+
+    # ユーザーがmax, minを補正したとき、Deviceのmax, minを変更するべきで、
+    # Container側のmax, minを変更するべきではないので、
+    # Container entityとは紐付けないことにする。
