@@ -99,7 +99,7 @@ export default {
       loading: true,
       isOpenedAdd: false,
       deviceIdFromURL: '',
-      reset: ''
+      reset: false
     };
   },
 
@@ -258,7 +258,7 @@ export default {
   align-items: center;
   justify-content: center;
   position: fixed;
-  bottom: 60px;
+  bottom: 80px;
   right: 30px;
 }
 .wave {
