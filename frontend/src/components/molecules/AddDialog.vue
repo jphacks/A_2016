@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <v-card>
       <h2 class="text-center pt-7 font-weight-bold">
         {{ title || 'デバイスを追加' }}
       </h2>
@@ -22,13 +23,24 @@
                       label="デバイスID"
                     />
                   </ValidationProvider>
-                  <label>商品を選択してください</label>
+                  <!-- <label>商品を選択してください</label>
                   <v-row>
                     <v-col v-for="(product, i) in products" :key="i" md="4" xs="6" >
                       <div class="product" @click="choiceProduct(product)">{{product.image}}</div>
                     </v-col>
                   </v-row>
-                  <label>商品がない場合</label>
+                  <label>商品がない場合</label> -->
+                  <p>商品を検索</p>
+                  <v-text-field v-model="searchItem" />
+                  <v-btn @click="search">
+                    検索
+                  </v-btn>
+                  <v-row>
+                    <v-col v-for="(item, i) in searchItems" :key="i" md="4" xs="6">
+                      <v-img :src="item.imageUrl"  @click="putUrl(item.itemUrl)" />
+                    </v-col>
+                  </v-row>
+                  <p style="margin-top:20px" @click="goForward">商品を登録しないで次に進む</p>
                 </v-card-text>
               </v-stepper-content>
 
@@ -36,17 +48,24 @@
                 <v-card-text>
                     <section>
                       <!--TODO: componentに分ける --->
-                      <label>容器を選択して下さい</label>
-                      <v-row>
+                      <label v-show="isExistedContainer">容器を選択して下さい</label>
+                      <label v-show="!isExistedContainer">最大容量・最小容量を入力してください</label>
+                      <v-row v-show="isExistedContainer">
                         <v-col v-for="(container, i) in containers" :key="i" md="4" xs="6" >
-                          <div class="container" @click="choiceContainer(container)">{{container.image}}</div>
+                          <div class="container" @click="choiceContainer(container)">
+                            <v-img :src="container.image" /> 
+                          </div>
                         </v-col>
                       </v-row>
                     </section>
-                    <p v-if="!item.max" color="red">容器を選択してください</p>
-                    <label>容器がない場合</label>
+                    <div v-show="!isExistedContainer">
+                      <v-text-field v-model="max" label="最大容量" />
+                      <v-text-field v-model="min" label="最小容量"/>
+                    </div>
+                    <p v-show="isExistedContainer" style="margin-top:20px" @click="isExistedContainer = !isExistedContainer">容器がない場合</p>
                     <v-spacer />
                     <v-btn color="secondary" text @click="currentStep -=1">戻る</v-btn>
+                    <v-btn v-if="!isExistedContainer" color="secondary" text @click="putMaxAndMin">次へ</v-btn>
                 </v-card-text>
               </v-stepper-content>
 
@@ -108,13 +127,14 @@
           </ValidationObserver>
         </v-stepper-items>
       </v-stepper>
+    </v-card>
   </v-container>
 </template>
 
 <script>
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-import { getContainers, getProducts, register } from '../../toServer/main';
+import { getContainers, register, searchItem } from '../../toServer/main';
 import { devicesStore } from '../../store/devices';
 
 extend('required', {
@@ -138,20 +158,27 @@ export default {
           header:"色・期限の設定"
         },
       ],
-      currentStep: 3,
+      url: '',
+      max: '',
+      min: '',
+      currentStep: 1,
       dialogContainers: false,
       item: {
         item: '',
+        url: '',
         device_id: '',
         max: 0,
         min: 0,
         expiration_date: '',
         color: '',
       },
+      searchItem: '',
+      searchItems: [],
       menu: false,
       containers: [],
       isChoicedProduct: false,
-      isChoicedContainer: []
+      isChoicedContainer: [],
+      isExistedContainer: true,
     };
   },
 
@@ -183,7 +210,6 @@ export default {
 
   async created () {
     this.containers = await getContainers()
-    this.products = await getProducts()
     this.item.item = ''
     this.item.max = 0
     this.item.min = 0
@@ -192,6 +218,7 @@ export default {
   },
 
   mounted() {
+    this.isExistedContainer = true
     if (this.deviceIdFromURL) {
       this.item.device_id = this.deviceIdFromURL;
     }
@@ -208,16 +235,28 @@ export default {
 
   methods: {
     goForward() {
-      if (this.isChoicedProduct == true) {
-        this.steps.splice(1,1)
-      }
       this.currentStep +=1
     },
 
-    choiceProduct () {
-      this.isChoicedContainer = true
-      // productのmaxとか,nameとかをthis.itemに格納していく
+    putUrl (url){
+      this.item.url= url
       this.goForward()
+    },
+
+    putMaxAndMin () {
+      this.item.max = this.max
+      this.item.min = this.min
+    },
+
+    // choiceProduct () {
+    //   this.isChoicedContainer = true
+    //   // productのmaxとか,nameとかをthis.itemに格納していく
+    //   this.goForward()
+    // },
+
+    async search () {
+      this.searchItems = await searchItem(this.searchItem)
+      console.log(this.searchItems)
     },
 
     choiceContainer (container) {
@@ -248,6 +287,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+p{
+  cursor: pointer;
+}
+
 .container{
   background-color:seashell;
   cursor: pointer;
@@ -260,20 +303,6 @@ export default {
   position: relative;
   top:3px
 }
-
-.product{
-  background-color:seashell;
-  cursor: pointer;
-  box-shadow: 0px 3px rgb(201, 155, 123);
-  user-select: none;
-  border-radius: 10px;
-}
-.product:active{
-  box-shadow: none;
-  position: relative;
-  top:3px
-}
-
 .v-card {
   color: #777777 !important;
   font-family: 'Exo', sans-serif;
