@@ -88,6 +88,7 @@
         <AddDialog
           @close-add-modal="closeAddModal"
           :deviceIdFromURL="deviceIdFromURL"
+          :reset="reset"
         />
       </v-dialog>
     </v-row>
@@ -117,6 +118,7 @@ export default {
       loading: true,
       isOpenedAdd: false,
       deviceIdFromURL: '',
+      reset: ''
     };
   },
 
@@ -150,6 +152,7 @@ export default {
   methods: {
     openAddModal() {
       this.isOpenedAdd = true;
+      this.reset = !this.reset
     },
 
     async closeAddModal() {

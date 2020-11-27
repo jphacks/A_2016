@@ -6,14 +6,14 @@
       </h2>
       <v-stepper v-model="currentStep">
         <v-stepper-header>
-          <v-stepper-step
-            v-for="(step, i) in steps"
-            :key="i"
-            :complete="currentStep > i + 1"
-            :step="i + 1"
-          >
-            {{ step.header }}
-          </v-stepper-step>
+          <section v-for="(step, i) in steps" :key="i">
+            <v-stepper-step
+              :complete="currentStep > i + 1"
+              :step="i + 1"
+            >
+              {{ step.header }}
+            </v-stepper-step>
+          </section>
         </v-stepper-header>
 
         <v-stepper-items>
@@ -29,17 +29,18 @@
                       label="デバイスID"
                     />
                   </ValidationProvider>
-                  <p>表示名を入力（必須）</p>
+                  <p style="margin-top:20px">表示名を入力（必須）</p>
                   <v-text-field
                     v-model="item.item"
                     label="表示名"
                   />
-                  <p>商品を検索・登録（任意）</p>
+                  <p style="margin-top:20px">商品を検索・登録（任意）</p>
                   <ValidationObserver ref="search" v-slot="{g}">
                   <ValidationProvider v-slot="{ errors }" rules="required">
                     <v-text-field
                       v-model="searchItem"
                       :error-messages="errors"
+                      label="検索ワード"
                     />
                   </ValidationProvider>
                   <v-btn @click="search" :disabled="g">
@@ -59,7 +60,7 @@
                       />
                     </v-col>
                   </v-row>
-                  <p style="margin-top: 20px" @click="goForward">
+                  <p style="margin-top: 20px; font-size:100%;" @click="goForward">
                     商品を登録しないで次に進む
                   </p>
                 </v-card-text>
@@ -81,12 +82,7 @@
                         md="4"
                         xs="6"
                       >
-                        <div
-                          class="container"
-                          @click="choiceContainer(container)"
-                        >
-                          <v-img :src="container.image" />
-                        </div>
+                        <v-img :src="container.image" @click="choiceContainer(container)" />
                       </v-col>
                     </v-row>
                   </section>
@@ -256,6 +252,10 @@ export default {
       required: false,
       type: String,
     },
+    reset: {
+      required: true,
+      type: Boolean
+    }
   },
 
   computed: {
@@ -288,6 +288,18 @@ export default {
     deviceId: function (val) {
       this.item.device_id = val;
     },
+    reset: function() {
+      this.currentStep = 1
+      this.item.item = ''
+      this.searchItem = ''
+      this.item.device_id = ''
+      this.item.url = ''
+      this.item.expiration_date = '';
+      this.item.color = '';
+      this.item.max= ''
+      this.item.min = 0; 
+      this.isExistedContainer= true
+    }
   },
 
   methods: {
