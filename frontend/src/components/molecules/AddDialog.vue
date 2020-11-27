@@ -7,7 +7,11 @@
       <v-stepper v-model="currentStep">
         <v-stepper-header>
           <section v-for="(step, i) in steps" :key="i">
-            <v-stepper-step :complete="currentStep > i + 1" :step="i + 1">
+            <v-stepper-step
+              :complete="currentStep > i + 1"
+              :step="i + 1"
+              color="#333333"
+            >
               {{ step.header }}
             </v-stepper-step>
           </section>
@@ -29,29 +33,33 @@
                   <p style="margin-top: 20px">表示名を入力（必須）</p>
                   <v-text-field v-model="item.item" label="表示名" />
                   <p style="margin-top: 20px">商品を検索・登録（任意）</p>
-                  <ValidationObserver ref="search" v-slot="{ g }">
+                  <ValidationObserver ref="search">
                     <ValidationProvider v-slot="{ errors }" rules="required">
                       <v-text-field
                         v-model="searchItem"
                         :error-messages="errors"
                         label="検索ワード"
+                        append-icon="mdi-magnify"
+                        @click:append="search"
+                        @input="handleSearchChanged"
                       />
                     </ValidationProvider>
-                    <v-btn @click="search" :disabled="g"> 検索 </v-btn>
                   </ValidationObserver>
-                  <v-row>
-                    <v-col
-                      v-for="(item, i) in searchItems"
-                      :key="i"
-                      md="4"
-                      xs="6"
+                  <v-list>
+                    <v-list-item
+                      link
+                      v-for="(item, index) in searchItems.slice(0, 9)"
+                      :key="index"
+                      @click="putUrl(item.itemUrl)"
                     >
-                      <v-img
-                        :src="item.imageUrl"
-                        @click="putUrl(item.itemUrl)"
-                      />
-                    </v-col>
-                  </v-row>
+                      <v-list-item-avatar>
+                        <v-img :src="item.imageUrl"></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ item.name }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
                   <p
                     style="margin-top: 20px; font-size: 100%"
                     @click="goForward"
@@ -243,6 +251,8 @@ export default {
       isChoicedProduct: false,
       isChoicedContainer: [],
       isExistedContainer: true,
+      lastSearched: 0,
+      searching: false,
     };
   },
 
@@ -266,12 +276,12 @@ export default {
     },
     name: {
       required: false,
-      type:String,
+      type: String,
     },
     reset: {
       required: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
 
   computed: {
@@ -285,32 +295,32 @@ export default {
     this.item.url = '';
     this.item.expiration_date = '';
     this.item.color = '';
-    this.currentStep = 1
+    this.currentStep = 1;
   },
 
   mounted() {
     this.isExistedContainer = true;
     if (this.deviceIdFromURL) {
-      console.log('a')
+      console.log('a');
       this.item.device_id = this.deviceIdFromURL;
     }
     if (this.deviceId) {
-      this.item.device_id = this.deviceId
+      this.item.device_id = this.deviceId;
     }
     if (this.name) {
-      this.item.item = this.name
+      this.item.item = this.name;
     }
-    this.currentStep = 1
+    this.currentStep = 1;
   },
 
   watch: {
     deviceId: function (val) {
       this.item.device_id = val;
     },
-    reset: function() {
-      this.currentStep = 1
-      this.isExistedContainer= true
-    }
+    reset: function () {
+      this.currentStep = 1;
+      this.isExistedContainer = true;
+    },
   },
 
   methods: {
@@ -340,10 +350,31 @@ export default {
       // this.colorpicker = false
     },
 
+    async handleSearchChanged() {
+      if (Date.now() - this.lastSearched > 1000) {
+        if (!this.searching) {
+          this.lastSearched = Date.now();
+          await this.search();
+        }
+      }
+      const q = this.searchItem;
+      setTimeout(() => {
+        if (q === this.searchItem) {
+          console.log(q);
+          this.lastSearched = Date.now();
+          this.search();
+        }
+      }, 2000);
+    },
+
     async search() {
       const isValid = this.$refs.search.validate();
       if (isValid && this.searchItem) {
-        this.searchItems = await searchItem(this.searchItem);
+        try {
+          this.searchItems = await searchItem(this.searchItem);
+        } catch (err) {
+          this.searchItems = [];
+        }
       }
     },
 
@@ -414,12 +445,6 @@ export default {
   .container-name {
     font-size: 10px;
   }
-}
-
-.container:active {
-  box-shadow: none;
-  position: relative;
-  top: 3px;
 }
 .v-card {
   color: #777777 !important;
