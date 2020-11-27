@@ -1,36 +1,51 @@
 <template>
   <div>
-    <v-app-bar flat class="navBar" color="#998675">
-      <h1 @click="openAbout = true">arcana</h1>
-      <v-dialog v-model="openAbout" max-width="600px">
-        <About />
-      </v-dialog>
+    <v-dialog v-model="openAbout" max-width="600px">
+      <About />
+    </v-dialog>
+    <v-app-bar fixed flat class="navBar" color="white">
       <v-spacer></v-spacer>
-      <v-btn icon color="white" @click="openAddModal">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
+      <img :src="image_src" />
+      <v-spacer></v-spacer>
+      <v-menu offset-y v-if="user">
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon class="avatar" v-bind="attrs" v-on="on">
+            <v-icon>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+        <v-list dense>
+          <v-list-item-group>
+            <v-list-item>
+              <v-list-item-title @click="openAbout = true"
+                >このアプリケーションについて</v-list-item-title
+              >
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title @click="logout">ログアウト</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-menu>
     </v-app-bar>
-    <v-row justify="center">
-      <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
-        <AddDialog
-          @close-add-modal="closeAddModal"
-          :deviceIdFromURL="deviceIdFromURL"
-        />
-      </v-dialog>
-    </v-row>
+    <div class="navbar-spacer" />
   </div>
 </template>
 
 <script>
-import About from '../About'
-import AddDialog from './AddDialog';
-import { devicesStore } from '../../store/devices';
+import About from '../About';
+import { firebaseApp } from '../../firebase/index';
+import { userStore } from '../../store/user';
 
 export default {
   name: 'Navbar',
   components: {
     About,
-    AddDialog,
+  },
+
+  computed: {
+    user() {
+      return userStore.state.user;
+    },
   },
 
   data() {
@@ -39,6 +54,7 @@ export default {
       isOpenedAdd: false,
       query: null,
       deviceIdFromURL: '',
+      image_src: require('../../../../images/arcana_logo.png'),
     };
   },
 
@@ -51,31 +67,33 @@ export default {
   },
 
   methods: {
-    openAddModal() {
-      this.isOpenedAdd = true;
-    },
-
-    async closeAddModal() {
-      await devicesStore.dispatch('fetchDevices');
-      this.isOpenedAdd = false;
-      this.deviceIdFromURL = '';
-      this.query?.delete('d');
-      history.pushState('', '', '?' + this.query?.toString());
+    logout() {
+      firebaseApp.auth().signOut().catch(console.error);
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
+.avatar {
+  position: relative;
+  top: 5px;
+  background-color: transparent !important;
+}
+
 .navBar {
-  font-family: 'Shrikhand', cursive;
-  h1 {
-    color: white;
-    font-size: 30px;
-    line-height: 60px;
-    font-weight: 400;
-    cursor: pointer;
+  .v-toolbar__content {
+    justify-content: center;
   }
+  img {
+    display: block;
+    width: 110px;
+    margin: 0 auto !important;
+  }
+}
+
+.navbar-spacer {
+  height: 64px;
 }
 
 .v-dialog {

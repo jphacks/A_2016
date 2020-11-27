@@ -1,9 +1,8 @@
 <template>
   <section @click="openModal" class="itemCard">
-    <h1 class="percentage">
-      {{ Math.round(info.percentage) }}<span class="p"> %</span>
-    </h1>
-    <h1 class="name">{{ info.item }}</h1>
+    <p class="name">{{ info.item }}</p>
+    <h1 class="percentage">{{ Math.round(info.percentage) }}<span> %</span></h1>
+    <div class="triangle"></div>
   </section>
 </template>
 
@@ -28,15 +27,25 @@ export default {
 
 <style scoped lang="scss">
 .percentage {
-  font-size: 250%;
-  font-weight: 300;
+  font-size: 16px;
+  font-weight: 500;
   font-family: 'Exo', sans-serif;
-  // font-family: 'Shrikhand', cursive;
+  font-size: 175%; // これ以上大きくすると崩れた
+  font-weight: 300;
+  span {
+    font-size: 12px;
+  }
 }
-.p {
-  font-size: 1.2rem;
+.triangle {
+  position: absolute;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #6c6c6c;
+  border-left: 8px solid transparent;
+  transform: rotate(135deg);
+  bottom: 4px;
+  right: 0px;
 }
 .name {
-  font-size: 16px !important;
+  font-size: 15px !important;
 }
 </style>

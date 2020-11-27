@@ -12,7 +12,7 @@
           {{ Math.round(item.percentage) }}%
           <p>残量が少なくなっています。</p>
         </h1>
-        <p class="buy" :href="item.url">購入する</p>
+        <a class="buy" :href="item.url" target="_blank">購入する</a>
       </div>
       <p v-if="displayExp" class="text-center mt-3 font-weight-light">
         消費期限 {{ expirationDate }}
@@ -41,7 +41,8 @@
       <v-dialog v-model="isOpenChange" max-width="900" hide-overlay>
         <AddDialog
           @close-add-modal="closeChangeModal"
-          :deviceId="item.device_id"
+          :deviceId="item.id"
+          :name="item.item"
           title="デバイスを変更"
         />
       </v-dialog>
@@ -50,7 +51,7 @@
 </template>
 
 <script>
-import { deleteItem } from '../../toServer/main';
+import { deleteDevice } from '../../toServer/v2/index';
 import AddDialog from './AddDialog';
 import dayjs from 'dayjs';
 import { devicesStore } from '../../store/devices';
@@ -74,7 +75,7 @@ export default {
       return dayjs(this.item?.expiration_date).format('YYYY - MM - DD');
     },
     canDelete() {
-      return !devicesStore.state.adminIds.includes(this.item?.device_id);
+      return !devicesStore.state.adminIds.includes(this.item?.id);
     },
     displayExp() {
       return !!this.item?.expiration_date;
@@ -94,6 +95,7 @@ export default {
 
     change() {
       this.$emit('close-detail-modal');
+      console.log(this.item)
       this.isOpenChange = true;
     },
 
@@ -103,7 +105,7 @@ export default {
 
     async onClickDelete() {
       try {
-        await deleteItem(this.item.device_id);
+        await deleteDevice(this.item.id);
         this.close();
       } catch (err) {
         console.error(err);
@@ -122,9 +124,10 @@ export default {
   font-size: 50%;
 }
 
-.buy{
+.buy {
   cursor: pointer;
   user-select: none;
+  text-decoration: none;
 }
 .dialog {
   z-index: 100000;

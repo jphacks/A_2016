@@ -25,8 +25,8 @@
             class="wave"
             :style="`top:${
               item && item.percentage <= 0
-                ? 170
-                : 150 - (item && item.percentage * 1.5)
+                ? 177
+                : 175 - (item && item.percentage * 1.75)
             }px;animation-name:wave${
               Math.abs(
                 item &&
@@ -46,8 +46,8 @@
             class="colorBox"
             :style="`height: ${
               item && item.percentage >= 100
-                ? 150
-                : item && item.percentage * 1.5 - 10
+                ? 175
+                : item && item.percentage * 1.75 - 10
             }px;backgroundColor:${
               item && item.color ? item.color : '#efebe9'
             }; `"
@@ -61,13 +61,25 @@
         </v-row>
       </section>
     </transition>
+    <v-btn icon color="white" @click="openAddModal" class="plus">
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
+    <v-row justify="center">
+      <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
+        <AddDialog
+          @close-add-modal="closeAddModal"
+          :deviceIdFromURL="deviceIdFromURL"
+          :reset="reset"
+        />
+      </v-dialog>
+    </v-row>
   </section>
 </template>
 
 <script>
 import Card from './molecules/Card';
 import Detail from '../components/molecules/Detail';
-
+import AddDialog from './molecules/AddDialog';
 import { devicesStore } from '../store/devices';
 
 export default {
@@ -76,6 +88,7 @@ export default {
   components: {
     Card,
     Detail,
+    AddDialog,
   },
 
   data() {
@@ -84,6 +97,9 @@ export default {
       detailItem: {},
       changeItem: {},
       loading: true,
+      isOpenedAdd: false,
+      deviceIdFromURL: '',
+      reset: false
     };
   },
 
@@ -92,10 +108,6 @@ export default {
     setInterval(() => {
       this.fetchDevices();
     }, 3000);
-  },
-
-  mounted() {
-    this.loading = true;
   },
 
   computed: {
@@ -107,7 +119,8 @@ export default {
         .map((device) => {
           const percentage = Math.min(100, Math.max(0, device.percentage));
           return {
-            device_id: device.device_id,
+            id: device.id,
+            url: device.url,
             item: device.item,
             weight: device.weight,
             percentage: percentage,
@@ -119,6 +132,19 @@ export default {
   },
 
   methods: {
+    openAddModal() {
+      this.isOpenedAdd = true;
+      this.reset = !this.reset
+    },
+
+    async closeAddModal() {
+      await devicesStore.dispatch('fetchDevices');
+      this.isOpenedAdd = false;
+      this.deviceIdFromURL = '';
+      this.query?.delete('d');
+      history.pushState('', '', '?' + this.query?.toString());
+    },
+
     openDetailModal(item) {
       this.isOpenedDetail = true;
       this.detailItem = item;
@@ -130,9 +156,14 @@ export default {
     },
 
     fetchDevices() {
-      devicesStore.dispatch('fetchDevices').then(() => {
-        this.loading = false;
-      });
+      devicesStore
+        .dispatch('fetchDevices')
+        .then(() => {
+          this.loading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
@@ -163,35 +194,40 @@ export default {
 }
 
 #lists {
-  width: 80%;
+  width: 90%;
   max-width: 950px;
   margin: 0 auto;
   padding-top: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 15px;
   .listCard {
     background-color: white;
-    margin: 10px auto;
-    width: 80%;
-    max-width: 150px;
-    max-height: 150px;
-    height: 150px;
+    margin: 0px auto;
+    width: 100%;
+    max-width: 200px;
+    height: 175px;
     overflow: hidden;
+    // border: 1px solid #c3c3c3;
     box-shadow: 0 0 0 1px #c3c3c3;
-    border-radius: 9px;
+    border-radius: 7px;
     cursor: pointer;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     // mix-blend-mode: hue;
     .percentage {
       position: absolute;
-      top: 3px;
-      left: 6px;
+      transform: translateX(-50%);
+      left: 50%;
+      bottom: 10px;
       mix-blend-mode: difference;
     }
     .name {
       position: absolute;
-      bottom: 3px;
-      left: 6px;
+      top: 8px;
+      left: 8px;
       mix-blend-mode: difference;
       width: calc(100% - 12px);
       font-size: 10px;
@@ -214,20 +250,27 @@ export default {
     border: none !important;
   }
 }
+.v-btn--icon.v-size--default {
+  width: 60px;
+  height: 60px;
+  background-color: #6c6c6c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 80px;
+  right: 30px;
+}
 .wave {
   position: absolute;
   transform: translateY(calc(-50% - 0px)) scale(1, -1);
   left: 0;
-  overflow-y: hidden;
-  // animation: wave;
   animation-duration: 4s;
-  animation-name: wave2;
   animation-iteration-count: infinite;
   animation-direction: normal;
   animation-timing-function: linear;
   width: 280%;
   height: 40%;
-  // mix-blend-mode: hue;
 }
 
 @keyframes wave1 {
@@ -289,21 +332,13 @@ export default {
 }
 
 @media screen and (max-width: 375px) {
-  .listCard {
-    width: 90%;
-    height: 150px;
-    max-width: 110px;
+  #lists {
+    grid-template-columns: 1fr 1fr !important;
   }
 }
 @media screen and (max-width: 767px) {
   #lists {
     grid-template-columns: 1fr 1fr 1fr;
-    width: 95%;
-  }
-  .listCard {
-    width: 90%;
-    height: 150px;
-    max-width: 110px;
   }
 }
 
