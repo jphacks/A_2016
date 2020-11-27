@@ -7,7 +7,11 @@
       <v-stepper v-model="currentStep">
         <v-stepper-header>
           <section v-for="(step, i) in steps" :key="i">
-            <v-stepper-step :complete="currentStep > i + 1" :step="i + 1">
+            <v-stepper-step
+              :complete="currentStep > i + 1"
+              :step="i + 1"
+              color="#333333"
+            >
               {{ step.header }}
             </v-stepper-step>
           </section>
