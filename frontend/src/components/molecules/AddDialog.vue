@@ -23,14 +23,14 @@
                       :error-messages="errors"
                       label="デバイスID"
                     />
-                    <v-text-field
-                      v-model="item.item"
-                      :error-messages="errors"
-                      label="名前"
-                    />
                   </ValidationProvider>
+                  <label>商品を選択してください</label>
+                  <v-row>
+                    <v-col v-for="(product, i) in products" :key="i" md="4" xs="6" >
+                      <div class="product" @click="choiceProduct(product)">{{product.image}}</div>
+                    </v-col>
+                  </v-row>
                   <v-spacer />
-                  <v-btn color="secondary" text @click="goForward()">次へ</v-btn>
                 </v-card-text>
               </v-stepper-content>
 
@@ -217,6 +217,12 @@ export default {
       this.currentStep +=1
     },
 
+    choiceProduct () {
+      this.isChoicedContainer = true
+      // productのmaxとか,nameとかをthis.itemに格納していく
+      this.goForward()
+    },
+
     choiceContainer (container) {
       console.log('最大容量は'+ container.max + '最小容量は'+ container.min)
       this.item.max = container.max
@@ -257,6 +263,20 @@ export default {
   position: relative;
   top:3px
 }
+
+.product{
+  background-color:seashell;
+  cursor: pointer;
+  box-shadow: 0px 3px rgb(201, 155, 123);
+  user-select: none;
+  border-radius: 10px;
+}
+.product:active{
+  box-shadow: none;
+  position: relative;
+  top:3px
+}
+
 .v-card {
   color: #777777 !important;
   font-family: 'Exo', sans-serif;
