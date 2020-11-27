@@ -139,6 +139,7 @@ export default {
           const percentage = Math.min(100, Math.max(0, device.percentage));
           return {
             id: device.id,
+            url: device.url,
             item: device.item,
             weight: device.weight,
             percentage: percentage,

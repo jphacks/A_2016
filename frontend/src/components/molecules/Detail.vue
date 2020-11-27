@@ -12,7 +12,7 @@
           {{ Math.round(item.percentage) }}%
           <p>残量が少なくなっています。</p>
         </h1>
-        <a class="buy" :href="item.url">購入する</a>
+        <a class="buy" :href="item.url" target="_blank">購入する</a>
       </div>
       <p v-if="displayExp" class="text-center mt-3 font-weight-light">
         消費期限 {{ expirationDate }}
@@ -125,6 +125,7 @@ export default {
 .buy {
   cursor: pointer;
   user-select: none;
+  text-decoration: none;
 }
 .dialog {
   z-index: 100000;
