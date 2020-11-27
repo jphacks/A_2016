@@ -213,6 +213,7 @@ export default {
     this.item.item = ''
     this.item.max = 0
     this.item.min = 0
+    this.item.url = ''
     this.item.expiration_date = ''
     this.item.color = ''
   },
