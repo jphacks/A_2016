@@ -45,8 +45,8 @@
           <div
             class="colorBox"
             :style="`height: ${
-              item && item.percentage >= 100
-                ? 175
+              item && item.percentage <= 10
+                ? 1
                 : item && item.percentage * 1.75 - 10
             }px;backgroundColor:${
               item && item.color ? item.color : '#efebe9'
@@ -99,7 +99,7 @@ export default {
       loading: true,
       isOpenedAdd: false,
       deviceIdFromURL: '',
-      reset: false
+      reset: false,
     };
   },
 
@@ -131,10 +131,18 @@ export default {
     },
   },
 
+  async mounted() {
+    this.query = new URLSearchParams(location.search.slice(1));
+    this.deviceIdFromURL = this.query?.get('d');
+    if (this.deviceIdFromURL) {
+      this.isOpenedAdd = true;
+    }
+  },
+
   methods: {
     openAddModal() {
       this.isOpenedAdd = true;
-      this.reset = !this.reset
+      this.reset = !this.reset;
     },
 
     async closeAddModal() {
