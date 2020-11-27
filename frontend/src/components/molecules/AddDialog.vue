@@ -60,12 +60,14 @@
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
-                  <p
+                  <v-btn
                     style="margin-top: 20px; font-size: 100%"
                     @click="goForward"
+                    text
+                    color="secondary"
                   >
                     商品を登録しないで次に進む
-                  </p>
+                  </v-btn>
                 </v-card-text>
               </v-stepper-content>
 
@@ -95,13 +97,15 @@
                     <v-text-field v-model="max" label="最大容量" />
                     <v-text-field v-model="min" label="最小容量" />
                   </div>
-                  <p
+                  <v-btn
                     v-show="isExistedContainer"
                     style="margin-top: 20px"
                     @click="isExistedContainer = !isExistedContainer"
+                    text
+                    color="secondary"
                   >
                     容器がない場合
-                  </p>
+                  </v-btn>
                   <v-spacer />
                   <v-btn color="secondary" text @click="currentStep -= 1"
                     >戻る</v-btn
@@ -148,12 +152,13 @@
                     <div class="step3" style="margin-top: 30px">
                       <label>色を選択</label>
                       <div style="margin-top: 20px">
-                        <v-icon
+                        <v-btn
                           class="box"
                           :style="`background-color: ${item.color};border:1px solid #111`"
                           @click="random"
-                          >mdi-recycle</v-icon
                         >
+                          <v-icon>mdi-autorenew</v-icon>
+                        </v-btn>
                         <v-card
                           flat
                           max-width="200px"

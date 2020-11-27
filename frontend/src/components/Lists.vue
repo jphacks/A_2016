@@ -7,8 +7,11 @@
       color="#cd853f"
       indeterminate
     ></v-progress-circular>
-    <transition name="fade">
-      <section v-show="!loading" id="lists">
+    <transition v-show="!loading" name="fade">
+      <div v-if="!loading && devices.length === 0">
+        arcanaを登録しましょう！
+      </div>
+      <section id="lists">
         <div
           v-for="(item, i) in devices"
           :key="i"
@@ -96,7 +99,6 @@ export default {
       isOpenedDetail: false,
       detailItem: {},
       changeItem: {},
-      loading: true,
       isOpenedAdd: false,
       deviceIdFromURL: '',
       reset: false,
@@ -128,6 +130,9 @@ export default {
             expiration_date: device.expiration_date,
           };
         });
+    },
+    loading() {
+      return devicesStore.state.loading;
     },
   },
 
@@ -164,14 +169,9 @@ export default {
     },
 
     fetchDevices() {
-      devicesStore
-        .dispatch('fetchDevices')
-        .then(() => {
-          this.loading = false;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      devicesStore.dispatch('fetchDevices').catch((err) => {
+        console.log(err);
+      });
     },
   },
 };
