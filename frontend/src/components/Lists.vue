@@ -17,60 +17,41 @@
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="55.338"
-            height="127.58"
-            viewBox="0 0 55.338 127.58"
-            class="containers"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            version="1.1"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            id="svg-bg"
+            class="wave"
+            :style="`top:${
+              item && item.percentage <= 0
+                ? 177
+                : 175 - (item && item.percentage * 1.75)
+            }px;animation-name:wave${
+              Math.abs(
+                item &&
+                  item.item.split('').reduce((a, b) => {
+                    a = (a << 5) - a + b.charCodeAt(0);
+                    return a & a;
+                  }, 0)
+              ) % 5
+            };`"
           >
-            <clipPath id="clip01">
-              <path
-                d="M249.562,150.974h39.783l8.111,14.045V278.555H242.118V165.019Z"
-                transform="translate(-242.118 -150.974)"
-                fill="black"
-              />
-            </clipPath>
-            <g clip-path="url(#clip01)">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                version="1.1"
-                viewBox="0 0 55.338 127.58"
-                width="400"
-                height="127.58"
-                preserveAspectRatio="none"
-                id="svg-bg"
-                class="wave"
-                :style="`top:${
-                  item && item.percentage <= 0
-                    ? 170
-                    : 150 - (item && item.percentage * 1.5)
-                }px;animation-name:wave${
-                  Math.abs(
-                    item &&
-                      item.item.split('').reduce((a, b) => {
-                        a = (a << 5) - a + b.charCodeAt(0);
-                        return a & a;
-                      }, 0)
-                  ) % 5
-                };`"
-              >
-                <path
-                  d="M0,0 v50 q10,10 20,0 t20,0 t20,0 t20,0 t20,0 v-50 Z"
-                  :fill="`${item && item.color ? item.color : whitesmoke}`"
-                ></path>
-                <div
-                  class="colorBox"
-                  :style="`height: ${
-                    item && item.percentage >= 100
-                      ? 150
-                      : item && item.percentage * 1.5 - 10
-                  }px;backgroundColor:${
-                    item && item.color ? item.color : '#efebe9'
-                  }; `"
-                />
-              </svg>
-            </g>
+            <path
+              d="M0,0 v50 q10,10 20,0 t20,0 t20,0 t20,0 t20,0 v-50 Z"
+              :fill="`${item && item.color ? item.color : whitesmoke}`"
+            ></path>
           </svg>
+          <div
+            class="colorBox"
+            :style="`height: ${
+              item && item.percentage >= 100
+                ? 175
+                : item && item.percentage * 1.75 - 10
+            }px;backgroundColor:${
+              item && item.color ? item.color : '#efebe9'
+            }; `"
+          />
           <Card :info="item" />
         </div>
         <v-row justify="center">
@@ -171,11 +152,14 @@ export default {
     },
 
     fetchDevices() {
-      devicesStore.dispatch('fetchDevices').then(()=>{
-        this.loading = false
-      }).catch((err) => {
-        console.log(err)
-      })
+      devicesStore
+        .dispatch('fetchDevices')
+        .then(() => {
+          this.loading = false;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
@@ -218,9 +202,10 @@ export default {
     margin: 0px auto;
     width: 100%;
     max-width: 200px;
-    height: 220px;
+    height: 175px;
     overflow: hidden;
-    border: 1px solid #c3c3c3;
+    // border: 1px solid #c3c3c3;
+    box-shadow: 0 0 0 1px #c3c3c3;
     border-radius: 7px;
     cursor: pointer;
     position: relative;
@@ -233,12 +218,13 @@ export default {
       transform: translateX(-50%);
       left: 50%;
       bottom: 10px;
+      mix-blend-mode: difference;
     }
     .name {
       position: absolute;
       top: 8px;
       left: 8px;
-      // mix-blend-mode: difference;
+      mix-blend-mode: difference;
       width: calc(100% - 12px);
       font-size: 10px;
       display: -webkit-box;
