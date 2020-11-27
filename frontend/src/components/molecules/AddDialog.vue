@@ -41,13 +41,12 @@
                       <label>容器を選択して下さい</label>
                       <v-row>
                         <v-col v-for="(container, i) in containers" :key="i" md="4" xs="6" >
-                          <div class="container" @click="choice(container)">{{container.image}}</div>
+                          <div class="container" @click="choiceContainer(container)">{{container.image}}</div>
                         </v-col>
                       </v-row>
                     </section>
                     <p v-if="!item.max" color="red">容器を選択してください</p>
                     <v-btn color="secondary" text @click="currentStep -=1">戻る</v-btn>
-                    <v-btn color="secondary" text @click="goForward()">次へ</v-btn>
                 </v-card-text>
               </v-stepper-content>
 
@@ -117,8 +116,7 @@
 <script>
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-import { register } from '../../toServer/main';
-import { getContainers } from '../../toServer/main'
+import { getContainers, getProducts, register } from '../../toServer/main';
 import { devicesStore } from '../../store/devices';
 
 extend('required', {
@@ -154,6 +152,7 @@ export default {
       },
       menu: false,
       containers: [],
+      isChoicedProduct: false,
       isChoicedContainer: []
     };
   },
@@ -186,9 +185,13 @@ export default {
 
   async created () {
     this.containers = await getContainers()
-    for (let i=0;i<this.containers.length;i++){
-      this.isChoicedContainer.push(false)
-    }
+    this.products = await getProducts()
+    this.currentStep=1
+    this.item.item = ''
+    this.item.max = 0
+    this.item.min = 0
+    this.item.expiration_date = ''
+    this.item.color = ''
   },
 
   mounted() {
@@ -198,12 +201,6 @@ export default {
     if (this.deviceId) {
       this.item.device_id = this.deviceId;
     }
-    this.currentStep=1
-    this.item.item = ''
-    this.item.max = 0
-    this.item.min = 0
-    this.item.expiration_date = ''
-    this.item.color = ''
   },
 
   watch: {
@@ -214,23 +211,17 @@ export default {
 
   methods: {
     goForward() {
-      if (this.isChoicedProduct) {
+      if (this.isChoicedProduct == true) {
         this.steps.splice(1,1)
       }
       this.currentStep +=1
     },
 
-    choiceContainer (container, num) {
+    choiceContainer (container) {
       console.log('最大容量は'+ container.max + '最小容量は'+ container.min)
       this.item.max = container.max
       this.item.min = container.min
-      // どこが選択されているかの処理。これに応じてbtnの色を変えるが、いい方法があれば違う方法にする
-      for (let i=0;i<this.isChoicedContainer;i++){
-        if (this.isChoicedContainer[i] === true ){
-          this.isChoicedContainer[i] = false
-        }
-      }
-      this.isChoicedContainer[num] = true
+      this.goForward()
     },  
 
     async register() {
@@ -257,6 +248,14 @@ export default {
 .container{
   background-color:seashell;
   cursor: pointer;
+  box-shadow: 0px 3px rgb(201, 155, 123);
+  user-select: none;
+  border-radius: 10px;
+}
+.container:active{
+  box-shadow: none;
+  position: relative;
+  top:3px
 }
 .v-card {
   color: #777777 !important;
