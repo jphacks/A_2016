@@ -148,15 +148,15 @@
                     <div class="step3" style="margin-top:30px">
                       <label>色を選択</label>
                       <div style="margin-top:20px">
-                        <v-icon class="box" :style="`background-color: ${item.color}`" @click="random">mdi-recycle</v-icon>
-                        <v-card max-width="200px" style="padding-left:10px; margin:10px auto">
+                        <v-icon class="box" :style="`background-color: ${item.color};border:1px solid #111`" @click="random">mdi-recycle</v-icon>
+                        <v-card flat max-width="200px" style="padding-left:10px; margin:10px auto">
                           <v-row>
                             <v-col
                               v-for="(co, i) in colorArr"
                               :key="i"
                               md="4"
                             >
-                            <div id="box" :style="`background-color: ${co}; width:30px;height:30px;padding-left:10px`" @click="choiceColor(co)"></div>
+                            <div id="box" :style="`background-color: ${co}; width:30px;height:30px;padding-left:10px;border:1px solid azure`" @click="choiceColor(co)"></div>
                             </v-col>
                           </v-row>
                         </v-card>
@@ -215,7 +215,7 @@ export default {
   data() {
     return {
       colorArr:[
-        '#b60205', '#d93f0b', '#fbca04', '#0e8a16', '#1d76db','#5319e7','#111111','#eeeeee','pink'
+        '#fffafa', '#ffe4c4', '#f0fff0', '#87ceeb', '#3cb371','#ff0000','#ffa500','#d8bfd8','#8a2be2'
       ],
       steps: [
         {
