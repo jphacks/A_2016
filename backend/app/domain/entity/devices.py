@@ -14,6 +14,7 @@ class Device(Base):
     color = Column(String(length=7))
     expiration_date = Column(DateTime)
     user_id = Column(String(length=32))  # Firebase Authentication
+    url = Column(String(length=255))
 
     # ユーザーがmax, minを補正したとき、Deviceのmax, minを変更するべきで、
     # Container側のmax, minを変更するべきではないので、
