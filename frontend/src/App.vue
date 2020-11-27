@@ -7,6 +7,7 @@
 
 <script>
 import Navbar from './components/molecules/Navbar';
+import { firebaseApp } from './firebase/index';
 import { userStore } from './store/user';
 
 export default {
@@ -15,7 +16,14 @@ export default {
     Navbar,
   },
   created() {
-    userStore.dispatch('fetchUser');
+    firebaseApp.auth().onAuthStateChanged((user) => {
+      userStore.dispatch('setUser', user);
+      if (user && this.$route.name !== 'Devices') {
+        this.$router.push({ name: 'Devices' });
+      } else if (!user && this.$route.name !== 'Login') {
+        this.$router.push({ name: 'Login' });
+      }
+    });
   },
 };
 </script>
