@@ -61,6 +61,7 @@ def new_router(db: Database):
         percentage: float
         color: Optional[str]
         expiration_date: Optional[str]
+        url: Optional[str]
 
     class GetDevicesRes(BaseModel):
         devices: List[GetDevicesResDevice]
@@ -82,6 +83,7 @@ def new_router(db: Database):
         for d in devices:
             weight = d.weight or 0
             exp = d.expiration_date.isoformat() if d.expiration_date is not None else None
+            url = '' if d.url is None else d.url
             try:
                 percentage = 100 * (weight - d.min) / (d.max - d.min)
             except ZeroDivisionError:
@@ -90,9 +92,10 @@ def new_router(db: Database):
                 id=d.id,
                 item=d.item,
                 weight=weight,
-                percentage=percentage,
+                percentage=min(100, max(0, percentage)),
                 color=d.color,
-                expiration_date=exp
+                expiration_date=exp,
+                url=url,
             ))
         return GetDevicesRes(devices=res_devices)
 
@@ -103,6 +106,7 @@ def new_router(db: Database):
         min: int
         color: str
         expiration_date: str  # ISO8601
+        url: str
 
     @router.post("/devices", status_code=status.HTTP_201_CREATED)
     def post_devices(
@@ -114,6 +118,7 @@ def new_router(db: Database):
         device = repository.get_devices_by_id(ssn, req.device_id)
         color = req.color or "#FFFFFF"
         expiration_date = req.expiration_date or None
+        url = '' if req.url is None else req.url
 
         try:
             if device is None:
@@ -127,6 +132,7 @@ def new_router(db: Database):
                         color=color,
                         expiration_date=expiration_date,
                         user_id=user_id,
+                        url=url
                     ),
                 )
             else:
@@ -140,6 +146,7 @@ def new_router(db: Database):
                         color=color,
                         expiration_date=expiration_date,
                         user_id=user_id,
+                        url=url
                     )
                 )
             return {}

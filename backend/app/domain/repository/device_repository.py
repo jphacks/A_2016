@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from app.domain import entity
 from app.domain.schemas import DeviceBase, validate_item, validate_min, validate_nat, validate_color, \
     validate_expiration_date, validate_user_id
+from app.domain.schemas.common_validation import validate_url
 
 
 class DeviceCreate(DeviceBase):
@@ -17,6 +18,7 @@ class DeviceCreate(DeviceBase):
     color: str
     expiration_date: Optional[str]
     user_id: Optional[str]
+    url: Optional[str]
 
     _validate_name = validator('item', allow_reuse=True)(validate_item)
     _validate_min = validator('min', allow_reuse=True)(validate_min)
@@ -26,6 +28,7 @@ class DeviceCreate(DeviceBase):
     _validate_expiration_date = validator(
         'expiration_date', allow_reuse=True)(validate_expiration_date)
     _validate_user_id = validator('user_id', allow_reuse=True)(validate_user_id)
+    _validate_url = validator('url', allow_reuse=True)(validate_url)
 
 
 def create_device(db: Session, device: DeviceCreate):
@@ -41,7 +44,8 @@ def create_device(db: Session, device: DeviceCreate):
         color=device.color,
         weight=0,
         expiration_date=expiration_date,
-        user_id=device.user_id
+        user_id=device.user_id,
+        url=device.url or '',
     )
 
     db.add(db_device)
@@ -72,6 +76,7 @@ class DeviceUpdate(DeviceBase):
     color: Optional[str]
     expiration_date: Optional[str]
     user_id: Optional[str]
+    url: Optional[str]
 
     _validate_name = validator('item', allow_reuse=True)(validate_item)
     _validate_min = validator('min', allow_reuse=True)(validate_min)
@@ -82,6 +87,7 @@ class DeviceUpdate(DeviceBase):
     _validate_expiration_date = validator(
         'expiration_date', allow_reuse=True)(validate_expiration_date)
     _validate_user_id = validator('user_id', allow_reuse=True)(validate_user_id)
+    _validate_url = validator('url', allow_reuse=True)(validate_url)
 
 
 def update_device(db: Session, params: DeviceUpdate):
@@ -102,6 +108,8 @@ def update_device(db: Session, params: DeviceUpdate):
         device_update.color = params.color
     if params.expiration_date is not None:
         device_update.expiration_date = params.expiration_date
+    if params.url is not None:
+        device_update.url = params.url
     db.commit()
     db.refresh(device_update)
     return device_update
