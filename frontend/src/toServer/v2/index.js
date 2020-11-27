@@ -14,7 +14,6 @@ const instance = (token) => {
 
 export const getDevices = async () => {
   const token = await userStore.getters.token;
-  if (!token) return [];
   const res = await instance(token).get('/devices');
   return res.data.devices;
 };

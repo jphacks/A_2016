@@ -127,10 +127,6 @@ export default {
     }, 3000);
   },
 
-  mounted() {
-    this.loading = false;
-  },
-
   computed: {
     devices() {
       return devicesStore.state.devices
@@ -175,9 +171,11 @@ export default {
     },
 
     fetchDevices() {
-      devicesStore.dispatch('fetchDevices').then(() => {
-        this.loading = false;
-      });
+      devicesStore.dispatch('fetchDevices').then(()=>{
+        this.loading = false
+      }).catch((err) => {
+        console.log(err)
+      })
     },
   },
 };

@@ -18,6 +18,7 @@ export const devicesStore = new Vuex.Store({
     async fetchDevices(context) {
       const devices = await getDevices();
       context.commit('setDevices', devices);
+      return devices
     },
   },
 });
