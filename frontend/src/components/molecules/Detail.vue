@@ -35,7 +35,7 @@
       </v-card-actions>
     </v-card>
     <v-row justify="center">
-      <v-dialog v-model="isOpenChange" max-width="500" hide-overlay>
+      <v-dialog v-model="isOpenChange" max-width="900" hide-overlay>
         <AddDialog
           @close-add-modal="closeChangeModal"
           :deviceId="item.device_id"
