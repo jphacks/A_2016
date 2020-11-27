@@ -19,6 +19,7 @@ class Device(DeviceBase):
     color: str
     expiration_date: str
     user_id: Optional[str]
+    url: Optional[str]
 
     class Config:
         orm_mode = True
