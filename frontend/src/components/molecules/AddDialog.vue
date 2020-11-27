@@ -152,12 +152,13 @@
                     <div class="step3" style="margin-top: 30px">
                       <label>色を選択</label>
                       <div style="margin-top: 20px">
-                        <v-icon
+                        <v-btn
                           class="box"
                           :style="`background-color: ${item.color};border:1px solid #111`"
                           @click="random"
-                          >mdi-recycle</v-icon
                         >
+                          <v-icon>mdi-autorenew</v-icon>
+                        </v-btn>
                         <v-card
                           flat
                           max-width="200px"
