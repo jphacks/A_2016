@@ -12,4 +12,8 @@ const firebaseConfig = {
   measurementId: 'G-76QVRJLQCX',
 };
 export const firebaseApp = firebase.initializeApp(firebaseConfig, 'arcana');
+firebaseApp
+  .auth()
+  .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .catch(console.error);
 // firebase.analytics();

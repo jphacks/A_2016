@@ -7,11 +7,15 @@
 
 <script>
 import Navbar from './components/molecules/Navbar';
+import { userStore } from './store/user';
 
 export default {
   name: 'App',
   components: {
     Navbar,
+  },
+  created() {
+    userStore.dispatch('fetchUser');
   },
 };
 </script>

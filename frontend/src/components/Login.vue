@@ -18,6 +18,7 @@ export default {
           requireDisplayName: false,
         },
       ],
+      signInFlow: 'popup',
       signInSuccessUrl: `${host}/devices`,
     });
   },

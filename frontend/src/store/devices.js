@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
-import { fetchDevices } from '../toServer/main';
 import Vue from 'vue';
+import { fetchDevices } from '../toServer/main';
 
 Vue.use(Vuex);
 
