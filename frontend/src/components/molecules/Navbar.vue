@@ -7,22 +7,30 @@
       <v-spacer></v-spacer>
       <img :src="image_src" />
       <v-spacer></v-spacer>
-      <v-btn icon class="avatar">
-        <v-icon>mdi-account-circle</v-icon>
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon class="avatar" v-bind="attrs" v-on="on">
+            <v-icon>mdi-account-circle</v-icon>
+          </v-btn>
+        </template>
+        <v-list dense>
+          <v-list-item link @click="logout">
+            <v-list-item-title>ログアウト</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
   </div>
 </template>
 
 <script>
 import About from '../About';
-// import AddDialog from './AddDialog';
+import { firebaseApp } from '../../firebase/index';
 
 export default {
   name: 'Navbar',
   components: {
     About,
-    // AddDialog,
   },
 
   data() {
@@ -42,14 +50,20 @@ export default {
       this.isOpenedAdd = true;
     }
   },
+
+  methods: {
+    logout() {
+      firebaseApp.auth().signOut().catch(console.error);
+    },
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .avatar {
   position: relative;
-  top: 0;
-  background: none;
+  top: 5px;
+  background-color: transparent !important;
 }
 
 .navBar {
