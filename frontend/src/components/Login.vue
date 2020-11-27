@@ -1,5 +1,5 @@
 <template>
-  <div class="#firebaseui-auth-container"></div>
+  <div id="firebaseui-auth-container"></div>
 </template>
 
 <script>
@@ -9,6 +9,8 @@ import firebase from 'firebase/app';
 export default {
   name: 'Login',
   created() {
+    const host = `${location.protocol}//${location.host}`;
+    console.log(host);
     ui.start('#firebaseui-auth-container', {
       signInOptions: [
         {
@@ -16,6 +18,7 @@ export default {
           requireDisplayName: false,
         },
       ],
+      signInSuccessUrl: `${host}/devices`,
     });
   },
 };

@@ -1,3 +1,4 @@
-import 'firebaseui';
+import * as firebaseui from 'firebaseui';
+import { firebaseApp } from './index';
 
-export const ui = new firebaseui.auth.AuthUI(firebase.auth());
+export const ui = new firebaseui.auth.AuthUI(firebaseApp.auth());
