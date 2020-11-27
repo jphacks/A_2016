@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card>
-      <h2 class="text-center pt-7 font-weight-bold">
+      <h2 class="text-center pt-7 font-weight-regular">
         {{ title || 'デバイスを追加' }}
       </h2>
       <v-stepper v-model="currentStep">
@@ -355,13 +355,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-p {
-  cursor: pointer;
+.v-stepper {
+  box-shadow: none;
 }
-
+.v-stepper__header {
+  box-shadow: none;
+}
 .container {
-  background-color: seashell;
-  cursor: pointer;
+  padding: 0;
   box-shadow: 0px 3px rgb(201, 155, 123);
   user-select: none;
   border-radius: 10px;
