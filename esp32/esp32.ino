@@ -1,7 +1,6 @@
-/*
-  JPHacks2020
-  team a_2016
-*/
+#include "HX711.h"
+
+// HX711 circuit wiring
 
 #include <WiFi.h>
 #include <HTTPClient.h>
@@ -12,18 +11,20 @@ const char* password = "2kumifriends";
 const char* serverURL = "https://a-2016-backend.herokuapp.com/devices/weight";
 //const char* serverURL = "https://jsonplaceholder.typicode.com/posts";
 
-const int sensorPin = 34;
-int sensorValue = 0;
+long sensorValue = 0;
 // timer
 unsigned long lastTime = 0;
 const unsigned long timerDelay = 1000 * 1; // one second
 
-const String device_id = "5CDCD561";
+const String device_id = "2FFB458E";
+const int LOADCELL_DOUT_PIN = 32;
+const int LOADCELL_SCK_PIN = 33;
 
-void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
-  pinMode(sensorPin, ANALOG);
+HX711 scale;
+
+void setup() {;
   Serial.begin(115200);
+  scale.begin(LOADCELL_DOUT_PIN, LOADCELL_SCK_PIN);
   setup_wifi();
 }
 
@@ -36,9 +37,11 @@ void loop() {
 }
 
 int get_weight() {
-  sensorValue = analogRead(sensorPin);
-  int convertedValue = 1.39 * sensorValue - 728;
-  if (convertedValue < 20) {
+    sensorValue = scale.read_average(10);
+    long A=411790.393;
+    long B=108114.4105;
+  int convertedValue = int((float(sensorValue)-float(B))/float(A)*1000);//mL
+  if (convertedValue < 50) {
     return 0;
   }
   return convertedValue;
@@ -46,7 +49,6 @@ int get_weight() {
 
 void send_data(int weight) {
   if (WiFi.status() == WL_CONNECTED) {
-    digitalWrite(LED_BUILTIN, HIGH);
     HTTPClient http;
     http.begin(serverURL);
     http.addHeader("Content-Type", "application/json");
@@ -60,14 +62,10 @@ void send_data(int weight) {
     Serial.println(httpResponseCode);
   } else {
     Serial.println("no wifi");
-    digitalWrite(LED_BUILTIN, HIGH);
     delay(300);
-    digitalWrite(LED_BUILTIN, LOW);
     delay(300);
-    digitalWrite(LED_BUILTIN, HIGH);
     delay(300);
   }
-  digitalWrite(LED_BUILTIN, LOW);
 }
 
 void setup_wifi() {
