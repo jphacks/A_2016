@@ -2,7 +2,7 @@
 
 [![demo movie](https://github.com/jphacks/A_2016/blob/master/images/arcana_logo.png?raw=true)](https://youtu.be/DF2gapkrYQQ)
 
-[![project overview](https://user-images.githubusercontent.com/55702777/98469528-81188680-2223-11eb-83e5-432b77cc28eb.png)
+[![project overview](https://user-images.githubusercontent.com/55702777/100488560-52bb0680-3152-11eb-8539-9a37f8fa0c11.png)
 ](https://youtu.be/DF2gapkrYQQ)
 
 ## 製品概要
