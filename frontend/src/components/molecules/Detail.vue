@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { deleteItem } from '../../toServer/main';
+import { deleteDevice } from '../../toServer/v2/index';
 import AddDialog from './AddDialog';
 import dayjs from 'dayjs';
 import { devicesStore } from '../../store/devices';
@@ -74,7 +74,7 @@ export default {
       return dayjs(this.item?.expiration_date).format('YYYY - MM - DD');
     },
     canDelete() {
-      return !devicesStore.state.adminIds.includes(this.item?.device_id);
+      return !devicesStore.state.adminIds.includes(this.item?.id);
     },
     displayExp() {
       return !!this.item?.expiration_date;
@@ -103,7 +103,7 @@ export default {
 
     async onClickDelete() {
       try {
-        await deleteItem(this.item.device_id);
+        await deleteDevice(this.item.id);
         this.close();
       } catch (err) {
         console.error(err);
@@ -122,7 +122,7 @@ export default {
   font-size: 50%;
 }
 
-.buy{
+.buy {
   cursor: pointer;
   user-select: none;
 }

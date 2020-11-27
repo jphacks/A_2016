@@ -6,8 +6,13 @@
       </h2>
       <v-stepper v-model="currentStep">
         <v-stepper-header>
-          <v-stepper-step v-for="(step,i ) in steps" :key="i" :complete="currentStep > i+1" :step="i+1">
-            {{step.header}}
+          <v-stepper-step
+            v-for="(step, i) in steps"
+            :key="i"
+            :complete="currentStep > i + 1"
+            :step="i + 1"
+          >
+            {{ step.header }}
           </v-stepper-step>
         </v-stepper-header>
 
@@ -24,52 +29,83 @@
                     />
                   </ValidationProvider>
                   <p>表示名を入力</p>
-                  <v-text-field
-                    v-model="item.item"
-                    label="表示名"
-                  />
+                  <v-text-field v-model="item.item" label="表示名" />
                   <p>商品を検索</p>
-                  <ValidationObserver ref="search" v-slot="{g}">
-                  <ValidationProvider v-slot="{ errors }" rules="required">
-                    <v-text-field
-                      v-model="searchItem"
-                      :error-messages="errors"
-                    />
-                  </ValidationProvider>
-                  <v-btn @click="search" :disabled="g">
-                    検索
-                  </v-btn>
+                  <ValidationObserver ref="search" v-slot="{ g }">
+                    <ValidationProvider v-slot="{ errors }" rules="required">
+                      <v-text-field
+                        v-model="searchItem"
+                        :error-messages="errors"
+                      />
+                    </ValidationProvider>
+                    <v-btn @click="search" :disabled="g"> 検索 </v-btn>
                   </ValidationObserver>
                   <v-row>
-                    <v-col v-for="(item, i) in searchItems" :key="i" md="4" xs="6">
-                      <v-img :src="item.imageUrl"  @click="putUrl(item.itemUrl)" />
+                    <v-col
+                      v-for="(item, i) in searchItems"
+                      :key="i"
+                      md="4"
+                      xs="6"
+                    >
+                      <v-img
+                        :src="item.imageUrl"
+                        @click="putUrl(item.itemUrl)"
+                      />
                     </v-col>
                   </v-row>
-                  <p style="margin-top:20px" @click="goForward">商品を登録しないで次に進む</p>
+                  <p style="margin-top: 20px" @click="goForward">
+                    商品を登録しないで次に進む
+                  </p>
                 </v-card-text>
               </v-stepper-content>
 
               <v-stepper-content step="2">
                 <v-card-text>
-                    <section>
-                      <label v-show="isExistedContainer">容器を選択して下さい</label>
-                      <label v-show="!isExistedContainer">最大容量・最小容量を入力してください</label>
-                      <v-row v-show="isExistedContainer">
-                        <v-col v-for="(container, i) in containers" :key="i" md="4" xs="6" >
-                          <div class="container" @click="choiceContainer(container)">
-                            <v-img :src="container.image" /> 
-                          </div>
-                        </v-col>
-                      </v-row>
-                    </section>
-                    <div v-show="!isExistedContainer">
-                      <v-text-field v-model="max" label="最大容量" />
-                      <v-text-field v-model="min" label="最小容量"/>
-                    </div>
-                    <p v-show="isExistedContainer" style="margin-top:20px" @click="isExistedContainer = !isExistedContainer">容器がない場合</p>
-                    <v-spacer />
-                    <v-btn color="secondary" text @click="currentStep -=1">戻る</v-btn>
-                    <v-btn v-if="!isExistedContainer" color="secondary" text @click="putMaxAndMin">次へ</v-btn>
+                  <section>
+                    <label v-show="isExistedContainer"
+                      >容器を選択して下さい</label
+                    >
+                    <label v-show="!isExistedContainer"
+                      >最大容量・最小容量を入力してください</label
+                    >
+                    <v-row v-show="isExistedContainer">
+                      <v-col
+                        v-for="(container, i) in containers"
+                        :key="i"
+                        md="4"
+                        xs="6"
+                      >
+                        <div
+                          class="container"
+                          @click="choiceContainer(container)"
+                        >
+                          <v-img :src="container.image" />
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </section>
+                  <div v-show="!isExistedContainer">
+                    <v-text-field v-model="max" label="最大容量" />
+                    <v-text-field v-model="min" label="最小容量" />
+                  </div>
+                  <p
+                    v-show="isExistedContainer"
+                    style="margin-top: 20px"
+                    @click="isExistedContainer = !isExistedContainer"
+                  >
+                    容器がない場合
+                  </p>
+                  <v-spacer />
+                  <v-btn color="secondary" text @click="currentStep -= 1"
+                    >戻る</v-btn
+                  >
+                  <v-btn
+                    v-if="!isExistedContainer"
+                    color="secondary"
+                    text
+                    @click="putMaxAndMin"
+                    >次へ</v-btn
+                  >
                 </v-card-text>
               </v-stepper-content>
 
@@ -77,52 +113,58 @@
                 <v-card-text>
                   <ValidationProvider rules="required">
                     <div class="step3">
-                    <label>期限</label>
-                    <v-menu
-                      v-model="menu"
-                      :close-on-content-click="false"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="100px"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="item.expiration_date"
-                          prepend-icon="mdi-calendar"
-                          readonly
-                          v-bind="attrs"
-                          v-on="on"
-                        ></v-text-field>
-                      </template>
-                      <v-dialog v-model="menu" max-width="400px" hide-overlay>
-                        <v-date-picker
-                          v-model="item.expiration_date"
-                          @input="menu = false"
-                        ></v-date-picker>
-                      </v-dialog>
-                    </v-menu>
+                      <label>期限</label>
+                      <v-menu
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="100px"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="item.expiration_date"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-dialog v-model="menu" max-width="400px" hide-overlay>
+                          <v-date-picker
+                            v-model="item.expiration_date"
+                            @input="menu = false"
+                          ></v-date-picker>
+                        </v-dialog>
+                      </v-menu>
                     </div>
                     <div class="step3">
-                    <label>色</label>
-                    <v-color-picker
-                      v-model="item.color"
-                      class="color"
-                    ></v-color-picker>
+                      <label>色</label>
+                      <v-color-picker
+                        v-model="item.color"
+                        class="color"
+                      ></v-color-picker>
                     </div>
                   </ValidationProvider>
                   <!-- <v-btn color="secondary" text @click="currentStep=2">戻る</v-btn> -->
-                  <p v-if="!canModify" class="caption text-right mt-10 mr-3 font-weight-light">
+                  <p
+                    v-if="!canModify"
+                    class="caption text-right mt-10 mr-3 font-weight-light"
+                  >
                     デモ用のデバイスは変更できません。
                   </p>
                   <v-card-actions>
                     <v-spacer />
-                    <v-btn color="secondary" text @click="currentStep-=1">戻る</v-btn>
+                    <v-btn color="secondary" text @click="currentStep -= 1"
+                      >戻る</v-btn
+                    >
                     <v-btn
                       color="secondary"
                       text
                       @click="register"
                       :disabled="invalid || !canModify"
-                    >登録</v-btn>
+                      >登録</v-btn
+                    >
                     <v-btn color="secondary" text @click="close">閉じる</v-btn>
                   </v-card-actions>
                 </v-card-text>
@@ -138,7 +180,11 @@
 <script>
 import { ValidationObserver, ValidationProvider, extend } from 'vee-validate';
 import { required } from 'vee-validate/dist/rules';
-import { getContainers, register, searchItem } from '../../toServer/main';
+import {
+  getContainers,
+  postDevices,
+  searchItem,
+} from '../../toServer/v2/index';
 import { devicesStore } from '../../store/devices';
 
 extend('required', {
@@ -153,13 +199,13 @@ export default {
     return {
       steps: [
         {
-          header:"商品を選択"
+          header: '商品を選択',
         },
         {
-          header:"容器を選択"
+          header: '容器を選択',
         },
         {
-          header:"色・期限の設定"
+          header: '色・期限の設定',
         },
       ],
       url: '',
@@ -212,18 +258,18 @@ export default {
     },
   },
 
-  async created () {
-    this.containers = await getContainers()
-    this.item.item = ''
-    this.item.max = 0
-    this.item.min = 0
-    this.item.url = ''
-    this.item.expiration_date = ''
-    this.item.color = ''
+  async created() {
+    this.containers = await getContainers();
+    this.item.item = '';
+    this.item.max = 0;
+    this.item.min = 0;
+    this.item.url = '';
+    this.item.expiration_date = '';
+    this.item.color = '';
   },
 
   mounted() {
-    this.isExistedContainer = true
+    this.isExistedContainer = true;
     if (this.deviceIdFromURL) {
       this.item.device_id = this.deviceIdFromURL;
     }
@@ -240,45 +286,45 @@ export default {
 
   methods: {
     goForward() {
-      this.currentStep +=1
+      this.currentStep += 1;
     },
 
-    putUrl (url){
-      this.item.url= url
-      this.goForward()
+    putUrl(url) {
+      this.item.url = url;
+      this.goForward();
     },
 
-    putMaxAndMin () {
-      this.item.max = this.max
-      this.item.min = this.min
-      this.goForward()
+    putMaxAndMin() {
+      this.item.max = this.max;
+      this.item.min = this.min;
+      this.goForward();
     },
 
-    async search () {
-      const isValid = this.$refs.search.validate()
+    async search() {
+      const isValid = this.$refs.search.validate();
       if (isValid && this.searchItem) {
-        this.searchItems = await searchItem(this.searchItem)
+        this.searchItems = await searchItem(this.searchItem);
       }
     },
 
-    choiceContainer (container) {
-      console.log('最大容量は'+ container.max + '最小容量は'+ container.min)
-      this.item.max = container.max - 0 
-      this.item.min = container.min - 0 
-      this.goForward()
-    },  
+    choiceContainer(container) {
+      console.log('最大容量は' + container.max + '最小容量は' + container.min);
+      this.item.max = container.max - 0;
+      this.item.min = container.min - 0;
+      this.goForward();
+    },
 
     async register() {
       const isValid = this.$refs.observer.validate();
       if (isValid && this.item.max && this.item.min) {
-        if(!this.item.item) {
-          this.item = this.searchItem 
+        if (!this.item.item) {
+          this.item = this.searchItem;
         }
         var color = this.item.color;
         color = color.slice(0, 7);
         this.item.color = color;
         console.log(this.item);
-        const res = register(this.item);
+        const res = postDevices(this.item);
         this.$emit('close-add-modal', res);
       }
     },
@@ -291,21 +337,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-p{
+p {
   cursor: pointer;
 }
 
-.container{
-  background-color:seashell;
+.container {
+  background-color: seashell;
   cursor: pointer;
   box-shadow: 0px 3px rgb(201, 155, 123);
   user-select: none;
   border-radius: 10px;
 }
-.container:active{
+.container:active {
   box-shadow: none;
   position: relative;
-  top:3px
+  top: 3px;
 }
 .v-card {
   color: #777777 !important;
