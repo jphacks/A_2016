@@ -96,7 +96,6 @@ export default {
       isOpenedDetail: false,
       detailItem: {},
       changeItem: {},
-      loading: true,
       isOpenedAdd: false,
       deviceIdFromURL: '',
       reset: false,
@@ -128,6 +127,9 @@ export default {
             expiration_date: device.expiration_date,
           };
         });
+    },
+    loading() {
+      return devicesStore.state.loading;
     },
   },
 
@@ -164,14 +166,9 @@ export default {
     },
 
     fetchDevices() {
-      devicesStore
-        .dispatch('fetchDevices')
-        .then(() => {
-          this.loading = false;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      devicesStore.dispatch('fetchDevices').catch((err) => {
+        console.log(err);
+      });
     },
   },
 };

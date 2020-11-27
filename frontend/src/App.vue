@@ -7,19 +7,21 @@
 
 <script>
 import Navbar from './components/molecules/Navbar';
-// import Footer from './components/molecules/Footer'
 import { firebaseApp } from './firebase/index';
 import { userStore } from './store/user';
+import { devicesStore } from './store/devices';
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    // Footer
   },
   created() {
     firebaseApp.auth().onAuthStateChanged((user) => {
       userStore.dispatch('setUser', user);
+      if (user) {
+        devicesStore.dispatch('fetchDevices');
+      }
       if (user && this.$route.name !== 'Devices') {
         this.$router.push({ name: 'Devices' });
       } else if (!user && this.$route.name !== 'Login') {
@@ -41,7 +43,6 @@ export default {
   /* margin-top: 60px; */
   background-color: #ebebeb;
 }
-
 
 h1,
 h2,
