@@ -1,6 +1,6 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
-import { fetchDevices } from '../toServer/main';
+import { getDevices } from '../toServer/v2/index';
 
 Vue.use(Vuex);
 
@@ -16,7 +16,7 @@ export const devicesStore = new Vuex.Store({
   },
   actions: {
     async fetchDevices(context) {
-      const devices = await fetchDevices();
+      const devices = await getDevices();
       context.commit('setDevices', devices);
     },
   },

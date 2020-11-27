@@ -107,7 +107,7 @@ export default {
         .map((device) => {
           const percentage = Math.min(100, Math.max(0, device.percentage));
           return {
-            device_id: device.device_id,
+            id: device.id,
             item: device.item,
             weight: device.weight,
             percentage: percentage,
