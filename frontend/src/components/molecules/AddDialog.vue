@@ -60,12 +60,14 @@
                       </v-list-item-content>
                     </v-list-item>
                   </v-list>
-                  <p
+                  <v-btn
                     style="margin-top: 20px; font-size: 100%"
                     @click="goForward"
+                    text
+                    color="secondary"
                   >
                     商品を登録しないで次に進む
-                  </p>
+                  </v-btn>
                 </v-card-text>
               </v-stepper-content>
 
@@ -95,13 +97,15 @@
                     <v-text-field v-model="max" label="最大容量" />
                     <v-text-field v-model="min" label="最小容量" />
                   </div>
-                  <p
+                  <v-btn
                     v-show="isExistedContainer"
                     style="margin-top: 20px"
                     @click="isExistedContainer = !isExistedContainer"
+                    text
+                    color="secondary"
                   >
                     容器がない場合
-                  </p>
+                  </v-btn>
                   <v-spacer />
                   <v-btn color="secondary" text @click="currentStep -= 1"
                     >戻る</v-btn
@@ -145,18 +149,27 @@
                         </v-dialog>
                       </v-menu>
                     </div>
-                    <div class="step3" style="margin-top:30px">
+                    <div class="step3" style="margin-top: 30px">
                       <label>色を選択</label>
-                      <div style="margin-top:20px">
-                        <v-icon class="box" :style="`background-color: ${item.color};border:1px solid #111`" @click="random">mdi-recycle</v-icon>
-                        <v-card flat max-width="200px" style="padding-left:10px; margin:10px auto">
+                      <div style="margin-top: 20px">
+                        <v-icon
+                          class="box"
+                          :style="`background-color: ${item.color};border:1px solid #111`"
+                          @click="random"
+                          >mdi-recycle</v-icon
+                        >
+                        <v-card
+                          flat
+                          max-width="200px"
+                          style="padding-left: 10px; margin: 10px auto"
+                        >
                           <v-row>
-                            <v-col
-                              v-for="(co, i) in colorArr"
-                              :key="i"
-                              md="4"
-                            >
-                            <div id="box" :style="`background-color: ${co}; width:30px;height:30px;padding-left:10px;border:1px solid azure`" @click="choiceColor(co)"></div>
+                            <v-col v-for="(co, i) in colorArr" :key="i" md="4">
+                              <div
+                                id="box"
+                                :style="`background-color: ${co}; width:30px;height:30px;padding-left:10px;border:1px solid azure`"
+                                @click="choiceColor(co)"
+                              ></div>
                             </v-col>
                           </v-row>
                         </v-card>
@@ -214,8 +227,16 @@ export default {
 
   data() {
     return {
-      colorArr:[
-        '#fffafa', '#ffe4c4', '#f0fff0', '#87ceeb', '#3cb371','#ff0000','#ffa500','#d8bfd8','#8a2be2'
+      colorArr: [
+        '#fffafa',
+        '#ffe4c4',
+        '#f0fff0',
+        '#87ceeb',
+        '#3cb371',
+        '#ff0000',
+        '#ffa500',
+        '#d8bfd8',
+        '#8a2be2',
       ],
       steps: [
         {
@@ -325,8 +346,8 @@ export default {
 
   methods: {
     random() {
-      var num = Math.floor(Math.random()*9)
-      this.item.color = this.colorArr[num]
+      var num = Math.floor(Math.random() * 9);
+      this.item.color = this.colorArr[num];
     },
 
     goForward() {
@@ -345,8 +366,8 @@ export default {
     },
 
     choiceColor(co) {
-      this.color=co
-      this.item.color = co
+      this.color = co;
+      this.item.color = co;
       // this.colorpicker = false
     },
 
@@ -410,14 +431,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.box{
-  padding-top:-5px;
+.box {
+  padding-top: -5px;
   padding-bottom: -5px;
-  border:1px solid #444;
+  border: 1px solid #444;
   border-radius: 5px;
   background-color: indianred;
-  width:40px;
-  height:40px;
+  width: 40px;
+  height: 40px;
 }
 .v-stepper {
   box-shadow: none;
