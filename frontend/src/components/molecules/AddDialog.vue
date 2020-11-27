@@ -1,10 +1,8 @@
 <template>
   <v-container>
-    <v-card>
       <h2 class="text-center pt-7 font-weight-bold">
         {{ title || 'デバイスを追加' }}
       </h2>
-
       <v-stepper v-model="currentStep">
         <v-stepper-header>
           <v-stepper-step v-for="(step,i ) in steps" :key="i" :complete="currentStep > i+1" :step="i+1">
@@ -110,7 +108,6 @@
           </ValidationObserver>
         </v-stepper-items>
       </v-stepper>
-    </v-card>
   </v-container>
 </template>
 
