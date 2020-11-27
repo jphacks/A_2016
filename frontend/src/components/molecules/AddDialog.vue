@@ -21,6 +21,7 @@
             <form>
               <v-stepper-content step="1">
                 <v-card-text>
+                  <p>デバイスIDを入力</p>
                   <ValidationProvider v-slot="{ errors }" rules="required">
                     <v-text-field
                       v-model="item.device_id"
@@ -28,17 +29,22 @@
                       label="デバイスID"
                     />
                   </ValidationProvider>
-                  <p>表示名を入力</p>
-                  <v-text-field v-model="item.item" label="表示名" />
-                  <p>商品を検索</p>
-                  <ValidationObserver ref="search" v-slot="{ g }">
-                    <ValidationProvider v-slot="{ errors }" rules="required">
-                      <v-text-field
-                        v-model="searchItem"
-                        :error-messages="errors"
-                      />
-                    </ValidationProvider>
-                    <v-btn @click="search" :disabled="g"> 検索 </v-btn>
+                  <p>表示名を入力（必須）</p>
+                  <v-text-field
+                    v-model="item.item"
+                    label="表示名"
+                  />
+                  <p>商品を検索・登録（任意）</p>
+                  <ValidationObserver ref="search" v-slot="{g}">
+                  <ValidationProvider v-slot="{ errors }" rules="required">
+                    <v-text-field
+                      v-model="searchItem"
+                      :error-messages="errors"
+                    />
+                  </ValidationProvider>
+                  <v-btn @click="search" :disabled="g">
+                    検索
+                  </v-btn>
                   </ValidationObserver>
                   <v-row>
                     <v-col
@@ -316,6 +322,9 @@ export default {
 
     async register() {
       const isValid = this.$refs.observer.validate();
+      if(!this.item.item) {
+          this.item = this.searchItem 
+        }
       if (isValid && this.item.max && this.item.min) {
         if (!this.item.item) {
           this.item = this.searchItem;
