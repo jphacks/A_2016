@@ -7,10 +7,7 @@
       <v-stepper v-model="currentStep">
         <v-stepper-header>
           <section v-for="(step, i) in steps" :key="i">
-            <v-stepper-step
-              :complete="currentStep > i + 1"
-              :step="i + 1"
-            >
+            <v-stepper-step :complete="currentStep > i + 1" :step="i + 1">
               {{ step.header }}
             </v-stepper-step>
           </section>
@@ -29,23 +26,18 @@
                       label="デバイスID"
                     />
                   </ValidationProvider>
-                  <p style="margin-top:20px">表示名を入力（必須）</p>
-                  <v-text-field
-                    v-model="item.item"
-                    label="表示名"
-                  />
-                  <p style="margin-top:20px">商品を検索・登録（任意）</p>
-                  <ValidationObserver ref="search" v-slot="{g}">
-                  <ValidationProvider v-slot="{ errors }" rules="required">
-                    <v-text-field
-                      v-model="searchItem"
-                      :error-messages="errors"
-                      label="検索ワード"
-                    />
-                  </ValidationProvider>
-                  <v-btn @click="search" :disabled="g">
-                    検索
-                  </v-btn>
+                  <p style="margin-top: 20px">表示名を入力（必須）</p>
+                  <v-text-field v-model="item.item" label="表示名" />
+                  <p style="margin-top: 20px">商品を検索・登録（任意）</p>
+                  <ValidationObserver ref="search" v-slot="{ g }">
+                    <ValidationProvider v-slot="{ errors }" rules="required">
+                      <v-text-field
+                        v-model="searchItem"
+                        :error-messages="errors"
+                        label="検索ワード"
+                      />
+                    </ValidationProvider>
+                    <v-btn @click="search" :disabled="g"> 検索 </v-btn>
                   </ValidationObserver>
                   <v-row>
                     <v-col
@@ -60,7 +52,10 @@
                       />
                     </v-col>
                   </v-row>
-                  <p style="margin-top: 20px; font-size:100%;" @click="goForward">
+                  <p
+                    style="margin-top: 20px; font-size: 100%"
+                    @click="goForward"
+                  >
                     商品を登録しないで次に進む
                   </p>
                 </v-card-text>
@@ -76,13 +71,15 @@
                       >最大容量・最小容量を入力してください</label
                     >
                     <v-row v-show="isExistedContainer">
-                      <v-col
-                        v-for="(container, i) in containers"
-                        :key="i"
-                        md="4"
-                        xs="6"
-                      >
-                        <v-img :src="container.image" @click="choiceContainer(container)" />
+                      <v-col v-for="(container, i) in containers" :key="i">
+                        <div
+                          class="container-image"
+                          justify="space-around"
+                          @click="choiceContainer(container)"
+                        >
+                          <img :src="container.image" />
+                          <p class="container-name">{{ container.name }}</p>
+                        </div>
                       </v-col>
                     </v-row>
                   </section>
@@ -273,6 +270,7 @@ export default {
     this.item.url = '';
     this.item.expiration_date = '';
     this.item.color = '';
+    this.currentStep = 1
   },
 
   mounted() {
@@ -282,15 +280,16 @@ export default {
       this.item.device_id = this.deviceIdFromURL;
     }
     if (this.deviceId) {
-      console.log(this.device_id)
-      this.item.device_id = this.deviceId;
+      this.item.device_id = this.deviceId
+    }
+    if (this.name) {
       this.item.item = this.name
     }
+    this.currentStep = 1
   },
 
   watch: {
     deviceId: function (val) {
-      console.log('kkaa')
       this.item.device_id = val;
     },
     reset: function() {
@@ -331,9 +330,9 @@ export default {
 
     async register() {
       const isValid = this.$refs.observer.validate();
-      if(!this.item.item) {
-          this.item = this.searchItem 
-        }
+      if (!this.item.item) {
+        this.item = this.searchItem;
+      }
       if (isValid && this.item.max && this.item.min) {
         if (!this.item.item) {
           this.item = this.searchItem;
@@ -366,6 +365,22 @@ p {
   user-select: none;
   border-radius: 10px;
 }
+.container-image {
+  height: 70px;
+  width: 70px;
+  margin: 0 auto;
+  padding: 5px;
+  border: 1px solid #888888;
+  border-radius: 5px;
+  img {
+    height: 100%;
+    object-fit: contain;
+  }
+  .container-name {
+    font-size: 10px;
+  }
+}
+
 .container:active {
   box-shadow: none;
   position: relative;
