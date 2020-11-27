@@ -1,11 +1,12 @@
 <template>
   <div>
-    <v-app-bar flat class="navBar" color="#998675">
-      <h1>arcana</h1>
+    <v-app-bar flat class="navBar" color="#FFFFFF">
       <v-spacer></v-spacer>
-      <v-btn icon color="white" @click="openAddModal">
+      <img :src="image_src" />
+      <v-spacer></v-spacer>
+      <!-- <v-btn icon color="white" @click="openAddModal">
         <v-icon>mdi-plus</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-row justify="center">
       <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
@@ -33,6 +34,7 @@ export default {
       isOpenedAdd: false,
       query: null,
       deviceIdFromURL: '',
+      image_src: require('../../../../images/arcana_logo.png'),
     };
   },
 
@@ -62,13 +64,13 @@ export default {
 
 <style scoped lang="scss">
 .navBar {
-  font-family: 'Shrikhand', cursive;
-  h1 {
-    color: white;
-    font-size: 30px;
-    line-height: 60px;
-    font-weight: 400;
-    cursor: pointer;
+  .v-toolbar__content {
+    justify-content: center;
+  }
+  img {
+    display: block;
+    width: 110px;
+    margin: 0 auto !important;
   }
 }
 
