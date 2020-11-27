@@ -81,8 +81,8 @@
         </v-row>
       </section>
     </transition>
-    <v-btn icon color="white" @click="openAddModal">
-        <v-icon>mdi-plus</v-icon>
+    <v-btn icon color="white" @click="openAddModal" class="plus">
+      <v-icon>mdi-plus</v-icon>
     </v-btn>
     <v-row justify="center">
       <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
@@ -98,7 +98,7 @@
 <script>
 import Card from './molecules/Card';
 import Detail from '../components/molecules/Detail';
-import AddDialog from './molecules/AddDialog'
+import AddDialog from './molecules/AddDialog';
 import { devicesStore } from '../store/devices';
 
 export default {
@@ -107,7 +107,7 @@ export default {
   components: {
     Card,
     Detail,
-    AddDialog
+    AddDialog,
   },
 
   data() {
@@ -263,7 +263,17 @@ export default {
     border: none !important;
   }
 }
-
+.v-btn--icon.v-size--default {
+  width: 60px;
+  height: 60px;
+  background-color: #6c6c6c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 60px;
+  right: 30px;
+}
 .wave {
   position: absolute;
   transform: translateY(calc(-50% - 0px)) scale(1, -1);

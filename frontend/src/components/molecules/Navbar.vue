@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar flat class="navBar" color="#998675">
+    <v-app-bar flat class="navBar" color="white">
       <v-dialog v-model="openAbout" max-width="600px">
         <About />
       </v-dialog>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import About from '../About'
+import About from '../About';
 // import AddDialog from './AddDialog';
 
 export default {
@@ -38,7 +38,7 @@ export default {
     if (this.deviceIdFromURL) {
       this.isOpenedAdd = true;
     }
-  }
+  },
 };
 </script>
 
