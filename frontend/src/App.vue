@@ -53,4 +53,8 @@ h4 {
   margin: 0;
   padding: 0;
 }
+
+#firebaseui-auth-container .firebaseui-idp-list {
+  padding-left: 0;
+}
 </style>
