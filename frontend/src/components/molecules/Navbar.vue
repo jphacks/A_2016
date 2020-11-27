@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <img :src="image_src" />
       <v-spacer></v-spacer>
-      <v-menu offset-y>
+      <v-menu offset-y v-if="user">
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon class="avatar" v-bind="attrs" v-on="on">
             <v-icon>mdi-account-circle</v-icon>
@@ -26,11 +26,18 @@
 <script>
 import About from '../About';
 import { firebaseApp } from '../../firebase/index';
+import { userStore } from '../../store/user';
 
 export default {
   name: 'Navbar',
   components: {
     About,
+  },
+
+  computed: {
+    user() {
+      return userStore.state.user;
+    },
   },
 
   data() {
