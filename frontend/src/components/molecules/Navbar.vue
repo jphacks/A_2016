@@ -3,9 +3,9 @@
     <v-dialog v-model="openAbout" max-width="600px">
       <About />
     </v-dialog>
-    <v-app-bar flat class="navBar" color="white">
+    <v-app-bar fixed flat class="navBar" color="white">
       <v-spacer></v-spacer>
-      <img :src="image_src" @click="openAbout = true"/>
+      <img :src="image_src" @click="openAbout = true" />
       <v-spacer></v-spacer>
       <v-menu offset-y v-if="user">
         <template v-slot:activator="{ on, attrs }">
@@ -20,6 +20,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
+    <div class="navbar-spacer" />
   </div>
 </template>
 
@@ -82,6 +83,10 @@ export default {
     width: 110px;
     margin: 0 auto !important;
   }
+}
+
+.navbar-spacer {
+  height: 56px;
 }
 
 .v-dialog {
