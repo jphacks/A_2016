@@ -1,9 +1,9 @@
 <template>
     <section>
         <v-card class="text">
-            <v-card-subtitle>どこにアルカナ？</v-card-subtitle>
-            <v-card-title><p>arcana</p></v-card-title>
-            <v-card-text>デバイスの残量を可視化できるかんな？</v-card-text>
+            <v-card-subtitle>残量を可視化できる!</v-card-subtitle>
+            <h1>arcana</h1>
+            <v-card-text>2020 All rights reserved. @優勝しなかったらハッカソン引退</v-card-text>
         </v-card>
     </section>
 </template>

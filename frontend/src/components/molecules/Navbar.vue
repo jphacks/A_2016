@@ -5,7 +5,7 @@
         <About />
       </v-dialog>
       <v-spacer></v-spacer>
-      <img :src="image_src" />
+      <img :src="image_src" @click="openAbout = true"/>
       <v-spacer></v-spacer>
     </v-app-bar>
   </div>

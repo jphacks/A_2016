@@ -71,7 +71,6 @@
               </svg>
             </g>
           </svg>
-
           <Card :info="item" />
         </div>
         <v-row justify="center">
@@ -129,7 +128,7 @@ export default {
   },
 
   mounted() {
-    this.loading = true;
+    this.loading = false;
   },
 
   computed: {
