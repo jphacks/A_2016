@@ -12,7 +12,8 @@
           {{ Math.round(item.percentage) }}%
           <p>残量が少なくなっています。</p>
         </h1>
-        <p class="buy" :href="item.url">購入する</p>
+        <a class="buy" :href="item.url">購入する</a>
+        {{item}}
       </div>
       <p v-if="displayExp" class="text-center mt-3 font-weight-light">
         消費期限 {{ expirationDate }}

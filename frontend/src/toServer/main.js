@@ -4,7 +4,7 @@ const serverURL = 'https://a-2016-backend.herokuapp.com';
 
 // 全てのデバイスの％などをget
 export const hello = async () => {
-  const res = await Axios.get(`${serverURL}/devices`);
+  const res = await Axios.get(`${serverURL}/v2/devices`);
   return res.data.devices;
 };
 
@@ -28,6 +28,7 @@ export const register = (item) => {
   Axios.post(`${serverURL}/devices`, item);
   return {
     item: item.item,
+    url: item.url,
     device_id: item.device_id,
     percentage: 45,
     weight: 0,
