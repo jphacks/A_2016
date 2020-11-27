@@ -460,6 +460,7 @@ export default {
   padding: 5px;
   border: 1px solid #888888;
   border-radius: 5px;
+  cursor: pointer;
   img {
     height: 100%;
     object-fit: contain;
