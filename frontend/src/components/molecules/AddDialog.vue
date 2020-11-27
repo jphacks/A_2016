@@ -30,7 +30,7 @@
                       <div class="product" @click="choiceProduct(product)">{{product.image}}</div>
                     </v-col>
                   </v-row>
-                  <v-spacer />
+                  <label>商品がない場合</label>
                 </v-card-text>
               </v-stepper-content>
 
@@ -46,6 +46,7 @@
                       </v-row>
                     </section>
                     <p v-if="!item.max" color="red">容器を選択してください</p>
+                    <label>容器がない場合</label>
                     <v-btn color="secondary" text @click="currentStep -=1">戻る</v-btn>
                 </v-card-text>
               </v-stepper-content>
@@ -186,7 +187,6 @@ export default {
   async created () {
     this.containers = await getContainers()
     this.products = await getProducts()
-    this.currentStep=1
     this.item.item = ''
     this.item.max = 0
     this.item.min = 0
