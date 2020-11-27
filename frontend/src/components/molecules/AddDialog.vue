@@ -45,19 +45,20 @@
                       />
                     </ValidationProvider>
                   </ValidationObserver>
-                  <v-row>
-                    <v-col
-                      v-for="(item, i) in searchItems"
-                      :key="i"
-                      md="4"
-                      xs="6"
+                  <v-list>
+                    <v-list-item
+                      link
+                      v-for="(item, index) in searchItems.slice(0, 9)"
+                      :key="index"
                     >
-                      <v-img
-                        :src="item.imageUrl"
-                        @click="putUrl(item.itemUrl)"
-                      />
-                    </v-col>
-                  </v-row>
+                      <v-list-item-avatar>
+                        <v-img :src="item.imageUrl"></v-img>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-title>{{ item.name }}</v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
                   <p
                     style="margin-top: 20px; font-size: 100%"
                     @click="goForward"
@@ -235,6 +236,7 @@ export default {
       isChoicedContainer: [],
       isExistedContainer: true,
       lastSearched: 0,
+      searching: false,
     };
   },
 
@@ -324,15 +326,19 @@ export default {
 
     async handleSearchChanged() {
       if (Date.now() - this.lastSearched > 1000) {
-        await this.search();
-        this.lastSearched = Date.now();
+        if (!this.searching) {
+          this.lastSearched = Date.now();
+          await this.search();
+        }
       }
       const q = this.searchItem;
       setTimeout(() => {
         if (q === this.searchItem) {
+          console.log(q);
+          this.lastSearched = Date.now();
           this.search();
         }
-      }, 1000);
+      }, 2000);
     },
 
     async search() {
