@@ -5,6 +5,11 @@ export const userStore = new Vuex.Store({
     user: null,
     loading: true,
   },
+  getters: {
+    token: async (state) => {
+      return await state.user.getIdToken();
+    },
+  },
   mutations: {
     setUser(state, user) {
       state.user = user;
