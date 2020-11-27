@@ -1,38 +1,25 @@
 <template>
   <div>
     <v-app-bar flat class="navBar" color="#998675">
-      <h1 @click="openAbout = true">arcana</h1>
       <v-dialog v-model="openAbout" max-width="600px">
         <About />
       </v-dialog>
       <v-spacer></v-spacer>
       <img :src="image_src" />
       <v-spacer></v-spacer>
-      <!-- <v-btn icon color="white" @click="openAddModal">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn> -->
     </v-app-bar>
-    <v-row justify="center">
-      <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
-        <AddDialog
-          @close-add-modal="closeAddModal"
-          :deviceIdFromURL="deviceIdFromURL"
-        />
-      </v-dialog>
-    </v-row>
   </div>
 </template>
 
 <script>
 import About from '../About'
-import AddDialog from './AddDialog';
-import { devicesStore } from '../../store/devices';
+// import AddDialog from './AddDialog';
 
 export default {
   name: 'Navbar',
   components: {
     About,
-    AddDialog,
+    // AddDialog,
   },
 
   data() {
@@ -51,21 +38,7 @@ export default {
     if (this.deviceIdFromURL) {
       this.isOpenedAdd = true;
     }
-  },
-
-  methods: {
-    openAddModal() {
-      this.isOpenedAdd = true;
-    },
-
-    async closeAddModal() {
-      await devicesStore.dispatch('fetchDevices');
-      this.isOpenedAdd = false;
-      this.deviceIdFromURL = '';
-      this.query?.delete('d');
-      history.pushState('', '', '?' + this.query?.toString());
-    },
-  },
+  }
 };
 </script>
 

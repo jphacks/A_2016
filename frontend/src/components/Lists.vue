@@ -81,13 +81,24 @@
         </v-row>
       </section>
     </transition>
+    <v-btn icon color="white" @click="openAddModal">
+        <v-icon>mdi-plus</v-icon>
+    </v-btn>
+    <v-row justify="center">
+      <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
+        <AddDialog
+          @close-add-modal="closeAddModal"
+          :deviceIdFromURL="deviceIdFromURL"
+        />
+      </v-dialog>
+    </v-row>
   </section>
 </template>
 
 <script>
 import Card from './molecules/Card';
 import Detail from '../components/molecules/Detail';
-
+import AddDialog from './molecules/AddDialog'
 import { devicesStore } from '../store/devices';
 
 export default {
@@ -96,6 +107,7 @@ export default {
   components: {
     Card,
     Detail,
+    AddDialog
   },
 
   data() {
@@ -104,6 +116,8 @@ export default {
       detailItem: {},
       changeItem: {},
       loading: true,
+      isOpenedAdd: false,
+      deviceIdFromURL: '',
     };
   },
 
@@ -139,6 +153,18 @@ export default {
   },
 
   methods: {
+    openAddModal() {
+      this.isOpenedAdd = true;
+    },
+
+    async closeAddModal() {
+      await devicesStore.dispatch('fetchDevices');
+      this.isOpenedAdd = false;
+      this.deviceIdFromURL = '';
+      this.query?.delete('d');
+      history.pushState('', '', '?' + this.query?.toString());
+    },
+
     openDetailModal(item) {
       this.isOpenedDetail = true;
       this.detailItem = item;
