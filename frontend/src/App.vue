@@ -1,19 +1,17 @@
 <template>
   <v-app>
     <Navbar />
-    <Lists />
+    <router-view />
   </v-app>
 </template>
 
 <script>
 import Navbar from './components/molecules/Navbar';
-import Lists from './components/Lists.vue';
 
 export default {
   name: 'App',
   components: {
     Navbar,
-    Lists,
   },
 };
 </script>

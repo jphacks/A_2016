@@ -29,10 +29,11 @@
                 : 150 - (item && item.percentage * 1.5)
             }px;animation-name:wave${
               Math.abs(
-                item && item.item.split('').reduce((a, b) => {
-                  a = (a << 5) - a + b.charCodeAt(0);
-                  return a & a;
-                }, 0)
+                item &&
+                  item.item.split('').reduce((a, b) => {
+                    a = (a << 5) - a + b.charCodeAt(0);
+                    return a & a;
+                  }, 0)
               ) % 5
             };`"
           >
