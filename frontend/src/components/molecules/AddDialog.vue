@@ -50,6 +50,7 @@
                       link
                       v-for="(item, index) in searchItems.slice(0, 9)"
                       :key="index"
+                      @click="putUrl(item.itemUrl)"
                     >
                       <v-list-item-avatar>
                         <v-img :src="item.imageUrl"></v-img>
@@ -260,12 +261,12 @@ export default {
     },
     name: {
       required: false,
-      type:String,
+      type: String,
     },
     reset: {
       required: false,
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
 
   computed: {
@@ -279,32 +280,32 @@ export default {
     this.item.url = '';
     this.item.expiration_date = '';
     this.item.color = '';
-    this.currentStep = 1
+    this.currentStep = 1;
   },
 
   mounted() {
     this.isExistedContainer = true;
     if (this.deviceIdFromURL) {
-      console.log('a')
+      console.log('a');
       this.item.device_id = this.deviceIdFromURL;
     }
     if (this.deviceId) {
-      this.item.device_id = this.deviceId
+      this.item.device_id = this.deviceId;
     }
     if (this.name) {
-      this.item.item = this.name
+      this.item.item = this.name;
     }
-    this.currentStep = 1
+    this.currentStep = 1;
   },
 
   watch: {
     deviceId: function (val) {
       this.item.device_id = val;
     },
-    reset: function() {
-      this.currentStep = 1
-      this.isExistedContainer= true
-    }
+    reset: function () {
+      this.currentStep = 1;
+      this.isExistedContainer = true;
+    },
   },
 
   methods: {
