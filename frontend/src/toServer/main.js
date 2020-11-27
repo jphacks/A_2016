@@ -40,3 +40,9 @@ export const deleteItem = async (deviceId) => {
   const res = await Axios.delete(`${serverURL}/devices/${deviceId}`);
   return res.data;
 };
+
+export const searchItem = async (name) => {
+  const res = await Axios.get(`${serverURL}/v2/searchitem?query=${name}`)
+  console.log(res)
+  return res.data.items
+}
