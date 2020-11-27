@@ -2,13 +2,12 @@
   <v-app>
     <Navbar />
     <router-view />
-    <Footer />
   </v-app>
 </template>
 
 <script>
 import Navbar from './components/molecules/Navbar';
-import Footer from './components/molecules/Footer'
+// import Footer from './components/molecules/Footer'
 import { firebaseApp } from './firebase/index';
 import { userStore } from './store/user';
 
@@ -16,7 +15,7 @@ export default {
   name: 'App',
   components: {
     Navbar,
-    Footer
+    // Footer
   },
   created() {
     firebaseApp.auth().onAuthStateChanged((user) => {

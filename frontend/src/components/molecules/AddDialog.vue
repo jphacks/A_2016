@@ -145,12 +145,22 @@
                         </v-dialog>
                       </v-menu>
                     </div>
-                    <div class="step3">
-                      <label>色</label>
-                      <v-color-picker
-                        v-model="item.color"
-                        class="color"
-                      ></v-color-picker>
+                    <div class="step3" style="margin-top:30px">
+                      <label>色を選択</label>
+                      <div style="margin-top:20px">
+                        <v-icon class="box" :style="`background-color: ${item.color}`" @click="random">mdi-recycle</v-icon>
+                        <v-card max-width="200px" style="padding-left:10px; margin:10px auto">
+                          <v-row>
+                            <v-col
+                              v-for="(co, i) in colorArr"
+                              :key="i"
+                              md="4"
+                            >
+                            <div id="box" :style="`background-color: ${co}; width:30px;height:30px;padding-left:10px`" @click="choiceColor(co)"></div>
+                            </v-col>
+                          </v-row>
+                        </v-card>
+                      </div>
                     </div>
                   </ValidationProvider>
                   <!-- <v-btn color="secondary" text @click="currentStep=2">戻る</v-btn> -->
@@ -204,6 +214,9 @@ export default {
 
   data() {
     return {
+      colorArr:[
+        '#b60205', '#d93f0b', '#fbca04', '#0e8a16', '#1d76db','#5319e7','#111111','#eeeeee','pink'
+      ],
       steps: [
         {
           header: '商品を選択',
@@ -220,6 +233,8 @@ export default {
       min: '',
       currentStep: 1,
       dialogContainers: false,
+      color: '',
+      // colorpicker: false,
       item: {
         item: '',
         url: '',
@@ -309,6 +324,11 @@ export default {
   },
 
   methods: {
+    random() {
+      var num = Math.floor(Math.random()*9)
+      this.item.color = this.colorArr[num]
+    },
+
     goForward() {
       this.currentStep += 1;
     },
@@ -322,6 +342,12 @@ export default {
       this.item.max = this.max;
       this.item.min = this.min;
       this.goForward();
+    },
+
+    choiceColor(co) {
+      this.color=co
+      this.item.color = co
+      // this.colorpicker = false
     },
 
     async handleSearchChanged() {
@@ -369,7 +395,6 @@ export default {
           this.item = this.searchItem;
         }
         var color = this.item.color;
-        color = color.slice(0, 7);
         this.item.color = color;
         console.log(this.item);
         const res = postDevices(this.item);
@@ -385,6 +410,15 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.box{
+  padding-top:-5px;
+  padding-bottom: -5px;
+  border:1px solid #444;
+  border-radius: 5px;
+  background-color: indianred;
+  width:40px;
+  height:40px;
+}
 .v-stepper {
   box-shadow: none;
 }
