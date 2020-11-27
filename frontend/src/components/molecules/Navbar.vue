@@ -1,12 +1,15 @@
 <template>
   <div>
+    <v-dialog v-model="openAbout" max-width="600px">
+      <About />
+    </v-dialog>
     <v-app-bar flat class="navBar" color="white">
-      <v-dialog v-model="openAbout" max-width="600px">
-        <About />
-      </v-dialog>
       <v-spacer></v-spacer>
       <img :src="image_src" />
       <v-spacer></v-spacer>
+      <v-btn icon class="avatar">
+        <v-icon>mdi-account-circle</v-icon>
+      </v-btn>
     </v-app-bar>
   </div>
 </template>
@@ -43,6 +46,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.avatar {
+  position: relative;
+  top: 0;
+  background: none;
+}
+
 .navBar {
   .v-toolbar__content {
     justify-content: center;
