@@ -12,14 +12,18 @@
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.9.5",
+    "firebase": "^8.1.1",
+    "firebaseui": "^4.7.1",
     "vee-validate": "^3.4.3",
     "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
     "vuetify": "^2.2.11",
     "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",

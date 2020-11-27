@@ -1,7 +1,10 @@
 <template>
   <div>
     <v-app-bar flat class="navBar" color="#998675">
-      <h1>arcana</h1>
+      <h1 @click="openAbout = true">arcana</h1>
+      <v-dialog v-model="openAbout" max-width="600px">
+        <About />
+      </v-dialog>
       <v-spacer></v-spacer>
       <v-btn icon color="white" @click="openAddModal">
         <v-icon>mdi-plus</v-icon>
@@ -19,17 +22,20 @@
 </template>
 
 <script>
+import About from '../About'
 import AddDialog from './AddDialog';
 import { devicesStore } from '../../store/devices';
 
 export default {
   name: 'Navbar',
   components: {
+    About,
     AddDialog,
   },
 
   data() {
     return {
+      openAbout: false,
       isOpenedAdd: false,
       query: null,
       deviceIdFromURL: '',
