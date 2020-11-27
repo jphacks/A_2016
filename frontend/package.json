@@ -12,6 +12,8 @@
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.9.5",
+    "firebase": "^8.1.1",
+    "firebaseui": "^4.7.1",
     "vee-validate": "^3.4.3",
     "vue": "^2.6.11",
     "vuetify": "^2.2.11",

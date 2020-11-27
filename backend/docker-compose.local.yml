@@ -6,12 +6,12 @@ services:
     build:
       context: .
       dockerfile: docker/app/Dockerfile
-    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8080
+    command: uvicorn app.main:app --reload --host 0.0.0.0 --port 8081
     env_file:
       - .env
       - .secret.env
     ports:
-    - 8080:8080
+    - 8081:8081
     volumes:
       - .:/app
   postgres:
