@@ -17,41 +17,61 @@
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            version="1.1"
-            viewBox="0 0 100 100"
-            preserveAspectRatio="none"
-            id="svg-bg"
-            class="wave"
-            :style="`top:${
-              item && item.percentage <= 0
-                ? 170
-                : 150 - (item && item.percentage * 1.5)
-            }px;animation-name:wave${
-              Math.abs(
-                item &&
-                  item.item.split('').reduce((a, b) => {
-                    a = (a << 5) - a + b.charCodeAt(0);
-                    return a & a;
-                  }, 0)
-              ) % 5
-            };`"
+            width="55.338"
+            height="127.58"
+            viewBox="0 0 55.338 127.58"
+            class="containers"
           >
-            <path
-              d="M0,0 v50 q10,10 20,0 t20,0 t20,0 t20,0 t20,0 v-50 Z"
-              :fill="`${item && item.color ? item.color : whitesmoke}`"
-            ></path>
+            <clipPath id="clip01">
+              <path
+                d="M249.562,150.974h39.783l8.111,14.045V278.555H242.118V165.019Z"
+                transform="translate(-242.118 -150.974)"
+                fill="black"
+              />
+            </clipPath>
+            <g clip-path="url(#clip01)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1"
+                viewBox="0 0 55.338 127.58"
+                width="400"
+                height="127.58"
+                preserveAspectRatio="none"
+                id="svg-bg"
+                class="wave"
+                :style="`top:${
+                  item && item.percentage <= 0
+                    ? 170
+                    : 150 - (item && item.percentage * 1.5)
+                }px;animation-name:wave${
+                  Math.abs(
+                    item &&
+                      item.item.split('').reduce((a, b) => {
+                        a = (a << 5) - a + b.charCodeAt(0);
+                        return a & a;
+                      }, 0)
+                  ) % 5
+                };`"
+              >
+                <path
+                  d="M0,0 v50 q10,10 20,0 t20,0 t20,0 t20,0 t20,0 v-50 Z"
+                  :fill="`${item && item.color ? item.color : whitesmoke}`"
+                ></path>
+                <div
+                  class="colorBox"
+                  :style="`height: ${
+                    item && item.percentage >= 100
+                      ? 150
+                      : item && item.percentage * 1.5 - 10
+                  }px;backgroundColor:${
+                    item && item.color ? item.color : '#efebe9'
+                  }; `"
+                />
+              </svg>
+            </g>
           </svg>
-          <div
-            class="colorBox"
-            :style="`height: ${
-              item && item.percentage >= 100
-                ? 150
-                : item && item.percentage * 1.5 - 10
-            }px;backgroundColor:${
-              item && item.color ? item.color : '#efebe9'
-            }; `"
-          />
+
           <Card :info="item" />
         </div>
         <v-row justify="center">
@@ -61,13 +81,24 @@
         </v-row>
       </section>
     </transition>
+    <v-btn icon color="white" @click="openAddModal">
+        <v-icon>mdi-plus</v-icon>
+    </v-btn>
+    <v-row justify="center">
+      <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
+        <AddDialog
+          @close-add-modal="closeAddModal"
+          :deviceIdFromURL="deviceIdFromURL"
+        />
+      </v-dialog>
+    </v-row>
   </section>
 </template>
 
 <script>
 import Card from './molecules/Card';
 import Detail from '../components/molecules/Detail';
-
+import AddDialog from './molecules/AddDialog'
 import { devicesStore } from '../store/devices';
 
 export default {
@@ -76,6 +107,7 @@ export default {
   components: {
     Card,
     Detail,
+    AddDialog
   },
 
   data() {
@@ -84,6 +116,8 @@ export default {
       detailItem: {},
       changeItem: {},
       loading: true,
+      isOpenedAdd: false,
+      deviceIdFromURL: '',
     };
   },
 
@@ -119,6 +153,18 @@ export default {
   },
 
   methods: {
+    openAddModal() {
+      this.isOpenedAdd = true;
+    },
+
+    async closeAddModal() {
+      await devicesStore.dispatch('fetchDevices');
+      this.isOpenedAdd = false;
+      this.deviceIdFromURL = '';
+      this.query?.delete('d');
+      history.pushState('', '', '?' + this.query?.toString());
+    },
+
     openDetailModal(item) {
       this.isOpenedDetail = true;
       this.detailItem = item;
@@ -163,36 +209,39 @@ export default {
 }
 
 #lists {
-  width: 80%;
+  width: 90%;
   max-width: 950px;
   margin: 0 auto;
   padding-top: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-gap: 15px;
   .listCard {
     background-color: white;
-    margin: 10px auto;
-    width: 80%;
-    max-width: 150px;
-    max-height: 150px;
-    height: 150px;
+    margin: 0px auto;
+    width: 100%;
+    max-width: 200px;
+    height: 220px;
     overflow: hidden;
-    box-shadow: 0 0 0 1px #c3c3c3;
-    border-radius: 9px;
+    border: 1px solid #c3c3c3;
+    border-radius: 7px;
     cursor: pointer;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     // mix-blend-mode: hue;
     .percentage {
       position: absolute;
-      top: 3px;
-      left: 6px;
-      mix-blend-mode: difference;
+      transform: translateX(-50%);
+      left: 50%;
+      bottom: 10px;
     }
     .name {
       position: absolute;
-      bottom: 3px;
-      left: 6px;
-      mix-blend-mode: difference;
+      top: 8px;
+      left: 8px;
+      // mix-blend-mode: difference;
       width: calc(100% - 12px);
       font-size: 10px;
       display: -webkit-box;
@@ -214,20 +263,17 @@ export default {
     border: none !important;
   }
 }
+
 .wave {
   position: absolute;
   transform: translateY(calc(-50% - 0px)) scale(1, -1);
   left: 0;
-  overflow-y: hidden;
-  // animation: wave;
   animation-duration: 4s;
-  animation-name: wave2;
   animation-iteration-count: infinite;
   animation-direction: normal;
   animation-timing-function: linear;
   width: 280%;
   height: 40%;
-  // mix-blend-mode: hue;
 }
 
 @keyframes wave1 {
@@ -289,21 +335,13 @@ export default {
 }
 
 @media screen and (max-width: 375px) {
-  .listCard {
-    width: 90%;
-    height: 150px;
-    max-width: 110px;
+  #lists {
+    grid-template-columns: 1fr 1fr !important;
   }
 }
 @media screen and (max-width: 767px) {
   #lists {
     grid-template-columns: 1fr 1fr 1fr;
-    width: 95%;
-  }
-  .listCard {
-    width: 90%;
-    height: 150px;
-    max-width: 110px;
   }
 }
 
