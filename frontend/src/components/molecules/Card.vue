@@ -29,7 +29,9 @@ export default {
 .percentage {
   font-size: 16px;
   font-weight: 500;
-  // font-family: 'Shrikhand', cursive;
+  font-family: 'Exo', sans-serif;
+  font-size: 175%; // これ以上大きくすると崩れた
+  font-weight: 300;
   span {
     font-size: 12px;
   }
