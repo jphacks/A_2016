@@ -23,18 +23,23 @@
                       label="デバイスID"
                     />
                   </ValidationProvider>
-                  <!-- <label>商品を選択してください</label>
-                  <v-row>
-                    <v-col v-for="(product, i) in products" :key="i" md="4" xs="6" >
-                      <div class="product" @click="choiceProduct(product)">{{product.image}}</div>
-                    </v-col>
-                  </v-row>
-                  <label>商品がない場合</label> -->
+                  <p>表示名を入力</p>
+                  <v-text-field
+                    v-model="item.item"
+                    label="表示名"
+                  />
                   <p>商品を検索</p>
-                  <v-text-field v-model="searchItem" />
-                  <v-btn @click="search">
+                  <ValidationObserver ref="search" v-slot="{g}">
+                  <ValidationProvider v-slot="{ errors }" rules="required">
+                    <v-text-field
+                      v-model="searchItem"
+                      :error-messages="errors"
+                    />
+                  </ValidationProvider>
+                  <v-btn @click="search" :disabled="g">
                     検索
                   </v-btn>
+                  </ValidationObserver>
                   <v-row>
                     <v-col v-for="(item, i) in searchItems" :key="i" md="4" xs="6">
                       <v-img :src="item.imageUrl"  @click="putUrl(item.itemUrl)" />
@@ -47,7 +52,6 @@
               <v-stepper-content step="2">
                 <v-card-text>
                     <section>
-                      <!--TODO: componentに分ける --->
                       <label v-show="isExistedContainer">容器を選択して下さい</label>
                       <label v-show="!isExistedContainer">最大容量・最小容量を入力してください</label>
                       <v-row v-show="isExistedContainer">
@@ -247,29 +251,29 @@ export default {
     putMaxAndMin () {
       this.item.max = this.max
       this.item.min = this.min
+      this.goForward()
     },
 
-    // choiceProduct () {
-    //   this.isChoicedContainer = true
-    //   // productのmaxとか,nameとかをthis.itemに格納していく
-    //   this.goForward()
-    // },
-
     async search () {
-      this.searchItems = await searchItem(this.searchItem)
-      console.log(this.searchItems)
+      const isValid = this.$refs.search.validate()
+      if (isValid && this.searchItem) {
+        this.searchItems = await searchItem(this.searchItem)
+      }
     },
 
     choiceContainer (container) {
       console.log('最大容量は'+ container.max + '最小容量は'+ container.min)
-      this.item.max = container.max
-      this.item.min = container.min
+      this.item.max = container.max - 0 
+      this.item.min = container.min - 0 
       this.goForward()
     },  
 
     async register() {
       const isValid = this.$refs.observer.validate();
       if (isValid && this.item.max && this.item.min) {
+        if(!this.item.item) {
+          this.item = this.searchItem 
+        }
         var color = this.item.color;
         color = color.slice(0, 7);
         this.item.color = color;
@@ -277,7 +281,6 @@ export default {
         const res = register(this.item);
         this.$emit('close-add-modal', res);
       }
-      // this.$emit('close-add-modal',this.item)
     },
 
     close() {

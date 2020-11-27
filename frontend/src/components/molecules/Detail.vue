@@ -7,10 +7,13 @@
       <h1 v-if="item.percentage > 19" class="text-center mt-5 font-weight-bold">
         {{ Math.round(item.percentage) }}%
       </h1>
-      <h1 v-else class="text-center mt-5 font-weight-bold danger">
-        {{ Math.round(item.percentage) }}%
-        <p>残量が少なくなっています。</p>
-      </h1>
+      <div v-else>
+        <h1 class="text-center mt-5 font-weight-bold danger">
+          {{ Math.round(item.percentage) }}%
+          <p>残量が少なくなっています。</p>
+        </h1>
+        <p class="buy" :href="item.url">購入する</p>
+      </div>
       <p v-if="displayExp" class="text-center mt-3 font-weight-light">
         消費期限 {{ expirationDate }}
       </p>
@@ -117,6 +120,11 @@ export default {
 
 .danger > p {
   font-size: 50%;
+}
+
+.buy{
+  cursor: pointer;
+  user-select: none;
 }
 .dialog {
   z-index: 100000;
