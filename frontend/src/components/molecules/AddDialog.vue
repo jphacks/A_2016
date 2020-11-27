@@ -47,6 +47,7 @@
                     </section>
                     <p v-if="!item.max" color="red">容器を選択してください</p>
                     <label>容器がない場合</label>
+                    <v-spacer />
                     <v-btn color="secondary" text @click="currentStep -=1">戻る</v-btn>
                 </v-card-text>
               </v-stepper-content>
@@ -95,7 +96,6 @@
                   <v-card-actions>
                     <v-spacer />
                     <v-btn color="secondary" text @click="currentStep-=1">戻る</v-btn>
-                    <v-spacer />
                     <v-btn
                       color="secondary"
                       text
@@ -141,7 +141,7 @@ export default {
           header:"色・期限の設定"
         },
       ],
-      currentStep: 1,
+      currentStep: 3,
       dialogContainers: false,
       item: {
         item: '',
