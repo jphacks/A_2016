@@ -5,7 +5,7 @@
     </v-dialog>
     <v-app-bar flat class="navBar" color="white">
       <v-spacer></v-spacer>
-      <img :src="image_src" @click="openAbout = true"/>
+      <img :src="image_src" />
       <v-spacer></v-spacer>
       <v-menu offset-y v-if="user">
         <template v-slot:activator="{ on, attrs }">
@@ -14,9 +14,14 @@
           </v-btn>
         </template>
         <v-list dense>
-          <v-list-item link @click="logout">
-            <v-list-item-title>ログアウト</v-list-item-title>
-          </v-list-item>
+          <v-list-item-group>
+            <v-list-item>
+              <v-list-item-title @click="openAbout = true">このアプリケーションについて</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-list-item-title @click="logout">ログアウト</v-list-item-title>
+            </v-list-item>
+          </v-list-item-group>
         </v-list>
       </v-menu>
     </v-app-bar>
