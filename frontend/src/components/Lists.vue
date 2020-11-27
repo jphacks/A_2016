@@ -7,8 +7,11 @@
       color="#cd853f"
       indeterminate
     ></v-progress-circular>
-    <transition name="fade">
-      <section v-show="!loading" id="lists">
+    <transition v-show="!loading" name="fade">
+      <div v-if="!loading && devices.length === 0">
+        arcanaを登録しましょう！
+      </div>
+      <section id="lists">
         <div
           v-for="(item, i) in devices"
           :key="i"
