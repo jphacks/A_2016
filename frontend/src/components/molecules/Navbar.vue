@@ -16,7 +16,9 @@
         <v-list dense>
           <v-list-item-group>
             <v-list-item>
-              <v-list-item-title @click="openAbout = true">このアプリケーションについて</v-list-item-title>
+              <v-list-item-title @click="openAbout = true"
+                >このアプリケーションについて</v-list-item-title
+              >
             </v-list-item>
             <v-list-item>
               <v-list-item-title @click="logout">ログアウト</v-list-item-title>
@@ -91,7 +93,7 @@ export default {
 }
 
 .navbar-spacer {
-  height: 56px;
+  height: 64px;
 }
 
 .v-dialog {
