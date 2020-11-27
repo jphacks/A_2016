@@ -33,15 +33,17 @@
                   <p style="margin-top: 20px">表示名を入力（必須）</p>
                   <v-text-field v-model="item.item" label="表示名" />
                   <p style="margin-top: 20px">商品を検索・登録（任意）</p>
-                  <ValidationObserver ref="search" v-slot="{ g }">
+                  <ValidationObserver ref="search">
                     <ValidationProvider v-slot="{ errors }" rules="required">
                       <v-text-field
                         v-model="searchItem"
                         :error-messages="errors"
                         label="検索ワード"
+                        append-icon="mdi-magnify"
+                        @click:append="search"
+                        @input="handleSearchChanged"
                       />
                     </ValidationProvider>
-                    <v-btn @click="search" :disabled="g"> 検索 </v-btn>
                   </ValidationObserver>
                   <v-row>
                     <v-col
@@ -232,6 +234,7 @@ export default {
       isChoicedProduct: false,
       isChoicedContainer: [],
       isExistedContainer: true,
+      lastSearched: 0,
     };
   },
 
@@ -319,10 +322,27 @@ export default {
       this.goForward();
     },
 
+    async handleSearchChanged() {
+      if (Date.now() - this.lastSearched > 1000) {
+        await this.search();
+        this.lastSearched = Date.now();
+      }
+      const q = this.searchItem;
+      setTimeout(() => {
+        if (q === this.searchItem) {
+          this.search();
+        }
+      }, 1000);
+    },
+
     async search() {
       const isValid = this.$refs.search.validate();
       if (isValid && this.searchItem) {
-        this.searchItems = await searchItem(this.searchItem);
+        try {
+          this.searchItems = await searchItem(this.searchItem);
+        } catch (err) {
+          this.searchItems = [];
+        }
       }
     },
 
@@ -385,12 +405,6 @@ export default {
   .container-name {
     font-size: 10px;
   }
-}
-
-.container:active {
-  box-shadow: none;
-  position: relative;
-  top: 3px;
 }
 .v-card {
   color: #777777 !important;
