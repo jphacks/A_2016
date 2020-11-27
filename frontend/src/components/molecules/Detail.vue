@@ -41,7 +41,8 @@
       <v-dialog v-model="isOpenChange" max-width="900" hide-overlay>
         <AddDialog
           @close-add-modal="closeChangeModal"
-          :deviceId="item.device_id"
+          :deviceId="item.id"
+          :name="item.item"
           title="デバイスを変更"
         />
       </v-dialog>
@@ -94,6 +95,7 @@ export default {
 
     change() {
       this.$emit('close-detail-modal');
+      console.log(this.item)
       this.isOpenChange = true;
     },
 

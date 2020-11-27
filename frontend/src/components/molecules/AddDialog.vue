@@ -252,8 +252,12 @@ export default {
       required: false,
       type: String,
     },
+    name: {
+      required: false,
+      type:String,
+    },
     reset: {
-      required: true,
+      required: false,
       type: Boolean
     }
   },
@@ -266,9 +270,6 @@ export default {
 
   async created() {
     this.containers = await getContainers();
-    this.item.item = '';
-    this.item.max = 0;
-    this.item.min = 0;
     this.item.url = '';
     this.item.expiration_date = '';
     this.item.color = '';
@@ -277,27 +278,23 @@ export default {
   mounted() {
     this.isExistedContainer = true;
     if (this.deviceIdFromURL) {
+      console.log('a')
       this.item.device_id = this.deviceIdFromURL;
     }
     if (this.deviceId) {
+      console.log(this.device_id)
       this.item.device_id = this.deviceId;
+      this.item.item = this.name
     }
   },
 
   watch: {
     deviceId: function (val) {
+      console.log('kkaa')
       this.item.device_id = val;
     },
     reset: function() {
       this.currentStep = 1
-      this.item.item = ''
-      this.searchItem = ''
-      this.item.device_id = ''
-      this.item.url = ''
-      this.item.expiration_date = '';
-      this.item.color = '';
-      this.item.max= ''
-      this.item.min = 0; 
       this.isExistedContainer= true
     }
   },

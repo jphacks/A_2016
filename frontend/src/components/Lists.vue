@@ -118,7 +118,7 @@ export default {
       loading: true,
       isOpenedAdd: false,
       deviceIdFromURL: '',
-      reset: ''
+      reset: false
     };
   },
 
