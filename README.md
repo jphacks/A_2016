@@ -2,7 +2,7 @@
 
 [![demo movie](https://github.com/jphacks/A_2016/blob/master/images/arcana_logo.png?raw=true)](https://youtu.be/DF2gapkrYQQ)
 
-[![project overview](https://user-images.githubusercontent.com/55702777/98469528-81188680-2223-11eb-83e5-432b77cc28eb.png)
+[![project overview](https://user-images.githubusercontent.com/55702777/100488560-52bb0680-3152-11eb-8539-9a37f8fa0c11.png)
 ](https://youtu.be/DF2gapkrYQQ)
 
 ## 製品概要
@@ -11,7 +11,7 @@
 
 買い物で「あれ、家に牛乳どれくらいあったっけ？」といった問題に直面したことはありませんか？また、冷蔵庫に食材を放置しすぎて腐敗したという経験はありませんか？ arcana (アルカナ) はそのような課題をテクノロジーで解決します。
 
-[arcana](https://objective-ptolemy-33394b.netlify.app/) は、重さを計測することによって在庫の残量を web から確認できる IoT デバイス・ツールです。消耗品の下に arcana を置くだけで、その残量をアプリで可視化できます。
+[arcana](https://ar-cana.netlify.app/) は、重さを計測することによって在庫の残量を web から確認できる IoT デバイス・ツールです。消耗品の下に arcana を置くだけで、その残量をアプリで可視化できます。
 
 ### 製品説明（具体的な製品の説明）
 
