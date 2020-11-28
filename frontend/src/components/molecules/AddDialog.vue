@@ -33,18 +33,13 @@
                   <p style="margin-top: 20px">表示名を入力（必須）</p>
                   <v-text-field v-model="item.item" label="表示名" />
                   <p style="margin-top: 20px">商品を検索・登録（任意）</p>
-                  <ValidationObserver ref="search">
-                    <ValidationProvider v-slot="{ errors }" rules="required">
                       <v-text-field
                         v-model="searchItem"
-                        :error-messages="errors"
                         label="検索ワード"
                         append-icon="mdi-magnify"
                         @click:append="search"
                         @input="handleSearchChanged"
                       />
-                    </ValidationProvider>
-                  </ValidationObserver>
                   <v-list>
                     <v-list-item
                       link
@@ -118,7 +113,6 @@
 
               <v-stepper-content step="3">
                 <v-card-text>
-                  <ValidationProvider rules="required">
                     <div class="step3">
                       <label>期限</label>
                       <v-menu
@@ -162,7 +156,6 @@
                         </v-card>
                       </div>
                     </div>
-                  </ValidationProvider>
                   <!-- <v-btn color="secondary" text @click="currentStep=2">戻る</v-btn> -->
                   <p
                     v-if="!canModify"
@@ -368,8 +361,8 @@ export default {
     },
 
     async search() {
-      const isValid = this.$refs.search.validate();
-      if (isValid && this.searchItem) {
+      // const isValid = this.$refs.search.validate();
+      if (this.searchItem) {
         try {
           this.searchItems = await searchItem(this.searchItem);
         } catch (err) {
@@ -386,14 +379,14 @@ export default {
     },
 
     async register() {
-      const isValid = this.$refs.observer.validate();
+      console.log("www")
+      const isValid = await this.$refs.observer.validate();
       if (!this.item.item) {
         this.item = this.searchItem;
       }
-      if (isValid && this.item.max && this.item.min) {
-        if (!this.item.item) {
-          this.item = this.searchItem;
-        }
+      console.log(isValid, this.item.max, this.item.min)
+      if (isValid && this.item.max) {
+        console.log('sss')
         var color = this.item.color;
         this.item.color = color;
         console.log(this.item);
