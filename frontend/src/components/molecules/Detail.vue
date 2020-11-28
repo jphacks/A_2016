@@ -12,7 +12,9 @@
           {{ Math.round(item.percentage) }}%
           <p>残量が少なくなっています。</p>
         </h1>
-        <a class="buy" :href="item.url" target="_blank">購入する</a>
+        <a class="buy" v-if="item.url" :href="item.url" target="_blank"
+          >購入する</a
+        >
       </div>
       <p v-if="displayExp" class="text-center mt-3 font-weight-light">
         消費期限 {{ expirationDate }}
@@ -95,7 +97,7 @@ export default {
 
     change() {
       this.$emit('close-detail-modal');
-      console.log(this.item)
+      console.log(this.item);
       this.isOpenChange = true;
     },
 
