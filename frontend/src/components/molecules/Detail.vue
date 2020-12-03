@@ -95,7 +95,7 @@ export default {
 
     change() {
       this.$emit('close-detail-modal');
-      console.log(this.item)
+      console.log(this.item);
       this.isOpenChange = true;
     },
 

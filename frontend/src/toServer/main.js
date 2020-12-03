@@ -14,14 +14,14 @@ export const fetchDevices = async () => {
 };
 
 export const getContainers = async () => {
-  const res = await Axios.get(`${serverURL}/v2/containers`)
-  return res.data.containers
-}
+  const res = await Axios.get(`${serverURL}/v2/containers`);
+  return res.data.containers;
+};
 
 export const getProducts = async () => {
-  const res = await Axios.get(`${serverURL}/v2/products`)
-  return res.data.products
-}
+  const res = await Axios.get(`${serverURL}/v2/products`);
+  return res.data.products;
+};
 
 // deviceの登録（変更もここで）
 export const register = (item) => {
@@ -43,7 +43,7 @@ export const deleteItem = async (deviceId) => {
 };
 
 export const searchItem = async (name) => {
-  const res = await Axios.get(`${serverURL}/v2/searchitem?query=${name}`)
-  console.log(res)
-  return res.data.items
-}
+  const res = await Axios.get(`${serverURL}/v2/searchitem?query=${name}`);
+  console.log(res);
+  return res.data.items;
+};

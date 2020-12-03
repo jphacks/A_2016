@@ -16,7 +16,9 @@
         <v-list dense>
           <v-list-item-group>
             <v-list-item @click="openAbout = true">
-              <v-list-item-title>このアプリケーションについて</v-list-item-title>
+              <v-list-item-title
+                >このアプリケーションについて</v-list-item-title
+              >
             </v-list-item>
             <v-list-item @click="logout">
               <v-list-item-title>ログアウト</v-list-item-title>

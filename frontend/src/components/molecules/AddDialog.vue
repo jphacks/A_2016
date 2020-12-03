@@ -33,13 +33,13 @@
                   <p style="margin-top: 20px">表示名を入力（必須）</p>
                   <v-text-field v-model="item.item" label="表示名" />
                   <p style="margin-top: 20px">商品を検索・登録（任意）</p>
-                      <v-text-field
-                        v-model="searchItem"
-                        label="検索ワード"
-                        append-icon="mdi-magnify"
-                        @click:append="search"
-                        @input="handleSearchChanged"
-                      />
+                  <v-text-field
+                    v-model="searchItem"
+                    label="検索ワード"
+                    append-icon="mdi-magnify"
+                    @click:append="search"
+                    @input="handleSearchChanged"
+                  />
                   <v-list>
                     <v-list-item
                       link
@@ -117,59 +117,59 @@
 
               <v-stepper-content step="3">
                 <v-card-text>
-                    <div class="step3">
-                      <label>期限</label>
-                      <v-menu
-                        v-model="menu"
-                        :close-on-content-click="false"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="100px"
+                  <div class="step3">
+                    <label>期限</label>
+                    <v-menu
+                      v-model="menu"
+                      :close-on-content-click="false"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="100px"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="item.expiration_date"
+                          prepend-icon="mdi-calendar"
+                          readonly
+                          v-bind="attrs"
+                          v-on="on"
+                        ></v-text-field>
+                      </template>
+                      <v-dialog v-model="menu" max-width="400px" hide-overlay>
+                        <v-date-picker
+                          v-model="item.expiration_date"
+                          @input="menu = false"
+                        ></v-date-picker>
+                      </v-dialog>
+                    </v-menu>
+                  </div>
+                  <div class="step3" style="margin-top: 30px">
+                    <label>色を選択</label>
+                    <div style="margin-top: 20px">
+                      <v-btn
+                        class="box"
+                        :style="`background-color: ${item.color};border:1px solid #111`"
+                        @click="random"
                       >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="item.expiration_date"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-dialog v-model="menu" max-width="400px" hide-overlay>
-                          <v-date-picker
-                            v-model="item.expiration_date"
-                            @input="menu = false"
-                          ></v-date-picker>
-                        </v-dialog>
-                      </v-menu>
+                        <v-icon>mdi-autorenew</v-icon>
+                      </v-btn>
+                      <v-card
+                        flat
+                        max-width="200px"
+                        style="padding-left: 10px; margin: 10px auto"
+                      >
+                        <v-row>
+                          <v-col v-for="(co, i) in colorArr" :key="i" md="4">
+                            <div
+                              id="box"
+                              :style="`background-color: ${co}; width:30px;height:30px;padding-left:10px;border:1px solid azure`"
+                              @click="choiceColor(co)"
+                            ></div>
+                          </v-col>
+                        </v-row>
+                      </v-card>
                     </div>
-                    <div class="step3" style="margin-top: 30px">
-                      <label>色を選択</label>
-                      <div style="margin-top: 20px">
-                        <v-btn
-                          class="box"
-                          :style="`background-color: ${item.color};border:1px solid #111`"
-                          @click="random"
-                        >
-                          <v-icon>mdi-autorenew</v-icon>
-                        </v-btn>
-                        <v-card
-                          flat
-                          max-width="200px"
-                          style="padding-left: 10px; margin: 10px auto"
-                        >
-                          <v-row>
-                            <v-col v-for="(co, i) in colorArr" :key="i" md="4">
-                              <div
-                                id="box"
-                                :style="`background-color: ${co}; width:30px;height:30px;padding-left:10px;border:1px solid azure`"
-                                @click="choiceColor(co)"
-                              ></div>
-                            </v-col>
-                          </v-row>
-                        </v-card>
-                      </div>
-                    </div>
+                  </div>
                   <!-- <v-btn color="secondary" text @click="currentStep=2">戻る</v-btn> -->
                   <p
                     v-if="!canModify"
@@ -401,14 +401,11 @@ export default {
     },
 
     async register() {
-      console.log("www")
       const isValid = await this.$refs.observer.validate();
       if (!this.item.item) {
         this.item = this.searchItem;
       }
-      console.log(isValid, this.item.max, this.item.min)
       if (isValid && this.item.max) {
-        console.log('sss')
         var color = this.item.color;
         this.item.color = color;
         console.log(this.item);

@@ -7,11 +7,11 @@
       color="#cd853f"
       indeterminate
     ></v-progress-circular>
-    <transition v-show="!loading" name="fade">
+    <transition name="fade">
       <div v-if="!loading && devices.length === 0">
         arcanaを登録しましょう！
       </div>
-      <section id="lists">
+      <section v-show="!loading" id="lists">
         <div
           v-for="(item, i) in devices"
           :key="i"
@@ -63,19 +63,19 @@
           </v-dialog>
         </v-row>
       </section>
+      <v-btn icon color="white" @click="openAddModal" class="plus">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+      <v-row justify="center">
+        <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
+          <AddDialog
+            @close-add-modal="closeAddModal"
+            :deviceIdFromURL="deviceIdFromURL"
+            :reset="reset"
+          />
+        </v-dialog>
+      </v-row>
     </transition>
-    <v-btn icon color="white" @click="openAddModal" class="plus">
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
-    <v-row justify="center">
-      <v-dialog v-model="isOpenedAdd" max-width="900px" hide-overlay>
-        <AddDialog
-          @close-add-modal="closeAddModal"
-          :deviceIdFromURL="deviceIdFromURL"
-          :reset="reset"
-        />
-      </v-dialog>
-    </v-row>
   </section>
 </template>
 
